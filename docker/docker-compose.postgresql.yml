@@ -1,0 +1,23 @@
+version: '2.0'
+
+services:
+  db:
+    image: sameersbn/postgresql:9.6-2
+    ports:
+      - 5432:5432
+    environment:
+      - DEBUG=false
+      - DB_USER=sample_user
+      - DB_PASS=sample_pass
+      - DB_NAME=db
+      ##- DB_EXTENSION=
+      ##- REPLICATION_MODE=
+      - REPLICATION_USER=sample_repluser
+      - REPLICATION_PASS=sample_repluserpass
+      ##- REPLICATION_SSLMODE=
+    volumes:
+      - ./postgresql:/var/lib/postgresql
+  adminer:
+    image: adminer
+    ports:
+      - 8184:8080
