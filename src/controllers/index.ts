@@ -3,7 +3,7 @@ import { AuthController } from './authController'
 
 import {
     UserCrudController
-} from './crud/UserCrudController'
+} from './crud/userCrudController'
 
 
 

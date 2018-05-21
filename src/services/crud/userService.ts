@@ -2,11 +2,13 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import { User } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
+const CONVERT_MD5 = 'md5'
+const ENCODING= 'hex'
 export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
     }
-    async getpassword(params: any, option?: ICrudOption) {   
+    async getPassword(params: any, option?: ICrudOption) {   
         var password = params.password;
         const item = await this.exec(this.model.findOne({where:{phone: params.phone}}), { allowNull: false })
         await this.exec(item.update({password}))
@@ -16,81 +18,82 @@ export class UserService extends CrudService<typeof User> {
     }
     
     async createUser(params: any, option?: ICrudOption) {    
-        var bampass = crypto.createHash('md5').update(params.password).digest('hex')    
-        var password = bampass;
-        var passwordnotmd5 = params.password
+        var passwordNotMd5 = params.password
+        var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)    
+        params.password = md5Password;
         var username = params.username;
         var phone = params.phone;
-        const resultusername: any = await this.model.count({
+        
+        const resultUserName: any = await this.model.count({
             where: {
                 username
             }
         });
-        const resultphone: any = await this.model.count({
+        const resultPhone: any = await this.model.count({
             where: {
                 phone
             }
             
         });
-        var lenghtphone = phone.length
-        var lenghtusername= username.length
-        var lenghtpassword= passwordnotmd5.length
-        if(lenghtusername <= 3){
-            const resultofregister = "Tài khoản phải có từ 4 ký tự trở lên"
-            return resultofregister;
-        }else if(lenghtpassword <= 5 ){
-            const resultofregister = "Mật khẩu phải có từ 6 ký tự trở lên"
-            return resultofregister;
-        }else if(lenghtphone > 14 || lenghtphone <10){
-            const resultofregister = "Số điện thoại sai quy định"
-            return resultofregister;
-        }else  if(resultusername == 1)
+        var lenghtPhone = phone.length
+        var lenghtUserName= username.length
+        var lenghtPassword= passwordNotMd5.length
+        if(lenghtUserName <= 3){
+            const resultOfRegister = "Tài khoản phải có từ 4 ký tự trở lên"
+            return resultOfRegister;
+        }else if(lenghtPassword <= 5 ){
+            const resultOfRegister = "Mật khẩu phải có từ 6 ký tự trở lên"
+            return resultOfRegister;
+        }else if(lenghtPhone > 15 || lenghtPhone < 9){
+            const resultOfRegister = "Số điện thoại sai quy định"
+            return resultOfRegister;
+        }else  if(resultUserName == 1)
         {
             const isDuplicated = false;
             const resultString = username+" Đã tồn tại";
-            const createuser=false;
+            const createUser=false;
             
-            let resultofregister: any;
-            resultofregister = {isDuplicated,resultString,createuser}
-            return resultofregister;
+            let resultOfRegister: any;
+            resultOfRegister = {isDuplicated,resultString,createUser}
+            return resultOfRegister;
         }
-        else  if(resultphone == 1)
+        else  if(resultPhone == 1)
         {
             const isDuplicated = false;
             const resultString = phone+" Đã tồn tại";
-            const createuser=false;
+            const createUser=false;
             
-            let resultofregister: any;
-            resultofregister = {isDuplicated,resultString,createuser}
-            return resultofregister;
+            let resultOfRegister: any;
+            resultOfRegister = {isDuplicated,resultString,createUser}
+            return resultOfRegister;
         }else
         {
             const isDuplicated = true;
             const resultString = username+" chưa tồn tại";
-            const createuser =await this.exec(
+            const createUser =await this.exec(
             this.model.create(params, this.applyCreateOptions(option))
             )
-            let resultofregister: any;
-            resultofregister = {isDuplicated,resultString,createuser}
-            return resultofregister; 
+            let resultOfRegister: any;
+            resultOfRegister = {isDuplicated,resultString,createUser}
+            return resultOfRegister; 
         }
 
         
     }
-    async check_login(params: any, option?: ICrudOption) { 
+    async checkLogin(params: any, option?: ICrudOption) { 
         
         
-        var username = params.username; 
-        var password = params.password;
+        var userName = params.username; 
+        var passWord = params.password;
         const result: any = await this.model.count({
             where: {
-                username,
-                password
+                username:userName,
+                password:passWord
             }        
         });
         if(result == 1){
 
-            const item = await this.exec(this.model.findOne({ where: {username: params.username} }), { allowNull: false })
+            const item = await this.exec(this.model.findOne({ where: {username: userName} }), { allowNull: false })
             const id=item.id
             const fullname=item.fullname
             const avatar=item.avatar
@@ -115,7 +118,7 @@ export class UserService extends CrudService<typeof User> {
             let resultoflogin: any;
             resultoflogin = {
                 username,
-                password,
+                passWord,
                 id,
                 fullname,
                 avatar,
@@ -143,7 +146,7 @@ export class UserService extends CrudService<typeof User> {
             let resultoflogin: any;
             resultoflogin = {
                 username:undefined,
-                password:undefined,
+                passWord:undefined,
                 id:undefined,
                 fullname:undefined,
                 avatar:undefined,

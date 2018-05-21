@@ -5,7 +5,12 @@ import { queryMiddleware,authInfoMiddleware, blockMiddleware } from '@/middlewar
 import * as multer from 'multer'
 import * as fs from 'fs'
 import * as express from 'express'
-export default class Sinhvienrouter extends CrudRouter<typeof userController> {
+import { config } from '@/config'
+const IMAGE_URL_LOCAL= `${config.server.protocol}://${config.server.host}:${config.server.port}`+'/api/v1/user/image/'
+const IMAGE_URL_SERVER= `${config.server.protocol}://${config.server.host}`+'/api/v1/user/image/'
+const TYPE_IMAGE='.png'
+const FILE_IMAGE='avatar/'
+export default class UserRouter extends CrudRouter<typeof userController> {
     constructor() {
         super(userController)
 
@@ -14,37 +19,45 @@ export default class Sinhvienrouter extends CrudRouter<typeof userController> {
         this.router = express.Router();
         var storage = multer.diskStorage({
             destination: function(req:Request,file:any,cb:any){
-                cb(null,'avatar/')
+                cb(null,FILE_IMAGE)
             },
             filename: function(req:Request,file:any,cb:any){
-                cb(null, file.fieldname + '-' + Date.now()+'.png')
+                cb(null, file.fieldname + '-' + Date.now()+TYPE_IMAGE)
             }
         })
         var upload = multer({storage:storage})
-        this.router.get('/image/:filename', this.route(this.layhinh));
-        this.router.put('/avatar/:id', this.updatehinhMiddlewares(), upload.single("avatar"), this.route(this.updateavatar))
+        this.router.get('/image/:filename', this.route(this.getImage));
+        this.router.put('/avatar/:id', this.updateImageMiddlewares(), upload.single("avatar"), this.route(this.updateAvatar))
     }
-    updatehinhMiddlewares(): any[] {
+    updateImageMiddlewares(): any[] {
         return [
              authInfoMiddleware.run()
         ]
     }
-    async updateavatar(req: Request, res: Response){
+    async updateAvatar(req: Request, res: Response){
         const { id } = req.params
+        var isLocalHost = false;
+        if(config.server.host =="localhost"){
+            isLocalHost = true;
+        }
+        var imageUrl = IMAGE_URL_SERVER;
+        if(isLocalHost){
+            imageUrl = IMAGE_URL_LOCAL;
+        }
         const result = await this.controller.update( 
-            {avatar :'https://rauvat.herokuapp.com/api/v1/user/image/'+req.file.filename},{filter: { id }}            
+            {avatar : imageUrl+req.file.filename},{filter: { id }}            
         )
         this.onSuccess(res, result)
 }
-// layhinhMiddlewares(): any[] {
+// getImageMiddlewares(): any[] {
 //     return [
 //          authInfoMiddleware.run()
 //     ]
 // }
-    async layhinh(req: Request, res: Response){
+    async getImage(req: Request, res: Response){
         const { filename } = req.params
         
-        fs.readFile('avatar/'+filename, function(err, data) {
+        fs.readFile(FILE_IMAGE+filename, function(err, data) {
             if (err) throw err; 
             else {
                 res.writeHead(200,{'Content-Type': 'image/png'});

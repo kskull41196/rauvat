@@ -6,14 +6,14 @@ export class UserCrudController extends CrudController<typeof userService> {
     constructor() {
         super(userService)
     }
-    async check_login(params: any, option?: ICrudOption) {
-        return await this.service.check_login(params, option)   
+    async checkLogin(params: any, option?: ICrudOption) {
+        return await this.service.checkLogin(params, option)   
     }
     async createUser(params: any, option?: ICrudOption) {
         return await this.service.createUser(params, option)   
     }
-    async getpassword(params: any, option?: ICrudOption) {
-        return await this.service.getpassword(params, option)   
+    async getPassword(params: any, option?: ICrudOption) {
+        return await this.service.getPassword(params, option)   
     }
 }
     
