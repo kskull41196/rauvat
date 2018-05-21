@@ -3,7 +3,7 @@ const sql = require('./database')
 dotenv.config({silent: true})
 export default {
     server: {
-        host: 'server host',
+        host: 'rauvat.herokuapp.com',
         protocol: 'https',
         debug: true,
         name: 'SERVER NAME',
