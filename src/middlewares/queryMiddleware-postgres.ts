@@ -12,11 +12,9 @@ export class QueryMiddleware extends BaseMiddleware {
     const limit = parseInt(req.query['limit'] || config.database.defaultPageSize)
     const offset = parseInt(req.query['offset']) || (page - 1) * limit
     const fields = this._parseFields(req)
-
-    if(fields.attributes != undefined){
-      fields.attributes = _.union(['id', 'updated_at'], fields.attributes);
+    if (fields.attributes != undefined){
+      fields.attributes = _.union(['id','updated_at'],fields.attributes);
     }
-
     req.queryInfo = _.merge({
       filter,
       limit,
@@ -66,8 +64,8 @@ export class QueryMiddleware extends BaseMiddleware {
     }
   }
   _parseAttribute(attrs: any) {
-    const attributes: any[] = [];
-    const includes: any[] = [];
+    let attributes: any[] = [];
+    let includes: any[] = [];
     let isGetAll = false;
     let isSetParanoid = false;
     let where: any = undefined
@@ -98,10 +96,10 @@ export class QueryMiddleware extends BaseMiddleware {
         }).bind(this))
       }
     });
-    const include = this._parseInclude(includes)
-    const result: any = {
+    let include = this._parseInclude(includes)
+    const result:any = {
       include: include,
-      distinct: includes ? true : false
+      distinct: include ? true : false
     };
     if (where) result.where = where
     if (!isGetAll) {
@@ -117,10 +115,10 @@ export class QueryMiddleware extends BaseMiddleware {
 
     if (includes.length === 0) return includes;
 
-    const associates: any[] = [];
+    let associates: any[] = [];
     _.forEach(includes, ((i: any) => {
       _.forEach(i, ((attrs: any, name: string) => {
-        const associate = Object.assign({
+        let associate = Object.assign({
           association: name
         }, this._parseAttribute(attrs));
         associates.push(associate);
