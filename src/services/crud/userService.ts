@@ -2,6 +2,7 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import { User } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
+import { config } from '@/config'
 const CONVERT_MD5 = 'md5'
 const ENCODING= 'hex'
 export class UserService extends CrudService<typeof User> {
@@ -80,6 +81,23 @@ export class UserService extends CrudService<typeof User> {
 
         
     }
+    async getList(option: ICrudOption = {
+        limit: config.database.defaultPageSize,
+        offset: 0,
+        scope: ['defaultScope']
+    }) {
+        let results =  await this.exec(
+            this.modelWithScope(option.scope)
+                .findAndCountAll(this.applyFindOptions(option)));
+                var i;
+                for (i = 0; i <results.length ; i++) { 
+                    results += results['password']
+                }
+         
+        return results;
+     
+    }
+
     async checkLogin(params: any, option?: ICrudOption) { 
         
         

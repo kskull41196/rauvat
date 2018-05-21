@@ -18,8 +18,8 @@ export class CrudRouter<T extends CrudController<any>> extends BaseRouter {
     controller: T
     router: express.Router
     defaultRouting() {
-        this.router.get('/',this.checkGetMiddlewares() ,this.getListMiddlewares(), this.route(this.getList))
-        this.router.get('/:id',this.checkGetMiddlewares() , this.getItemMiddlewares(), this.route(this.getItem))
+        this.router.get('/',this.getListMiddlewares(), this.route(this.getList))
+        this.router.get('/:id',this.getItemMiddlewares(), this.route(this.getItem))
         this.router.post('/', this.createMiddlewares(), this.route(this.create))
         this.router.put('/:id', this.updateMiddlewares(), this.route(this.update))
         this.router.delete('/:id', this.deleteMiddlewares(), this.route(this.delete))

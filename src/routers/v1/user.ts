@@ -29,6 +29,8 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.get('/image/:filename', this.route(this.getImage));
         this.router.put('/avatar/:id', this.updateImageMiddlewares(), upload.single("avatar"), this.route(this.updateAvatar))
     }
+
+    
     updateImageMiddlewares(): any[] {
         return [
              authInfoMiddleware.run()

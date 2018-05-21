@@ -5,6 +5,9 @@ import { FirebaseService } from './firebaseService'
 import {
     UserService
 } from './crud/userService'
+import {
+    PostService
+} from './crud/PostService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -16,6 +19,7 @@ const tokenService = new TokenService()
 const utilService = new UtilService()
 const firebaseService = new FirebaseService()
 const userService = new UserService()
+const postService = new PostService()
 
 // Crud
 
@@ -28,4 +32,5 @@ export {
     ICrudExecOption,
     ICrudOption,
     userService,
+    postService,
 }
