@@ -12,7 +12,7 @@ export class QueryMiddleware extends BaseMiddleware {
     const limit = parseInt(req.query['limit'] || config.database.defaultPageSize)
     const offset = parseInt(req.query['offset']) || (page - 1) * limit
     const fields = this._parseFields(req)
-    if (fields.attributes != undefined){
+    if (fields.attributes){
       fields.attributes = _.union(['id','updated_at'],fields.attributes);
     }
     req.queryInfo = _.merge({
@@ -21,6 +21,8 @@ export class QueryMiddleware extends BaseMiddleware {
       offset,
       order
     }, fields)
+    
+
     next()
   }
   /**

@@ -6,7 +6,7 @@ import {
  } from "@/models/tables";
 //post
 Post.belongsTo(User, {
-    foreignKey: 'id',
+    foreignKey: 'user_id',
     as: 'user'
 });
 User.hasMany(Post, {

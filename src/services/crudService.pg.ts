@@ -99,7 +99,7 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
             offset: option.offset,
             order: option.order,
             attributes: option.attributes,
-            include: option.includes,
+            include: option.include,
             paranoid: option.paranoid,
         }
         return query
