@@ -63,19 +63,19 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         if (result.toJSON) {
             result = result.toJSON()
         }
-        var resultNe = Object.assign({
+        var resultNotPass = Object.assign({
             result
         }, undefined)
-        var rowJson = resultNe.result.rows;
+        var rowJson = resultNotPass.result.rows;
         for (var i = 0; i < rowJson.length; i++) {
             var jsonObject = rowJson[i].dataValues;
             delete jsonObject["password"]
-            resultNe.result.rows[i].dataValues = jsonObject;
+            resultNotPass.result.rows[i].dataValues = jsonObject;
         }
         const page = _.floor(req.queryInfo.offset / req.queryInfo.limit) + 1
         res.json({
             code: 200,
-            results: resultNe,
+            results: resultNotPass,
             pagination: {
                 'current_page': page,
                 'next_page': page + 1,
@@ -89,14 +89,14 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         req.queryInfo.filter.id = id
         var result = await this.controller.getItem(req.queryInfo)
         result = result || {}
-        var resultNe = Object.assign({
+        var resultNotPass = Object.assign({
             result
         }, undefined)
-        var rowJson = resultNe.result;
+        var rowJson = resultNotPass.result;
         
             var jsonObject = rowJson.dataValues;
             delete jsonObject["password"]
-            resultNe.result.dataValues = jsonObject;
+            resultNotPass.result.dataValues = jsonObject;
         
         if (Object.keys(result).length === 0) {
             res.json({
@@ -105,7 +105,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         } else {
             res.json({
                 code: 200,
-                results: resultNe
+                results: resultNotPass
             })
         }
     }
@@ -134,7 +134,8 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         return [authInfoMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        // return [blockMiddleware.run()]
+        return[]
     }
     deleteAllMiddlewares(): any[] {
         return [blockMiddleware.run()]

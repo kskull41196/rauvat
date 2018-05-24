@@ -2,11 +2,15 @@
 
 module.exports = {
   up: async function (queryInterface, Sequelize) {
-    return await queryInterface.createTable('tbl_post', {
+    return await queryInterface.createTable('tbl_rate', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
+      },
+      rate: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       content: {
         type: Sequelize.TEXT,
@@ -20,17 +24,13 @@ module.exports = {
         },
         allowNull: false
       },
-      amount_of_like: {
-        type: Sequelize.INTEGER,
-        allowNull: true
+      entity_id: {
+        type: Sequelize.UUID,
+        allowNull: false
       },
-      amount_of_comment: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      is_from_store: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      entity_type: {
+        type: Sequelize.ENUM,
+        values: ['POST', 'CMT'],
         allowNull: false
       },
       status: {
@@ -53,6 +53,6 @@ module.exports = {
   },
 
   down: async function (queryInterface, Sequelize) {
-    return await queryInterface.dropTable('tbl_post');
+    return await queryInterface.dropTable('tbl_rate');
   }
 };

@@ -2,35 +2,23 @@
 
 module.exports = {
   up: async function (queryInterface, Sequelize) {
-    return await queryInterface.createTable('tbl_post', {
+    return await queryInterface.createTable('tbl_bill_activity', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
       },
-      content: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      user_id: {
+      bill_id: {
         type: Sequelize.UUID,
         references: {
-          model: 'tbl_user',
+          model: 'tbl_bill',
           key: 'id'
         },
         allowNull: false
       },
-      amount_of_like: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      amount_of_comment: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      is_from_store: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      action: {
+        type: Sequelize.ENUM,
+        values: ['ORDERED','SUCCESSED','FAILED'],
         allowNull: false
       },
       status: {
@@ -53,6 +41,6 @@ module.exports = {
   },
 
   down: async function (queryInterface, Sequelize) {
-    return await queryInterface.dropTable('tbl_post');
+    return await queryInterface.dropTable('tbl_bill_activity');
   }
 };

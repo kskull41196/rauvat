@@ -7,6 +7,33 @@ import {
 import {
     PostCrudController
 } from './crud/postCrudController'
+import {
+    ProductCrudController
+} from './crud/productCrudController'
+import {
+    Global_areaCrudController
+} from './crud/global_areaCrudController'
+import {
+    Bill_itemCrudController
+} from './crud/bill_itemCrudController'
+import {
+    Bill_activityCrudController
+} from './crud/bill_activityCrudController'
+import {
+    BillCrudController
+} from './crud/billCrudController'
+import {
+    LikeCrudController
+} from './crud/likeCrudController'
+import {
+    CommentCrudController
+} from './crud/commentCrudController'
+import {
+    RateCrudController
+} from './crud/rateCrudController'
+import {
+    Global_promotionCrudController
+} from './crud/global_promotionCrudController'
 
 
 
@@ -16,6 +43,15 @@ const authController = new AuthController()
 
 const userController = new UserCrudController()
 const postController = new PostCrudController()
+const productController = new ProductCrudController()
+const global_areaController = new Global_areaCrudController()
+const bill_itemController = new Bill_itemCrudController()
+const bill_activityController = new Bill_activityCrudController()
+const billController = new BillCrudController()
+const likeController = new LikeCrudController()
+const rateController = new RateCrudController()
+const commentController = new CommentCrudController()
+const global_promotionController = new Global_promotionCrudController()
 
 
 
@@ -23,5 +59,14 @@ export {
     CrudController,
     authController,
     userController,
-    postController
+    postController,
+    productController,
+    global_areaController,
+    bill_itemController,
+    billController,
+    global_promotionController,
+    bill_activityController,
+    likeController,
+    rateController,
+    commentController
 }

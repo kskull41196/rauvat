@@ -1,11 +1,11 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { Post } from '@/models/tables'
+import { Bill_activity } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 
-export class PostService extends CrudService<typeof Post> {
+export class Bill_activityService extends CrudService<typeof Bill_activity> {
     constructor() {
-        super(Post)
+        super(Bill_activity)
     }
     
 }

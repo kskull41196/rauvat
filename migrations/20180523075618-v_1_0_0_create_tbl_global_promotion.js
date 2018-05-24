@@ -2,35 +2,43 @@
 
 module.exports = {
   up: async function (queryInterface, Sequelize) {
-    return await queryInterface.createTable('tbl_post', {
+    return await queryInterface.createTable('tbl_global_promotion', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
       },
-      content: {
+      title: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      short_description: {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      user_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'tbl_user',
-          key: 'id'
-        },
+      description: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      amount_of_like: {
-        type: Sequelize.INTEGER,
-        allowNull: true
+      type: {
+        type: Sequelize.ENUM,
+        values: ['AMOUNT', 'PERCENT'],
+        allowNull: false
       },
-      amount_of_comment: {
-        type: Sequelize.INTEGER,
-        allowNull: true
+      thumb: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      is_from_store: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      value: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      start_date: {
+        type: 'TIMESTAMP',
+        allowNull: false
+      },
+      end_date: {
+        type: 'TIMESTAMP',
         allowNull: false
       },
       status: {
@@ -53,6 +61,6 @@ module.exports = {
   },
 
   down: async function (queryInterface, Sequelize) {
-    return await queryInterface.dropTable('tbl_post');
+    return await queryInterface.dropTable('tbl_global_promotion');
   }
 };

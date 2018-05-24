@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { postController } from '@/controllers'
+import { commentController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class PostRouter extends CrudRouter<typeof postController> {
+export default class CommentRouter extends CrudRouter<typeof commentController> {
     constructor() {
-        super(postController)
+        super(commentController)
 
     }
     getListMiddlewares(): any[] {

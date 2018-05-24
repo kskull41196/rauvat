@@ -2,17 +2,21 @@
 
 module.exports = {
   up: async function (queryInterface, Sequelize) {
-    return await queryInterface.createTable('tbl_product', {
+    return await queryInterface.createTable('tbl_bill', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV1,
         primaryKey: true
       },
-      name: {
-        type: Sequelize.STRING,
+      promotion_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'tbl_global_promotion',
+          key: 'id'
+        },
         allowNull: false
       },
-      user_id: {
+      buyer_id: {
         type: Sequelize.UUID,
         references: {
           model: 'tbl_user',
@@ -20,42 +24,36 @@ module.exports = {
         },
         allowNull: false
       },
-      price: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      short_description: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      thumb: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      list_image: {
-        type: Sequelize.ARRAY({type:Sequelize.STRING}),
-        validate:{
-          isUrl:true
+      seller_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'tbl_user',
+          key: 'id'
         },
         allowNull: false
       },
       rating: {
         type: Sequelize.INTEGER,
-        defaultValue: 5,
+        allowNull: true
+      },
+      feedback_from_buyer: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
+      feedback_from_seller: {
+        type: Sequelize.TEXT,
+        allowNull: true
+      },
+      total_price: {
+        type: Sequelize.INTEGER,
         allowNull: false
       },
-      type: {
-        type: Sequelize.ENUM,
-        values: ['BUY', 'SELL'],
-        allowNull: false
+      sub_fee: {
+        type: Sequelize.INTEGER,
+        allowNull: true
       },
-      is_from_store: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      address: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
       longitude: {
@@ -66,28 +64,13 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true
       },
-      duration: {
-        type: Sequelize.INTEGER,
-        defaultValue: 7,
+      received_time: {
+        type: 'TIMESTAMP',
         allowNull: false
       },
-      is_limit_duration: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-        allowNull: false
-      },
-      attribute: {
-        type: Sequelize.JSON,
-        allowNull: false
-      },
-      state: {
-        type: Sequelize.ENUM,
-        values: ['REVIEW', 'VALID','BANNED', 'OUTDATED'],
-        allowNull: false
-      },
-      feedback_from_admin	: {
+      note: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: false
       },
       status: {
         type: Sequelize.BOOLEAN,
@@ -109,6 +92,6 @@ module.exports = {
   },
 
   down: async function (queryInterface, Sequelize) {
-    return await queryInterface.dropTable('tbl_product');
+    return await queryInterface.dropTable('tbl_bill');
   }
 };

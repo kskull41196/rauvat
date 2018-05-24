@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { postController } from '@/controllers'
+import { global_promotionController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class PostRouter extends CrudRouter<typeof postController> {
+export default class Global__promotionRouter extends CrudRouter<typeof global_promotionController> {
     constructor() {
-        super(postController)
+        super(global_promotionController)
 
     }
     getListMiddlewares(): any[] {
