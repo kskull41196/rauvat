@@ -11,6 +11,10 @@ import {
     Like,
     Comment,
     Rate,
+    Wallet,
+    Wallet_import,
+    Wallet_export,
+
  
  } from "@/models/tables";
 //post
@@ -116,6 +120,33 @@ Comment.belongsTo(User, {
 User.hasMany(Comment, {
     foreignKey: 'user_id',
     as: 'comment'
+});
+//user
+User.hasOne(Wallet, {
+    foreignKey: 'user_id',
+    as: 'wallet'
+});
+Wallet.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+//wallet_import
+Wallet_import.belongsTo(Wallet, {
+    foreignKey: 'wallet_id',
+    as: 'wallet'
+});
+Wallet.hasMany(Wallet_import, {
+    foreignKey: 'wallet_id',
+    as: 'wallet_import'
+});
+//wallet_export
+Wallet_export.belongsTo(Wallet, {
+    foreignKey: 'wallet_id',
+    as: 'wallet'
+});
+Wallet.hasMany(Wallet_export, {
+    foreignKey: 'wallet_id',
+    as: 'wallet_export'
 });
 
 console.log('run associates')

@@ -35,6 +35,15 @@ import {
  import {
     CommentService
  } from './crud/commentService'
+ import {
+   WalletService
+ } from './crud/walletService'
+ import {
+    Wallet_importService
+  } from './crud/wallet_importService'
+  import {
+    Wallet_exportService
+  } from './crud/wallet_exportService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -56,6 +65,9 @@ const likeService = new LikeService()
 const rateService = new RateService()
 const commentService = new CommentService()
 const global_promotionService = new Global_promotionService()
+const walletService = new WalletService()
+const wallet_importService = new Wallet_importService()
+const wallet_exportService = new Wallet_exportService()
 
 // Crud
 
@@ -77,5 +89,8 @@ export {
     billService,
     likeService,
     rateService,
-    commentService
+    commentService,
+    walletService,
+    wallet_importService,
+    wallet_exportService
 }

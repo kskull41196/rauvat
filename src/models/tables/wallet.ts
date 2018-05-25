@@ -3,25 +3,29 @@ import {
   Sequelize
 } from '../base'
 
-export const Global_area = sequelize.define(
-  'tbl_global_area',
+export const Wallet = sequelize.define(
+  'tbl_wallet',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    area: {
-      type: Sequelize.STRING,
+    user_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_user',
+        key: 'id'
+      },
       allowNull: false
     },
-    parent_id: {
-      type: Sequelize.UUID,
-      allowNull: true
-    },
-    pattern: {
-      type: Sequelize.STRING,
-      allowNull: true
+    amount_of_purchase: {
+      type: Sequelize.BIGINT,
+      validate: {
+        min:0,
+      },
+      defaultValue:0,
+      allowNull: false
     },
     status: {
       type: Sequelize.BOOLEAN,

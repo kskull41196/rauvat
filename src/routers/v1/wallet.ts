@@ -1,21 +1,13 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { global_areaController } from '@/controllers'
+import { walletController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class Global_areaRouter extends CrudRouter<typeof global_areaController> {
+export default class WalletRouter extends CrudRouter<typeof walletController> {
     constructor() {
-        super(global_areaController)
+        super(walletController)
 
     }
-    customRouting(){
-        this.router.post('/get_item_with_parents', this.route(this.getItemWithParents))
-    }
-    async getItemWithParents(req: Request, res: Response) {
-        const result = await this.controller.getItemWithParents(req.body)
-        this.onSuccess(res, result)
-    }
-
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
     }

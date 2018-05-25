@@ -6,6 +6,8 @@ export class Global_areaCrudController extends CrudController<typeof global_area
     constructor() {
         super(global_areaService)
     }
-    
+    async getItemWithParents(params: any, option?: ICrudOption) {
+        return await this.service.getItemWithParents(params, option)
+    }
 }
     

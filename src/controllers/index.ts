@@ -34,6 +34,15 @@ import {
 import {
     Global_promotionCrudController
 } from './crud/global_promotionCrudController'
+import {
+    WalletCrudController
+} from './crud/walletCrudController'
+import {
+    Wallet_importCrudController
+} from './crud/wallet_importCrudController'
+import {
+    Wallet_exportCrudController
+} from './crud/wallet_exportCrudController'
 
 
 
@@ -52,8 +61,9 @@ const likeController = new LikeCrudController()
 const rateController = new RateCrudController()
 const commentController = new CommentCrudController()
 const global_promotionController = new Global_promotionCrudController()
-
-
+const walletController = new WalletCrudController()
+const wallet_importController = new Wallet_importCrudController()
+const wallet_exportController = new Wallet_exportCrudController()
 
 export {
     CrudController,
@@ -68,5 +78,8 @@ export {
     bill_activityController,
     likeController,
     rateController,
-    commentController
+    commentController,
+    walletController,
+    wallet_importController,
+    wallet_exportController,
 }
