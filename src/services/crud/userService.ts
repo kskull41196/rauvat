@@ -88,13 +88,7 @@ export class UserService extends CrudService<typeof User> {
     }) {
         let results =  await this.exec(
             this.modelWithScope(option.scope)
-                .findAndCountAll(this.applyFindOptions(option)));
-        //         var i;
-        //         for (i = 0; i <results.length ; i++) { 
-                    
-        //         }
-        // console.log(results);
-        
+                .findAndCountAll(this.applyFindOptions(option)));      
         return results;
      
     }
@@ -137,7 +131,6 @@ export class UserService extends CrudService<typeof User> {
             let resultoflogin: any;
             resultoflogin = {
                 username,
-                passWord,
                 id,
                 fullname,
                 avatar,

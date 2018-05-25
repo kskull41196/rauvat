@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { global_areaController } from '@/controllers'
+import { globalAreaController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class Global_areaRouter extends CrudRouter<typeof global_areaController> {
+export default class GlobalAreaRouter extends CrudRouter<typeof globalAreaController> {
     constructor() {
-        super(global_areaController)
+        super(globalAreaController)
 
     }
     customRouting(){

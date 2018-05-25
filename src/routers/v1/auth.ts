@@ -61,25 +61,7 @@ export default class AuthRouter extends BaseRouter {
             jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
                 this.onSuccess(res,
                     {
-                        id: dataObtained['id'],
-                        fullname: dataObtained['fullname'],
-                        avatar: dataObtained['avatar'],
-                        sex: dataObtained['sex'],
-                        birthday: dataObtained['birthday'],
-                        phone: dataObtained['phone'],
-                        address: dataObtained['address'],
-                        longitude: dataObtained['longitude'],
-                        latitude: dataObtained['latitude'],
-                        user_type: dataObtained['user_type'],
-                        email: dataObtained['email'],
-                        amount_of_like: dataObtained['amount_of_like'],
-                        amount_of_comment: dataObtained['amount_of_comment'],
-                        amount_of_order: dataObtained['amount_of_order'],
-                        amount_of_purchase: dataObtained['amount_of_purchase'],
-                        status: dataObtained['status'],
-                        created_at: dataObtained['created_at'],
-                        updated_at: dataObtained['updated_at'],
-                        deleted_at: dataObtained['deleted_at'],
+                        dataObtained,
                         token: token
                     }
                 )

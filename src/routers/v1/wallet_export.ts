@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { wallet_exportController } from '@/controllers'
+import { walletExportController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class Wallet_exportRouter extends CrudRouter<typeof wallet_exportController> {
+export default class Wallet_exportRouter extends CrudRouter<typeof walletExportController> {
     constructor() {
-        super(wallet_exportController)
+        super(walletExportController)
 
     }
     getListMiddlewares(): any[] {

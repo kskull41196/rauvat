@@ -1,10 +1,10 @@
 import { CrudController } from '../crudController'
-import { ICrudOption, errorService ,global_areaService} from '@/services'
+import { ICrudOption, errorService ,globalAreaService} from '@/services'
 
 
-export class Global_areaCrudController extends CrudController<typeof global_areaService> {
+export class GlobalareaController extends CrudController<typeof globalAreaService> {
     constructor() {
-        super(global_areaService)
+        super(globalAreaService)
     }
     async getItemWithParents(params: any, option?: ICrudOption) {
         return await this.service.getItemWithParents(params, option)

@@ -2,47 +2,47 @@ import { CrudController } from './crudController'
 import { AuthController } from './authController'
 
 import {
-    UserCrudController
-} from './crud/userCrudController'
+    UserController
+} from './crud/userController'
 import {
-    PostCrudController
-} from './crud/postCrudController'
+    PostController
+} from './crud/postController'
 import {
-    ProductCrudController
-} from './crud/productCrudController'
+    ProductController
+} from './crud/productController'
 import {
-    Global_areaCrudController
-} from './crud/global_areaCrudController'
+    GlobalareaController
+} from './crud/globalareaController'
 import {
-    Bill_itemCrudController
-} from './crud/bill_itemCrudController'
+    BillitemController
+} from './crud/billitemController'
 import {
-    Bill_activityCrudController
-} from './crud/bill_activityCrudController'
+    BillactivityController
+} from './crud/billactivityController'
 import {
-    BillCrudController
-} from './crud/billCrudController'
+    BillController
+} from './crud/billController'
 import {
-    LikeCrudController
-} from './crud/likeCrudController'
+    LikeController
+} from './crud/likeController'
 import {
-    CommentCrudController
-} from './crud/commentCrudController'
+    CommentController
+} from './crud/commentController'
 import {
-    RateCrudController
-} from './crud/rateCrudController'
+    RateController
+} from './crud/rateController'
 import {
-    Global_promotionCrudController
-} from './crud/global_promotionCrudController'
+    GlobalpromotionController
+} from './crud/globalpromotionController'
 import {
-    WalletCrudController
-} from './crud/walletCrudController'
+    WalletController
+} from './crud/walletController'
 import {
-    Wallet_importCrudController
-} from './crud/wallet_importCrudController'
+    WalletimportController
+} from './crud/walletimportController'
 import {
-    Wallet_exportCrudController
-} from './crud/wallet_exportCrudController'
+    WalletexportController
+} from './crud/walletexportController'
 
 
 
@@ -50,20 +50,20 @@ const authController = new AuthController()
 
 // Crud
 
-const userController = new UserCrudController()
-const postController = new PostCrudController()
-const productController = new ProductCrudController()
-const global_areaController = new Global_areaCrudController()
-const bill_itemController = new Bill_itemCrudController()
-const bill_activityController = new Bill_activityCrudController()
-const billController = new BillCrudController()
-const likeController = new LikeCrudController()
-const rateController = new RateCrudController()
-const commentController = new CommentCrudController()
-const global_promotionController = new Global_promotionCrudController()
-const walletController = new WalletCrudController()
-const wallet_importController = new Wallet_importCrudController()
-const wallet_exportController = new Wallet_exportCrudController()
+const userController = new UserController()
+const postController = new PostController()
+const productController = new ProductController()
+const globalAreaController = new GlobalareaController()
+const billItemController = new BillitemController()
+const billActivityController = new BillactivityController()
+const billController = new BillController()
+const likeController = new LikeController()
+const rateController = new RateController()
+const commentController = new CommentController()
+const globalPromotionController = new GlobalpromotionController()
+const walletController = new WalletController()
+const walletImportController = new WalletimportController()
+const walletExportController = new WalletexportController()
 
 export {
     CrudController,
@@ -71,15 +71,15 @@ export {
     userController,
     postController,
     productController,
-    global_areaController,
-    bill_itemController,
+    globalAreaController,
+    billItemController,
     billController,
-    global_promotionController,
-    bill_activityController,
+    globalPromotionController,
+    billActivityController,
     likeController,
     rateController,
     commentController,
     walletController,
-    wallet_importController,
-    wallet_exportController,
+    walletImportController,
+    walletExportController,
 }

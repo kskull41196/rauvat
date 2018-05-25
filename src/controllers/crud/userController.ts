@@ -2,7 +2,7 @@ import { CrudController } from '../crudController'
 import { ICrudOption, errorService ,userService} from '@/services'
 
 
-export class UserCrudController extends CrudController<typeof userService> {
+export class UserController extends CrudController<typeof userService> {
     constructor() {
         super(userService)
     }

@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { bill_activityController } from '@/controllers'
+import { billActivityController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class Bill_activityRouter extends CrudRouter<typeof bill_activityController> {
+export default class Bill_activityRouter extends CrudRouter<typeof billActivityController> {
     constructor() {
-        super(bill_activityController)
+        super(billActivityController)
 
     }
     getListMiddlewares(): any[] {

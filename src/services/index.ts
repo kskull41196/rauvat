@@ -12,20 +12,20 @@ import {
    ProductService
 } from './crud/ProductService'
 import {
-    Global_areaService
- } from './crud/global_areaService'
+    GlobalAreaService
+ } from './crud/globalAreaService'
  import {
-    Bill_itemService
- } from './crud/bill_itemService'
+    BillItemService
+ } from './crud/billItemService'
  import {
-    Bill_activityService
- } from './crud/bill_activityService'
+    BillActivityService
+ } from './crud/billActivityService'
  import {
     BillService
  } from './crud/billService'
  import {
-    Global_promotionService
- } from './crud/global_promotionService'
+    GlobalPromotionService
+ } from './crud/globalPromotionService'
  import {
     LikeService
  } from './crud/likeService'
@@ -39,11 +39,11 @@ import {
    WalletService
  } from './crud/walletService'
  import {
-    Wallet_importService
-  } from './crud/wallet_importService'
+    WalletImportService
+  } from './crud/walletImportService'
   import {
-    Wallet_exportService
-  } from './crud/wallet_exportService'
+    WalletExportService
+  } from './crud/walletExportService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -57,17 +57,17 @@ const firebaseService = new FirebaseService()
 const userService = new UserService()
 const postService = new PostService()
 const productService = new ProductService()
-const global_areaService = new Global_areaService()
-const bill_itemService = new Bill_itemService()
-const bill_activityService = new Bill_activityService()
+const globalAreaService = new GlobalAreaService()
+const billItemService = new BillItemService()
+const billActivityService = new BillActivityService()
 const billService = new BillService()
 const likeService = new LikeService()
 const rateService = new RateService()
 const commentService = new CommentService()
-const global_promotionService = new Global_promotionService()
+const globalPromotionService = new GlobalPromotionService()
 const walletService = new WalletService()
-const wallet_importService = new Wallet_importService()
-const wallet_exportService = new Wallet_exportService()
+const walletImportService = new WalletImportService()
+const walletExportService = new WalletExportService()
 
 // Crud
 
@@ -82,15 +82,15 @@ export {
     userService,
     postService,
     productService,
-    global_areaService,
-    bill_itemService,
-    bill_activityService,
-    global_promotionService,
+    globalAreaService,
+    billItemService,
+    billActivityService,
+    globalPromotionService,
     billService,
     likeService,
     rateService,
     commentService,
     walletService,
-    wallet_importService,
-    wallet_exportService
+    walletImportService,
+    walletExportService
 }
