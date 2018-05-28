@@ -43,6 +43,12 @@ import {
 import {
     WalletexportController
 } from './crud/walletexportController'
+import {
+    PaidHistoryController
+} from './crud/paidhistoryController'
+import {
+    EmployeeController
+} from './crud/employeeController'
 
 
 
@@ -64,6 +70,8 @@ const globalPromotionController = new GlobalpromotionController()
 const walletController = new WalletController()
 const walletImportController = new WalletimportController()
 const walletExportController = new WalletexportController()
+const paidHistoryController = new PaidHistoryController()
+const employeeController = new EmployeeController()
 
 export {
     CrudController,
@@ -82,4 +90,6 @@ export {
     walletController,
     walletImportController,
     walletExportController,
+    paidHistoryController,
+    employeeController
 }

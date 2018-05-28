@@ -61,10 +61,18 @@ export const Bill = sequelize.define(
     },
     longitude: {
       type: Sequelize.DOUBLE,
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0,
       allowNull: true
     },
     latitude: {
       type: Sequelize.DOUBLE,
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0,
       allowNull: true
     },
     received_time: {

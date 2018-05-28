@@ -17,6 +17,16 @@ export default class AuthRouter extends BaseRouter {
         this.router.post('/login', this.route(this.login))
         this.router.post('/register/', this.route(this.checkCreateUser));
         this.router.put('/forgetpass/', this.route(this.getPassword));
+        this.router.get('/gettoken', this.route(this.getToken))
+    }
+    async getToken(req: Request, res: Response) {
+      
+        const getToken = await userController.checkLogin(req.body)
+        
+            jwt.sign({ getToken }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
+                this.onSuccess(res,{token:token})
+            });
+        
     }
     async getPassword(req: Request, res: Response) {
         var MD5_PASSWORD = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
@@ -58,6 +68,7 @@ export default class AuthRouter extends BaseRouter {
                 error: "Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu"
             });
         } else {
+            dataObtained.role ="USER";   
             jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
                 this.onSuccess(res,
                     {

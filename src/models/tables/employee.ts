@@ -3,56 +3,32 @@ import {
   Sequelize
 } from '../base'
 
-export const Wallet_import = sequelize.define(
-  'tbl_wallet_import',
+export const Employee = sequelize.define(
+  'tbl_employee',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    wallet_id: {
-      type: Sequelize.UUID,
-      references: {
-        model: 'tbl_wallet',
-        key: 'id'
-      },
-      allowNull: false
-    },
-    employee_id: {
-      type: Sequelize.UUID,
-      references: {
-        model: 'tbl_employee',
-        key: 'id'
-      },
-      allowNull: false
-    },
-    address: {
+    fullname: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    longitude: {
-      type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
+    avatar: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    phone: {
+      type: Sequelize.STRING,
       allowNull: false
     },
-    latitude: {
-      type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
+    email: {
+      type: Sequelize.STRING,
       allowNull: false
     },
-    amount: {
-      type: Sequelize.BIGINT,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
+    password: {
+      type: Sequelize.STRING,
       allowNull: false
     },
     status: {

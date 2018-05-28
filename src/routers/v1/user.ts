@@ -9,18 +9,18 @@ export default class UserRouter extends CrudRouter<typeof userController> {
 
     }
     async getList(req: Request, res: Response) {
-        var result = await this.controller.getList(req.queryInfo)
-        if (result.toJSON) {
-            result = result.toJSON()
+        var objects = await this.controller.getList(req.queryInfo)
+        if (objects.toJSON) {
+            objects = objects.toJSON()
         }
         var resultNotPass = Object.assign({
-            result
+            objects
         }, undefined)
-        var rowJson = resultNotPass.result.rows;
+        var rowJson = resultNotPass.objects.rows;
         for (var i = 0; i < rowJson.length; i++) {
             var jsonObject = rowJson[i].dataValues;
             delete jsonObject["password"]
-            resultNotPass.result.rows[i].dataValues = jsonObject;
+            resultNotPass.objects.rows[i].dataValues = jsonObject;
         }
         const page = _.floor(req.queryInfo.offset / req.queryInfo.limit) + 1
         res.json({
@@ -37,18 +37,18 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     async getItem(req: Request, res: Response) {
         const { id } = req.params
         req.queryInfo.filter.id = id
-        var result = await this.controller.getItem(req.queryInfo)
-        result = result || {}
+        var objects = await this.controller.getItem(req.queryInfo)
+        objects = objects || {}
         var resultNotPass = Object.assign({
-            result
+            objects
         }, undefined)
-        var rowJson = resultNotPass.result;
+        var rowJson = resultNotPass.objects;
         
             var jsonObject = rowJson.dataValues;
             delete jsonObject["password"]
-            resultNotPass.result.dataValues = jsonObject;
+            resultNotPass.objects.dataValues = jsonObject;
         
-        if (Object.keys(result).length === 0) {
+        if (Object.keys(objects).length === 0) {
             res.json({
                 code: 200
             })

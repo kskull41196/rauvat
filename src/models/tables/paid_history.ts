@@ -3,56 +3,41 @@ import {
   Sequelize
 } from '../base'
 
-export const Wallet_import = sequelize.define(
-  'tbl_wallet_import',
+export const Paid_history = sequelize.define(
+  'tbl_paid_history',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    wallet_id: {
+    bill_id: {
       type: Sequelize.UUID,
       references: {
-        model: 'tbl_wallet',
+        model: 'tbl_bill',
         key: 'id'
       },
       allowNull: false
     },
-    employee_id: {
-      type: Sequelize.UUID,
-      references: {
-        model: 'tbl_employee',
-        key: 'id'
-      },
-      allowNull: false
-    },
-    address: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    longitude: {
-      type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
-      allowNull: false
-    },
-    latitude: {
-      type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
-      allowNull: false
-    },
-    amount: {
+    pay_amount: {
       type: Sequelize.BIGINT,
       validate: {
-        min: 0,
+        min:0,
       },
-      defaultValue: 0,
+      defaultValue:0,
+      allowNull: false
+    },
+    retain_amount: {
+      type: Sequelize.BIGINT,
+      validate: {
+        min:0,
+      },
+      defaultValue:0,
+      allowNull: false
+    },
+    payment_method: {
+      type: Sequelize.ENUM,
+      values: ['COD', 'ONLINE','WALLET'],
       allowNull: false
     },
     status: {

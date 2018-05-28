@@ -1,5 +1,5 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { User } from '@/models/tables'
+import { User,Wallet } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 import { config } from '@/config'
@@ -73,9 +73,14 @@ export class UserService extends CrudService<typeof User> {
             const resultString = username+" chưa tồn tại";
             const createUser =await this.exec(
             this.model.create(params, this.applyCreateOptions(option))
+            ) 
+            const item = await this.exec(this.model.findOne({where:{username}}), { allowNull: false }) //tìm username vừa dc tạo
+            params.user_id=item.id //cho user_id của wallet = id của username vừa dc tạo ở trên
+            const createWallet= await this.exec(
+                Wallet.create(params, this.applyCreateOptions(option)) //tạo ví cho username vừa tạo ở trên với amount_of_purchase mặc định = 0
             )
             let resultOfRegister: any;
-            resultOfRegister = {isDuplicated,resultString,createUser}
+            resultOfRegister = {isDuplicated,resultString,createUser,createWallet}
             return resultOfRegister; 
         }
 

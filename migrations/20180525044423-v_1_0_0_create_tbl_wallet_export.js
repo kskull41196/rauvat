@@ -16,12 +16,40 @@ module.exports = {
         },
         allowNull: false
       },
+      employee_id: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'tbl_employee',
+          key: 'id'
+        },
+        allowNull: false
+      },
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      longitude: {
+        type: Sequelize.DOUBLE,
+        validate: {
+          min: 0,
+        },
+        defaultValue: 0,
+        allowNull: false
+      },
+      latitude: {
+        type: Sequelize.DOUBLE,
+        validate: {
+          min: 0,
+        },
+        defaultValue: 0,
+        allowNull: false
+      },
       amount: {
         type: Sequelize.BIGINT,
         validate: {
-          min:0,
+          min: 0,
         },
-        defaultValue:0,
+        defaultValue: 0,
         allowNull: false
       },
       status: {

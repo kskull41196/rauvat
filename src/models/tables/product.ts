@@ -71,11 +71,17 @@ export const Product = sequelize.define(
     },
     longitude: {
       type: Sequelize.DOUBLE,
-      allowNull: true
+        validate: {
+          min: 0,
+        },
+        defaultValue: 0
     },
     latitude: {
       type: Sequelize.DOUBLE,
-      allowNull: true
+        validate: {
+          min: 0,
+        },
+        defaultValue: 0
     },
     duration: {
       type: Sequelize.INTEGER,

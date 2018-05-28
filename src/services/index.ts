@@ -9,41 +9,47 @@ import {
     PostService
 } from './crud/PostService'
 import {
-   ProductService
+    ProductService
 } from './crud/ProductService'
 import {
     GlobalAreaService
- } from './crud/globalAreaService'
- import {
+} from './crud/globalAreaService'
+import {
     BillItemService
- } from './crud/billItemService'
- import {
+} from './crud/billItemService'
+import {
     BillActivityService
- } from './crud/billActivityService'
- import {
+} from './crud/billActivityService'
+import {
     BillService
- } from './crud/billService'
- import {
+} from './crud/billService'
+import {
     GlobalPromotionService
- } from './crud/globalPromotionService'
- import {
+} from './crud/globalPromotionService'
+import {
     LikeService
- } from './crud/likeService'
- import {
+} from './crud/likeService'
+import {
     RateService
- } from './crud/rateService'
- import {
+} from './crud/rateService'
+import {
     CommentService
- } from './crud/commentService'
- import {
-   WalletService
- } from './crud/walletService'
- import {
+} from './crud/commentService'
+import {
+    WalletService
+} from './crud/walletService'
+import {
     WalletImportService
-  } from './crud/walletImportService'
-  import {
+} from './crud/walletImportService'
+import {
     WalletExportService
-  } from './crud/walletExportService'
+} from './crud/walletExportService'
+import {
+    PaidHistoryService
+} from './crud/paidHistoryService'
+import {
+    EmployeeService
+} from './crud/employeeService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -68,6 +74,8 @@ const globalPromotionService = new GlobalPromotionService()
 const walletService = new WalletService()
 const walletImportService = new WalletImportService()
 const walletExportService = new WalletExportService()
+const paidHistoryService = new PaidHistoryService()
+const employeeService = new EmployeeService()
 
 // Crud
 
@@ -92,5 +100,7 @@ export {
     commentService,
     walletService,
     walletImportService,
-    walletExportService
+    walletExportService,
+    paidHistoryService,
+    employeeService
 }

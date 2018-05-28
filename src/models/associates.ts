@@ -14,6 +14,8 @@ import {
     Wallet,
     Wallet_import,
     Wallet_export,
+    Paid_history,
+    Employee
 
  
  } from "@/models/tables";
@@ -139,6 +141,14 @@ Wallet.hasMany(Wallet_import, {
     foreignKey: 'wallet_id',
     as: 'wallet_import'
 });
+Wallet_import.belongsTo(Employee, {
+    foreignKey: 'employee_id',
+    as: 'employee'
+});
+Employee.hasMany(Wallet_import, {
+    foreignKey: 'employee_id',
+    as: 'wallet_import'
+});
 //wallet_export
 Wallet_export.belongsTo(Wallet, {
     foreignKey: 'wallet_id',
@@ -148,5 +158,21 @@ Wallet.hasMany(Wallet_export, {
     foreignKey: 'wallet_id',
     as: 'wallet_export'
 });
-
+Wallet_export.belongsTo(Employee, {
+    foreignKey: 'employee_id',
+    as: 'employee'
+});
+Employee.hasMany(Wallet_export, {
+    foreignKey: 'employee_id',
+    as: 'Wallet_export'
+});
+//paid_histry
+Paid_history.belongsTo(Bill, {
+    foreignKey: 'bill_id',
+    as: 'bill'
+});
+Bill.hasMany(Paid_history, {
+    foreignKey: 'bill_id',
+    as: 'paid_history'
+});
 console.log('run associates')
