@@ -9,6 +9,9 @@ export class WalletController extends CrudController<typeof walletService> {
     async export(params: any, option?: ICrudOption) {
         return await this.service.export(params, option)   
     }
+    async import(params: any, option?: ICrudOption) {
+        return await this.service.import(params, option)   
+    }
     
 }
     
