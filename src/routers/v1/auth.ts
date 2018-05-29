@@ -35,18 +35,6 @@ export default class AuthRouter extends BaseRouter {
         this.onSuccess(res, result)
     }
     async checkCreateUser(req: Request, res: Response) {
-        if (req.body.fullname != undefined) {
-            req.body.fullname
-            req.body.sex = "Other";
-            req.body.birthday = new Date();;
-            req.body.address = "T.Ô.I";
-            req.body.user_type = "Normal";
-            req.body.email = "Cập nhật";
-            req.body.amount_of_like = 0;
-            req.body.amount_of_comment = 0;
-            req.body.amount_of_order = 0;
-            req.body.amount_of_purchase = 0;
-        } else {
             req.body.fullname = "Cập nhật";
             req.body.sex = "Other";
             req.body.birthday = new Date();;
@@ -57,8 +45,6 @@ export default class AuthRouter extends BaseRouter {
             req.body.amount_of_comment = 0;
             req.body.amount_of_order = 0;
             req.body.amount_of_purchase = 0;
-
-        }
         const result = await userController.createUser(req.body)
         if (result['isDuplicated'] == false) {
             res.status(401).json({
@@ -70,7 +56,6 @@ export default class AuthRouter extends BaseRouter {
             this.onSuccess(res, result)
         }
     }
-
     async login(req: Request, res: Response) {
         var md5_password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
         req.body.password = md5_password;
