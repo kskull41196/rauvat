@@ -19,12 +19,28 @@ export const Bill_item = sequelize.define(
       },
       allowNull: false
     },
+    bill_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_bill',
+        key: 'id'
+      },
+      allowNull: false
+    },
     price: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DOUBLE,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      },
       allowNull: false
     },
     amount: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DOUBLE,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      },
       allowNull: false
     },
     status: {

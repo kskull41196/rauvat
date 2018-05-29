@@ -8,22 +8,22 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         super(billController)
 
     }
-    getListMiddlewares(): any[] {
-        return [queryMiddleware.run()]
-    }
-    getItemMiddlewares(): any[] {
-        return [queryMiddleware.run()]
-    }
-    updateMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
-    }
-    deleteMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
-    }
-    deleteAllMiddlewares(): any[] {
-        return [blockMiddleware.run()]
-    }
-    createMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
-    }
+    // getListMiddlewares(): any[] {
+    //     return [queryMiddleware.run()]
+    // }
+    // getItemMiddlewares(): any[] {
+    //     return [queryMiddleware.run()]
+    // }
+    // updateMiddlewares(): any[] {
+    //     return [authInfoMiddleware.run()]
+    // }
+    // deleteMiddlewares(): any[] {
+    //     return [authInfoMiddleware.run()]
+    // }
+    // deleteAllMiddlewares(): any[] {
+    //     return [blockMiddleware.run()]
+    // }
+    // createMiddlewares(): any[] {
+    //     return [authInfoMiddleware.run()]
+    // }
 }
