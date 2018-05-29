@@ -111,6 +111,6 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         return [blockMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return []
     }
 }
