@@ -20,13 +20,13 @@ export default class AuthRouter extends BaseRouter {
         this.router.get('/gettoken', this.route(this.getToken))
     }
     async getToken(req: Request, res: Response) {
-      
+
         const getToken = await userController.checkLogin(req.body)
-        
-            jwt.sign({ getToken }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
-                this.onSuccess(res,{token:token})
-            });
-        
+
+        jwt.sign({ getToken }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
+            this.onSuccess(res, { token: token })
+        });
+
     }
     async getPassword(req: Request, res: Response) {
         var MD5_PASSWORD = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
@@ -35,17 +35,30 @@ export default class AuthRouter extends BaseRouter {
         this.onSuccess(res, result)
     }
     async checkCreateUser(req: Request, res: Response) {
-        req.body.fullname = "Cập nhật";
-        req.body.sex = "Other";
-        req.body.birthday = new Date();;
-        req.body.address = "T.Ô.I";
-        req.body.user_type = "Normal";
-        req.body.email = "Cập nhật";
-        req.body.amount_of_like = 0;
-        req.body.amount_of_comment = 0;
-        req.body.amount_of_order = 0;
-        req.body.amount_of_purchase = 0;
+        if (req.body.fullname != undefined) {
+            req.body.fullname
+            req.body.sex = "Other";
+            req.body.birthday = new Date();;
+            req.body.address = "T.Ô.I";
+            req.body.user_type = "Normal";
+            req.body.email = "Cập nhật";
+            req.body.amount_of_like = 0;
+            req.body.amount_of_comment = 0;
+            req.body.amount_of_order = 0;
+            req.body.amount_of_purchase = 0;
+        } else {
+            req.body.fullname = "Cập nhật";
+            req.body.sex = "Other";
+            req.body.birthday = new Date();;
+            req.body.address = "T.Ô.I";
+            req.body.user_type = "Normal";
+            req.body.email = "Cập nhật";
+            req.body.amount_of_like = 0;
+            req.body.amount_of_comment = 0;
+            req.body.amount_of_order = 0;
+            req.body.amount_of_purchase = 0;
 
+        }
         const result = await userController.createUser(req.body)
         if (result['isDuplicated'] == false) {
             res.status(401).json({
@@ -68,7 +81,7 @@ export default class AuthRouter extends BaseRouter {
                 error: "Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu"
             });
         } else {
-            dataObtained.role ="USER";   
+            dataObtained.role = "USER";
             jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
                 this.onSuccess(res,
                     {

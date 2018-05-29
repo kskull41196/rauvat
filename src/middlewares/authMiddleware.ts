@@ -16,8 +16,9 @@ export class AuthInfoMiddleware extends BaseMiddleware {
       
 
         jwt.verify(bearerToken,SECRET_KEY,(err:any,authData:any)=>{
-          console.log(err)
-          if(err){
+          if(authData.role !='USER'){
+            throw errorService.auth.unauthorized();
+          }else if(err){
             throw errorService.auth.unauthorized();
           }else{
             next()

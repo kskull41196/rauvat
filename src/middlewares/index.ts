@@ -1,5 +1,5 @@
 import { AuthInfoMiddleware } from './authMiddleware'
-import { AdminAuthInfoMiddleware } from './adminauthMiddleware'
+import { AdminAuthInfoMiddleware } from './adminAuthMiddleware'
 import { BlockMiddleware } from './blockMiddleware'
 import { QueryMiddleware } from './queryMiddleware' 
 import { FirebaseAuthInfoMiddleware } from './firebaseAuthMiddleware'
