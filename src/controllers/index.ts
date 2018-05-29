@@ -17,8 +17,8 @@ import {
     BillitemController
 } from './crud/billitemController'
 import {
-    BillactivityController
-} from './crud/billactivityController'
+    BillActivityController
+} from './crud/billActivityController'
 import {
     BillController
 } from './crud/billController'
@@ -61,7 +61,7 @@ const postController = new PostController()
 const productController = new ProductController()
 const globalAreaController = new GlobalareaController()
 const billItemController = new BillitemController()
-const billActivityController = new BillactivityController()
+const billActivityController = new BillActivityController()
 const billController = new BillController()
 const likeController = new LikeController()
 const rateController = new RateController()

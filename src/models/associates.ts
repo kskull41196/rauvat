@@ -5,7 +5,7 @@ import {
     Product,
     Global_area,
     Bill_item,
-    Bill_activity,
+    BillActivity,
     Global_promotion,
     Bill,
     Like,
@@ -62,14 +62,14 @@ Bill.hasMany(Bill_item, {
     foreignKey: 'bill_id',
     as: 'bill_item'
 });
-//bill_activity
-Bill_activity.belongsTo(Bill, {
+//BillActivity
+BillActivity.belongsTo(Bill, {
     foreignKey: 'bill_id',
     as: 'bill'
 });
-Bill.hasMany(Bill_activity, {
+Bill.hasMany(BillActivity, {
     foreignKey: 'bill_id',
-    as: 'bill_activity'
+    as: 'BillActivity'
 });
 //bill
 Bill.belongsTo(User, {
