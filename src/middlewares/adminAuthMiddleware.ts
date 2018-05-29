@@ -14,13 +14,16 @@ export class AdminAuthInfoMiddleware extends BaseMiddleware {
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
 
-
       jwt.verify(bearerToken, SECRET_KEY, (err: any, authData: any) => {
         console.log(err)
         if (err) {
           throw errorService.auth.unauthorized();
         } else {
-          next()
+          if (authData.role == 'ADMIN') {
+            next()
+          } else {
+            throw errorService.auth.unauthorized();
+          }
         }
       });
     } else {
