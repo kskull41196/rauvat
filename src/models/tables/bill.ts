@@ -34,6 +34,21 @@ export const Bill = sequelize.define(
       },
       allowNull: false
     },
+    current_paid_history_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_paid_history',
+        key: 'id'
+      }
+    },
+    current_bill_activity_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_bill_activity',
+        key: 'id'
+      }
+    },
+    
     rating: {
       type: Sequelize.INTEGER,
       defaultValue: 0

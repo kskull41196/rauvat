@@ -97,6 +97,15 @@ Global_promotion.hasMany(Bill, {
     foreignKey: 'promotion_id',
     as: 'bill'
 });
+Bill.belongsTo(BillActivity, {
+    foreignKey: 'current_bill_activity_id',
+    as: 'activity'
+})
+Bill.belongsTo(PaidHistory, {
+    foreignKey: 'current_paid_history_id',
+    as: 'paid_history'
+})
+
 //like
 Like.belongsTo(User, {
     foreignKey: 'user_id',
