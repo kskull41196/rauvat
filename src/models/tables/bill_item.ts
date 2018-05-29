@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Bill_item = sequelize.define(
+export const BillItem = sequelize.define(
   'tbl_bill_item',
   {
     id: {

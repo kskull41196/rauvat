@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Paid_history = sequelize.define(
+export const PaidHistory = sequelize.define(
   'tbl_paid_history',
   {
     id: {

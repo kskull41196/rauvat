@@ -2,15 +2,9 @@ import { ErrorService } from './errorService'
 import { TokenService } from './tokenService'
 import { UtilService } from './utilService'
 import { FirebaseService } from './firebaseService'
-import {
-    UserService
-} from './crud/userService'
-import {
-    PostService
-} from './crud/PostService'
-import {
-    ProductService
-} from './crud/ProductService'
+import { UserService } from './crud/userService'
+import { PostService } from './crud/PostService'
+import { ProductService } from './crud/ProductService'
 import {
     GlobalAreaService
 } from './crud/globalAreaService'
