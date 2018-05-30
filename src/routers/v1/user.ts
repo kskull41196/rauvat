@@ -8,6 +8,41 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         super(userController)
 
     }
+    editUserMiddlewares(): any[] {
+        return [authInfoMiddleware.run()]
+    }
+    async update(req: Request, res: Response){       
+        const { id } = req.params
+        const result = await this.controller.update(req.body, {
+            filter: { id }
+        })
+        if(result['error_username'] == true){
+            res.status(401).json({            
+                code: 401,
+                error:"Không được thay đổi Username"
+            });
+        }else{
+        
+        this.onSuccess(res, result)
+        }
+    }
+    async create(req: Request, res: Response) {
+        req.body.user_type = "Normal";
+        req.body.amount_of_like = 0;
+        req.body.amount_of_comment = 0;
+        req.body.amount_of_order = 0;
+        req.body.amount_of_purchase = 0;
+    const result = await this.controller.create(req.body)
+    if (result['isDuplicated'] == false) {
+        res.status(401).json({
+            code: 401,
+            error: result['resultString']
+        });
+    } else {
+
+        this.onSuccess(res, result)
+    }
+}
     async getList(req: Request, res: Response) {
         var objects = await this.controller.getList(req.queryInfo)
         if (objects.toJSON) {
@@ -76,6 +111,6 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         return [blockMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return []
     }
 }
