@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Bill_activity = sequelize.define(
+export const BillActivity = sequelize.define(
   'tbl_bill_activity',
   {
     id: {
@@ -21,12 +21,14 @@ export const Bill_activity = sequelize.define(
     },
     action: {
       type: Sequelize.ENUM,
-      values: ['ORDERED','SUCCESSED','FAILED'],
+      values: ['ORDERED', 'SUCCESSED', 'FAILED'],
+      defaultValue: 'ORDERED',
       allowNull: false
     },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
+      allowNull: false
     },
     created_at: {
       type: 'TIMESTAMP',

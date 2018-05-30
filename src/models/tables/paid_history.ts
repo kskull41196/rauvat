@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Paid_history = sequelize.define(
+export const PaidHistory = sequelize.define(
   'tbl_paid_history',
   {
     id: {
@@ -20,29 +20,39 @@ export const Paid_history = sequelize.define(
       allowNull: false
     },
     pay_amount: {
-      type: Sequelize.BIGINT,
+      type: Sequelize.DOUBLE,
       validate: {
-        min:0,
+        min: 0,
       },
-      defaultValue:0,
+      defaultValue: 0,
       allowNull: false
     },
-    retain_amount: {
-      type: Sequelize.BIGINT,
+    type: {
+      type: Sequelize.ENUM,
+      values: [
+        'PARTIAL', 'FULL'
+      ],
+      defaultValue: 'PARTIAL',
+      allowNull: false
+    },
+    remain_amount: {
+      type: Sequelize.DOUBLE,
       validate: {
-        min:0,
+        min: 0,
       },
-      defaultValue:0,
+      defaultValue: 0,
       allowNull: false
     },
     payment_method: {
       type: Sequelize.ENUM,
-      values: ['COD', 'ONLINE','WALLET'],
+      values: ['COD', 'ONLINE', 'WALLET'],
+      defaultValue: 'COD',
       allowNull: false
     },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
+      allowNull: false
     },
     created_at: {
       type: 'TIMESTAMP',
