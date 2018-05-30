@@ -53,6 +53,9 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
         offset: 0,
         scope: ['defaultScope']
     }) {
+
+        console.log(option);
+
         return await this.exec(
             this.modelWithScope(option.scope)
                 .findAndCountAll(this.applyFindOptions(option))
