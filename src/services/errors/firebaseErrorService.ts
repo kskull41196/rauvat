@@ -33,4 +33,7 @@ export class FirebaseErrorService {
     cannotUnsubscribeFromTopic(error: any) {
         return new FirebaseException('unsubscribe_topic', error.message)
     }
+    cannotCreateAccount(error: any) {
+        return new FirebaseException(error.code, error.message)
+    }
 }
