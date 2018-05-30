@@ -2,6 +2,7 @@ import { errorService } from '@/services'
 import { config } from '@/config'
 import * as moment from 'moment'
 import * as jwt from 'jwt-simple'
+import * as jsonwebtoken from 'jsonwebtoken'
 export interface IGenerateTokenOption {
     exp?: moment.Moment
     secret?: string
@@ -61,5 +62,10 @@ export class TokenService {
             exp: moment().add(1, 'days'),
             secret
         })
+    }
+
+    async createJwtToken(payload: any){
+        let secret = config.server.secret;
+        return await jsonwebtoken.sign({ payload }, secret, { expiresIn: 60 * 24 * 60 * 60 });
     }
 }

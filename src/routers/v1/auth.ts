@@ -2,8 +2,14 @@ import { CrudRouter } from '../crud'
 import { errorService } from '@/services'
 import * as express from 'express'
 import { Request, Response, BaseRouter } from '../base'
-import { authController } from '@/controllers';
-import { userController } from '@/controllers'
+import {
+    authController,
+    userController
+} from '@/controllers';
+import {
+    authInfoMiddleware,
+    adminAuthInfoMiddleware
+} from '@/middlewares'
 import * as jwt from 'jsonwebtoken'
 import { token } from 'morgan';
 import * as crypto from 'crypto'
@@ -18,6 +24,14 @@ export default class AuthRouter extends BaseRouter {
         this.router.post('/register/', this.route(this.checkCreateUser));
         this.router.put('/forgetpass/', this.route(this.getPassword));
         this.router.get('/gettoken', this.route(this.getToken))
+        this.router.post('/employee_login', this.route(this.employeeLogin));
+        this.router.post('/test', this.testMiddlewares());
+    }
+
+    testMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
     }
     async getToken(req: Request, res: Response) {
 
@@ -92,4 +106,21 @@ export default class AuthRouter extends BaseRouter {
             });
         }
     }
+
+    async employeeLogin(req: Request, res: Response) {
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                id_token: {
+                    type: 'string'
+                }
+            },
+            required: ['id_token']
+        });
+        const result = await authController.employeeLogin(req.body.id_token);
+
+        this.onSuccess(res, result);
+
+    }
+
 } 

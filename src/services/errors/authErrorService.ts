@@ -21,5 +21,8 @@ export class AuthErrorService {
     tokenExpired() {
         return new AuthException('token_expired', 'Token Expried')
     }
+    emailNotVerified(){
+        return new AuthException('email_not_verified', 'Email not verified')
+    }
  
 }
