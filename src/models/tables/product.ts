@@ -2,6 +2,7 @@ import {
   sequelize,
   Sequelize
 } from '../base'
+import * as geolib from 'geolib'
 
 export const Product = sequelize.define(
   'tbl_product',
@@ -48,9 +49,9 @@ export const Product = sequelize.define(
       allowNull: false
     },
     list_image: {
-      type: Sequelize.ARRAY({type:Sequelize.STRING}),
-      validate:{
-        isUrl:true
+      type: Sequelize.ARRAY({ type: Sequelize.STRING }),
+      validate: {
+        isUrl: true
       },
       allowNull: false
     },
@@ -69,19 +70,27 @@ export const Product = sequelize.define(
       defaultValue: false,
       allowNull: false
     },
+    position: {
+      type: Sequelize.GEOMETRY('POINT', 4326),
+      defaultValue: {
+        type: 'Point',
+        coordinates: [0, 0],
+        crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+      }
+    },
     longitude: {
       type: Sequelize.DOUBLE,
-        validate: {
-          min: 0,
-        },
-        defaultValue: 0
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0
     },
     latitude: {
       type: Sequelize.DOUBLE,
-        validate: {
-          min: 0,
-        },
-        defaultValue: 0
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0
     },
     duration: {
       type: Sequelize.INTEGER,
@@ -99,10 +108,10 @@ export const Product = sequelize.define(
     },
     state: {
       type: Sequelize.ENUM,
-      values: ['REVIEW', 'VALID','BANNED', 'OUTDATED'],
+      values: ['REVIEW', 'VALID', 'BANNED', 'OUTDATED'],
       allowNull: false
     },
-    feedback_from_admin	: {
+    feedback_from_admin: {
       type: Sequelize.STRING,
       allowNull: true
     },
@@ -123,6 +132,22 @@ export const Product = sequelize.define(
     deleted_at: { type: 'TIMESTAMP' }
   },
   {
+    hooks: {
+      beforeCreate: (product: any) => {
+        product.position = {
+          type: 'Point',
+          coordinates: [product.longitude, product.latitude],
+          crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+        }
+      },
+      beforeUpdate: (product: any) => {
+        product.position = {
+          type: 'Point',
+          coordinates: [product.longitude, product.latitude],
+          crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+        }
+      }
+    },
     timestamps: true,
     underscored: true,
     freezeTableName: true,
