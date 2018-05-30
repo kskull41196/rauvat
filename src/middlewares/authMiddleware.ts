@@ -13,14 +13,9 @@ export class AuthInfoMiddleware extends BaseMiddleware {
       const bearerHeader = req.headers[HEADERS].toString()
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
-      jwt.verify(bearerToken, SECRET_KEY, (err: any, authData: any) => {
-        if (err) {
-          throw errorService.auth.unauthorized();
-        } else {
-          req.body.user_from_token = authData
-          next()
-        }
-      });
+      const result = await tokenService.decodeToken(bearerToken);
+      req.body.user_from_token = result.payload
+      next()
     } else {
       throw errorService.auth.unauthorized();
     }

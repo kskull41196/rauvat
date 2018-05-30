@@ -17,7 +17,7 @@ export class UserService extends CrudService<typeof User> {
         if (params.username != item.username && params.username != undefined) {
             throw errorService.database.queryFail("Không được thay đổi Username")
         } else {
-            if(params.password != undefined){
+            if (params.password != undefined) {
                 var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)
                 params.password = md5Password;
             }
@@ -88,13 +88,7 @@ export class UserService extends CrudService<typeof User> {
             item.password = undefined
             return item;
         } else {
-
-            let resultoflogin: any;
-            resultoflogin = {
-                username: undefined,
-                password: undefined,
-            }
-            return resultoflogin;
+            throw errorService.database.queryFail("Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu")
         }
     }
 }

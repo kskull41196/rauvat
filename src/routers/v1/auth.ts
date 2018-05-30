@@ -1,5 +1,5 @@
 import { CrudRouter } from '../crud'
-import { errorService } from '@/services'
+import { errorService, tokenService } from '@/services'
 import * as express from 'express'
 import { Request, Response, BaseRouter } from '../base'
 import {
@@ -75,17 +75,9 @@ export default class AuthRouter extends BaseRouter {
         var md5_password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
         req.body.password = md5_password;
         const dataObtained = await userController.checkLogin(req.body)
-        if (dataObtained['username'] == undefined && dataObtained['password'] == undefined) {
-            res.status(401).json({
-                code: 401,
-                error: "Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu"
-            });
-        } else {
-            dataObtained.dataValues.role = "USER";
-            jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: TWO_MONTHS_IN_SECONDS }, (err: any, token: any) => {
-                this.onSuccess(res, dataObtained, { token: token })
-            });
-        }
+        dataObtained.dataValues.role = "USER";
+        var token = await tokenService.createJwtToken(dataObtained);
+        this.onSuccess(res, dataObtained, { token })
     }
 
     async employeeLogin(req: Request, res: Response) {
@@ -98,7 +90,10 @@ export default class AuthRouter extends BaseRouter {
             },
             required: ['id_token']
         });
-        const result = await authController.employeeLogin(req.body.id_token);
+
+        const bearer = req.body.id_token.split(' ');
+        const bearerToken = bearer[1];
+        const result = await authController.employeeLogin(bearerToken);
 
         this.onSuccess(res, result);
 
