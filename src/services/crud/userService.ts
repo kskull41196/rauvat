@@ -14,15 +14,16 @@ export class UserService extends CrudService<typeof User> {
     }
     async update(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
-        if (params.username != item.username || params.username == undefined) {
+        if (params.username != item.username && params.username != undefined) {
             throw errorService.database.queryFail("Không được thay đổi Username")
         } else {
-            var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)
-            params.password = md5Password;
-            await this.exec(item.update(params))
-            let resultOfEditUser: any;
-            resultOfEditUser = { params }
-            return resultOfEditUser;
+            if(params.password != undefined){
+                var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)
+                params.password = md5Password;
+            }
+            let updatedItem = await this.exec(item.update(params))
+            updatedItem.password = undefined
+            return updatedItem;
         }
     }
     async getPassword(params: any, option?: ICrudOption) {
@@ -69,9 +70,9 @@ export class UserService extends CrudService<typeof User> {
         else if (resultPhone == 1) {
             throw errorService.database.queryFail(phone + " đã tồn tại, vui lòng chọn số điện thoại khác khác")
         } else {
-            const createdUser = await this.exec(this.model.create(params, this.applyCreateOptions(option)))   
-             //tạo ví cho username vừa tạo ở trên với amount_of_purchase mặc định = 0       
-            const createWallet = await this.exec(Wallet.create({user_id:createdUser.id}, this.applyCreateOptions(option)))
+            const createdUser = await this.exec(this.model.create(params, this.applyCreateOptions(option)))
+            //tạo ví cho username vừa tạo ở trên với amount_of_purchase mặc định = 0       
+            const createWallet = await this.exec(Wallet.create({ user_id: createdUser.id }, this.applyCreateOptions(option)))
             return { createdUser, createWallet };
         }
     }

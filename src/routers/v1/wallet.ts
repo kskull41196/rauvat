@@ -15,12 +15,6 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
         this.router.post('/import/:id', this.route(this.import))
     }
     async export(req: Request, res: Response) {
-        /*var accesstoken = req.headers.authorization
-         jwt.verify('accesstoken', SECRET_KEY, (err: any, authData: any) => {
-            console.log(err)
-            var employee_id = authData.employee_id
-
-            req.body.employee_id = employee_id;*/
         const { id } = req.params
         const result = await this.controller.export(req.body, {
             filter: { id }
@@ -28,12 +22,6 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
         this.onSuccess(res, result)
     };
     async import(req: Request, res: Response) {
-        /*var accesstoken = req.headers.authorization
-         jwt.verify('accesstoken', SECRET_KEY, (err: any, authData: any) => {
-            console.log(err)
-            var employee_id = authData.employee_id
- 
-            req.body.employee_id = employee_id;*/
         const { id } = req.params
         const result = await this.controller.import(req.body, {
             filter: { id }

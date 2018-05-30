@@ -6,7 +6,6 @@ import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewa
 export default class GlobalPromotionRouter extends CrudRouter<typeof globalPromotionController> {
     constructor() {
         super(globalPromotionController)
-
     }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]

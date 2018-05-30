@@ -9,10 +9,13 @@ export default class GlobalAreaRouter extends CrudRouter<typeof globalAreaContro
 
     }
     customRouting(){
-        this.router.post('/get_item_with_parents', this.route(this.getItemWithParents))
+        this.router.get('/get_item_with_parents/:id', this.route(this.getItemWithParents))
     }
     async getItemWithParents(req: Request, res: Response) {
-        const result = await this.controller.getItemWithParents(req.body)
+        const { id } = req.params
+        const result = await this.controller.getItemWithParents(req.body,{
+            filter: { id }
+        })
         this.onSuccess(res, result)
     }
 
