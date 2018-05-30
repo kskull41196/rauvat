@@ -76,9 +76,7 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
                 }
             }
         });
-
         const result = await this.controller.filter(req.body, req.queryInfo);
-
         this.onSuccessAsList(res, result, undefined, req.queryInfo);
     }
 }
