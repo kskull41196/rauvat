@@ -20,6 +20,7 @@ export class AuthInfoMiddleware extends BaseMiddleware {
         if (err) {
           throw errorService.auth.unauthorized();
         } else {
+          req.body.user_from_token = authData
           next()
         }
       });

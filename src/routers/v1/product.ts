@@ -29,6 +29,7 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
     }
     createMiddlewares(): any[] {
         return []
+        //for testing purpose, it should be queryMiddleware
     }
 
     filterMiddlewares(): any[] {

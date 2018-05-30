@@ -15,13 +15,15 @@ import { token } from 'morgan';
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
 const SECRET_KEY = 'caco3+hno3'
+const ENCODING = 'hex'
+const TWO_MONTHS_IN_SECONDS = 2 * 30 * 24 * 60 * 60
 export default class AuthRouter extends BaseRouter {
     router: express.Router
     constructor() {
         super()
         this.router = express.Router()
         this.router.post('/login', this.route(this.login))
-        this.router.post('/register/', this.route(this.checkCreateUser));
+        this.router.post('/register/', this.route(this.registerUser));
         this.router.put('/forgetpass/', this.route(this.getPassword));
         this.router.get('/gettoken', this.route(this.getToken))
         this.router.post('/employee_login', this.route(this.employeeLogin));
@@ -43,32 +45,31 @@ export default class AuthRouter extends BaseRouter {
 
     }
     async getPassword(req: Request, res: Response) {
-        var MD5_PASSWORD = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
-        req.body.password = MD5_PASSWORD;
+        var md5Password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest(ENCODING);
+        req.body.password = md5Password;
         const result = await userController.getPassword(req.body)
         this.onSuccess(res, result)
     }
-    async checkCreateUser(req: Request, res: Response) {
-            req.body.fullname = "Cập nhật";
-            req.body.sex = "Other";
-            req.body.birthday = new Date();;
-            req.body.address = "T.Ô.I";
-            req.body.user_type = "Normal";
-            req.body.email = "Cập nhật";
-            req.body.amount_of_like = 0;
-            req.body.amount_of_comment = 0;
-            req.body.amount_of_order = 0;
-            req.body.amount_of_purchase = 0;
-        const result = await userController.createUser(req.body)
-        if (result['isDuplicated'] == false) {
-            res.status(401).json({
-                code: 401,
-                error: result['resultString']
-            });
-        } else {
-
-            this.onSuccess(res, result)
+    async registerUser(req: Request, res: Response) {
+        if (req.body.fullname == undefined) {
+            req.body.fullname = "";
         }
+        if (req.body.sex == undefined) {
+            req.body.sex = "Other"
+        }
+        if (req.body.birthday == undefined) {
+            req.body.birthday = new Date();
+        }
+        if (req.body.address == undefined) {
+            req.body.address = ""
+        }
+        if (req.body.email == undefined) {
+            req.body.email = ""
+        }
+        const result = await userController.create(req.body)
+
+        this.onSuccess(res, result)
+
     }
     async login(req: Request, res: Response) {
         var md5_password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
@@ -80,14 +81,9 @@ export default class AuthRouter extends BaseRouter {
                 error: "Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu"
             });
         } else {
-            dataObtained.role = "USER";
-            jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
-                this.onSuccess(res,
-                    {
-                        dataObtained,
-                        token: token
-                    }
-                )
+            dataObtained.dataValues.role = "USER";
+            jwt.sign({ dataObtained }, SECRET_KEY, { expiresIn: TWO_MONTHS_IN_SECONDS }, (err: any, token: any) => {
+                this.onSuccess(res, dataObtained, { token: token })
             });
         }
     }

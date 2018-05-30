@@ -44,7 +44,7 @@ module.exports = {
             user_type: {
               type: Sequelize.ENUM,
               values: ['Normal', 'Silver', 'Gold','Diamond'],
-              allowNull: false
+              defaultValue: 'Normal'
             }, 
             email: {
               type: Sequelize.STRING,
