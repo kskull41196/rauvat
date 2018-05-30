@@ -4,8 +4,8 @@ import {
     Post,
     Product,
     Global_area,
-    Bill_item,
-    Bill_activity,
+    BillItem,
+    BillActivity,
     Global_promotion,
     Bill,
     Like,
@@ -14,9 +14,8 @@ import {
     Wallet,
     Wallet_import,
     Wallet_export,
-    Paid_history,
+    PaidHistory,
     Employee
-
  
  } from "@/models/tables";
 //post
@@ -45,32 +44,34 @@ Global_area.hasMany(Product, {
     foreignKey: 'global_area_id',
     as: 'product'
 });
-//bill_item
-Bill_item.belongsTo(Product, {
+//BillItem
+BillItem.belongsTo(Product, {
     foreignKey: 'product_id',
     as: 'product'
 });
-Product.hasMany(Bill_item, {
+Product.hasMany(BillItem, {
     foreignKey: 'product_id',
-    as: 'bill_item'
+    as: 'bill_items'
 });
-Bill_item.belongsTo(Bill, {
+BillItem.belongsTo(Bill, {
     foreignKey: 'bill_id',
     as: 'bill'
 });
-Bill.hasMany(Bill_item, {
+Bill.hasMany(BillItem, {
     foreignKey: 'bill_id',
-    as: 'bill_item'
+    as: 'items'
 });
-//bill_activity
-Bill_activity.belongsTo(Bill, {
+
+//BillActivity
+BillActivity.belongsTo(Bill, {
     foreignKey: 'bill_id',
     as: 'bill'
 });
-Bill.hasMany(Bill_activity, {
+Bill.hasMany(BillActivity, {
     foreignKey: 'bill_id',
-    as: 'bill_activity'
+    as: 'activities'
 });
+
 //bill
 Bill.belongsTo(User, {
     foreignKey: 'buyer_id',
@@ -78,7 +79,7 @@ Bill.belongsTo(User, {
 });
 User.hasMany(Bill, {
     foreignKey: 'buyer_id',
-    as: 'bill_buyer'
+    as: 'bill_buyers'
 });
 Bill.belongsTo(User, {
     foreignKey: 'seller_id',
@@ -86,7 +87,7 @@ Bill.belongsTo(User, {
 });
 User.hasMany(Bill, {
     foreignKey: 'seller_id',
-    as: 'bill_seller'
+    as: 'bill_sellers'
 });
 Bill.belongsTo(Global_promotion, {
     foreignKey: 'promotion_id',
@@ -96,6 +97,15 @@ Global_promotion.hasMany(Bill, {
     foreignKey: 'promotion_id',
     as: 'bill'
 });
+Bill.belongsTo(BillActivity, {
+    foreignKey: 'current_bill_activity_id',
+    as: 'activity'
+})
+Bill.belongsTo(PaidHistory, {
+    foreignKey: 'current_paid_history_id',
+    as: 'paid_history'
+})
+
 //like
 Like.belongsTo(User, {
     foreignKey: 'user_id',
@@ -167,12 +177,13 @@ Employee.hasMany(Wallet_export, {
     as: 'Wallet_export'
 });
 //paid_histry
-Paid_history.belongsTo(Bill, {
+PaidHistory.belongsTo(Bill, {
     foreignKey: 'bill_id',
     as: 'bill'
 });
-Bill.hasMany(Paid_history, {
+Bill.hasMany(PaidHistory, {
     foreignKey: 'bill_id',
-    as: 'paid_history'
+    as: 'paid_histories'
 });
+
 console.log('run associates')

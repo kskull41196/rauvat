@@ -16,8 +16,7 @@ export const Bill = sequelize.define(
       references: {
         model: 'tbl_global_promotion',
         key: 'id'
-      },
-      allowNull: false
+      }
     },
     buyer_id: {
       type: Sequelize.UUID,
@@ -35,25 +34,46 @@ export const Bill = sequelize.define(
       },
       allowNull: false
     },
+    current_paid_history_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_paid_history',
+        key: 'id'
+      }
+    },
+    current_bill_activity_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_bill_activity',
+        key: 'id'
+      }
+    },
+    
     rating: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      defaultValue: 0
     },
     feedback_from_buyer: {
-      type: Sequelize.TEXT,
-      allowNull: true
+      type: Sequelize.TEXT
     },
     feedback_from_seller: {
-      type: Sequelize.TEXT,
-      allowNull: true
+      type: Sequelize.TEXT
     },
     total_price: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DOUBLE,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      },
       allowNull: false
     },
     sub_fee: {
-      type: Sequelize.INTEGER,
-      allowNull: true
+      type: Sequelize.DOUBLE,
+      defaultValue: 0,
+      validate: {
+        min: 0
+      },
+      allowNull: false
     },
     address: {
       type: Sequelize.TEXT,
@@ -61,31 +81,32 @@ export const Bill = sequelize.define(
     },
     longitude: {
       type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
       defaultValue: 0,
-      allowNull: true
+      validate: {
+        min: 0
+      },
+      allowNull: false
     },
     latitude: {
       type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
       defaultValue: 0,
-      allowNull: true
+      validate: {
+        min: 0
+      },
+      allowNull: false
     },
     received_time: {
       type: 'TIMESTAMP',
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       allowNull: false
     },
     note: {
-      type: Sequelize.TEXT,
-      allowNull: false
+      type: Sequelize.TEXT
     },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
+      allowNull: false
     },
     created_at: {
       type: 'TIMESTAMP',
