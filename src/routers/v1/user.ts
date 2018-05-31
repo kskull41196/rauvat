@@ -8,6 +8,13 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         super(userController)
 
     }
+    customRouting(){
+        this.router.post('/check_username', this.route(this.checkUsername))
+    }
+    async checkUsername(req: Request, res: Response) {
+        const result = await this.controller.checkUsername(req.body)
+        this.onSuccess(res,result)
+    }
     async update(req: Request, res: Response) {
         const { id } = req.params
         const result = await this.controller.update(req.body, {

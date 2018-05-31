@@ -91,4 +91,15 @@ export class UserService extends CrudService<typeof User> {
             throw errorService.database.queryFail("Vui lòng kiểm tra lại Tài khoản hoặc mật khẩu")
         }
     }
+    async checkUsername(params: any, option?: ICrudOption) {
+        const result: any = await this.model.count({
+            where: { username: params.username }
+        });
+        if (result == 1) {
+            throw errorService.database.queryFail(params.username + " đã tồn tại, vui lòng chọn username khác")
+        } else {
+            const resultOfCheckUser = "Có thể sử dụng " + params.username
+            return { message: resultOfCheckUser };
+        }
+    }
 }
