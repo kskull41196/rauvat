@@ -36,12 +36,9 @@ export default class AuthRouter extends BaseRouter {
         ]
     }
     async getToken(req: Request, res: Response) {
-
-        const getToken = await userController.checkLogin(req.body)
-
-        jwt.sign({ getToken }, SECRET_KEY, { expiresIn: 60 * 24 * 60 * 60 }, (err: any, token: any) => {
-            this.onSuccess(res, { token: token })
-        });
+        const getToken ="ADMIN";
+        var token = await tokenService.createJwtToken(getToken);
+        this.onSuccess(res, getToken, { token })
 
     }
     async getPassword(req: Request, res: Response) {
