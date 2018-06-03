@@ -11,6 +11,7 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
 
     customRouting() {
         this.router.post('/filter', this.filterMiddlewares(), this.route(this.filter));
+        this.router.post('/post_product', this.postProductMiddlewares(), this.route(this.postProduct));
     }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
@@ -79,4 +80,87 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
         const result = await this.controller.filter(req.body, req.queryInfo);
         this.onSuccessAsList(res, result, undefined, req.queryInfo);
     }
+
+    postProductMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async postProduct(req: Request, res: Response) {
+        //req.body.user_id = req.token_info.payload.user_id;
+        console.log(req.token_info)
+        req.body.user_id = req.tokenInfo.payload.user_id
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                name: {
+                    type: 'string'
+                },
+                price: {
+                    type: 'number'
+                },
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                short_description: {
+                    type: 'string'
+                },
+                description: {
+                    type: 'string'
+                },
+                global_category_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                global_area_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                thumb: {
+                    type: 'string',
+                    format: 'url'
+                },
+                list_image: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                },
+                is_from_store: {
+                    type: 'boolean'
+                },
+                address: {
+                    type: 'string'
+                },
+                longitude: {
+                    type: 'number',
+                    minimum: 0
+                },
+                lattiude: {
+                    type: 'number',
+                    minimum: 0
+                },
+                duration: {
+                    type: 'number',
+                    minimum: 0
+                },
+                is_limit_duration: {
+                    type: 'boolean'
+                },
+                is_buy: {
+                    type: 'boolean'
+                },
+                attribute: {
+                    type: 'object'
+                }
+            },
+            required: ['name', 'price', 'description', 'global_category_id', 'thumb', 'is_from_store', 'attribute', 'global_area_id']
+        });
+
+        const result = await this.controller.postProduct(req.body);
+        this.onSuccess(res, result)
+    }
+
 }

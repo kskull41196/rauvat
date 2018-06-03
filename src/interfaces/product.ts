@@ -12,3 +12,23 @@ export interface IFilterProduct {
     },
     radius?: number
 }
+
+export interface IPostProduct {
+    name: string,
+    price: string,
+    short_description?: string,
+    description: string,
+    global_category_id: string,
+    thumb: string,
+    list_image?: string[],
+    is_from_store: boolean,
+    address?: string,
+    longitude?: number,
+    latitude?: number,
+    duration?: number,
+    is_limit_duration?: boolean,
+    is_buy: boolean,
+    attribute: object,
+    type: 'BUY' | 'SELL',
+    state: 'REVIEW' | 'VALID' | 'BANNED' | 'OUTDATED'
+}

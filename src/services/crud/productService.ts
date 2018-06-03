@@ -1,13 +1,18 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { Product } from '@/models/tables'
 import {
-    Sequelize
+    Product,
+    GlobalCategory
+} from '@/models'
+import {
+    Sequelize,
+    sequelize
 } from '@/models'
 import CONST from '@/const'
 import * as geolib from 'geolib'
 import { config } from '@/config'
 import {
-    IFilterProduct
+    IFilterProduct,
+    IPostProduct
 } from '@/interfaces'
 
 export class ProductService extends CrudService<typeof Product> {
@@ -71,6 +76,50 @@ export class ProductService extends CrudService<typeof Product> {
         )
 
         // return await this.exec(Product.findAndCountAll(query));
+
+    }
+
+    async postProduct(params: IPostProduct) {
+        let {
+            global_category_id,
+            is_buy
+        } = params;
+
+        if (is_buy) params.type = 'BUY';
+        else params.type = 'SELL'
+
+        params.state = 'REVIEW';
+
+        const t = await sequelize.transaction();
+
+        try {
+            let product = await this.exec(Product.create(params, {
+                transaction: t
+            }))
+
+            let global_category = await this.exec(GlobalCategory.findOne({
+                where: {
+                    id: global_category_id
+                },
+                transaction: t
+            }))
+
+            await this.exec(GlobalCategory.update({
+                amount_of_product: global_category.amount_of_product + 1
+            }, {
+                    where: {
+                        id: global_category_id
+                    },
+                    transaction: t
+                }))
+
+            t.commit();
+            return product;
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+        }
 
     }
 

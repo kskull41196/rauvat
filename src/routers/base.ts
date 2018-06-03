@@ -15,7 +15,7 @@ export interface Request extends express.Request {
   queryInfo?: ICrudOption
   tokenInfo?: {
     payload: any,
-    roles: string,
+    role: string,
     exp: any,
     [x: string]: any
   }
