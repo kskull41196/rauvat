@@ -155,7 +155,7 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
                     type: 'object'
                 }
             },
-            required: ['name', 'price', 'description', 'global_category_id', 'thumb', 'is_from_store', 'attribute', 'global_area_id', 'address', 'longitude', 'lattitude', 'duration', 'is_limit_duration', 'is_buy']
+            required: ['name', 'price', 'description', 'global_category_id', 'thumb', 'is_from_store', 'attribute', 'global_area_id', 'address', 'longitude', 'latitude', 'duration', 'is_limit_duration', 'is_buy']
         });
 
         const result = await this.controller.postProduct(req.body);
