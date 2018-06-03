@@ -14,7 +14,7 @@ export class AuthInfoMiddleware extends BaseMiddleware {
       const bearer = bearerHeader.split(' ');
       const bearerToken = bearer[1];
       const result = await tokenService.decodeToken(bearerToken);
-      req.body.user_from_token = result.payload
+      req.body.token_info = result;
       next()
     } else {
       throw errorService.auth.unauthorized();

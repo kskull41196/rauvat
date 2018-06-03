@@ -73,7 +73,8 @@ export default class AuthRouter extends BaseRouter {
         req.body.password = md5_password;
         const dataObtained = await userController.checkLogin(req.body)
         dataObtained.dataValues.role = "USER";
-        var token = await tokenService.createJwtToken(dataObtained);
+        // var token = await tokenService.createJwtToken(dataObtained);
+        let token = await tokenService.getUserToken(dataObtained.id)
         this.onSuccess(res, dataObtained, { token })
     }
 

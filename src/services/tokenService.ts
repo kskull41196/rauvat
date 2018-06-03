@@ -16,7 +16,7 @@ export class TokenService {
     }
 
     async generateToken(payload: any, role: string, option: IGenerateTokenOption = {
-        exp : moment().add(5, "minutes")
+        exp: moment().add(5, "minutes")
     }) {
         const secret = option.secret || config.server.secret
         return jwt.encode({
@@ -65,7 +65,18 @@ export class TokenService {
         })
     }
 
-    async createJwtToken(payload: any){
+    async getUserToken(user_id: string, secret: string = "") {
+        secret = secret + config.server.secret
+        return await this.generateToken({
+            user_id,
+            role: 'USER'
+        }, 'USER' , {
+            exp: moment().add(7, 'days'),
+            secret
+        })
+    }
+
+    async createJwtToken(payload: any) {
         let secret = config.server.secret;
         return await jsonwebtoken.sign({ payload }, secret, { expiresIn: 60 * 24 * 60 * 60 });
     }
