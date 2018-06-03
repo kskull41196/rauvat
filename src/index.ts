@@ -9,6 +9,9 @@ import { config } from '@/config'
 import api from './routers'
 import * as cors from 'cors'
 
+var Raven = require('raven');
+Raven.config('https://3a369651752640bfa3527eb4391e948c@sentry.io/1218239').install();
+
 console.log("Starting server with at " + process.pid + " on port " + config.server.port);
 // Connect Database
 // const MongoStore = mongo(session)

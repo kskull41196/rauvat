@@ -2,6 +2,7 @@ import {
   sequelize,
   Sequelize
 } from '../base'
+import * as geolib from 'geolib'
 
 export const Product = sequelize.define(
   'tbl_product',
@@ -131,6 +132,22 @@ export const Product = sequelize.define(
     deleted_at: { type: 'TIMESTAMP' }
   },
   {
+    hooks: {
+      beforeCreate: (product: any) => {
+        product.position = {
+          type: 'Point',
+          coordinates: [product.longitude, product.latitude],
+          crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+        }
+      },
+      beforeUpdate: (product: any) => {
+        product.position = {
+          type: 'Point',
+          coordinates: [product.longitude, product.latitude],
+          crs: { type: 'name', properties: { name: 'EPSG:4326' } }
+        }
+      }
+    },
     timestamps: true,
     underscored: true,
     freezeTableName: true,

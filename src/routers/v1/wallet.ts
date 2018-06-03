@@ -1,7 +1,7 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { walletController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
+import { authInfoMiddleware, queryMiddleware, blockMiddleware,adminAuthInfoMiddleware } from '@/middlewares'
 const SECRET_KEY = 'caco3+hno3'
 import * as jwt from 'jsonwebtoken'
 import { token } from 'morgan';
@@ -11,8 +11,8 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
 
     }
     customRouting() {
-        this.router.post('/export/:id', this.route(this.export))
-        this.router.post('/import/:id', this.route(this.import))
+        this.router.post('/export/:id',this.exportMiddlewares(), this.route(this.export))
+        this.router.post('/import/:id',this.importMiddlewares() ,this.route(this.import))
     }
     async export(req: Request, res: Response) {
         const { id } = req.params
@@ -32,6 +32,12 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
 
 
 
+    exportMiddlewares(): any[] {
+        return [adminAuthInfoMiddleware.run()]
+    }
+    importMiddlewares(): any[] {
+        return [adminAuthInfoMiddleware.run()]
+    }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
     }

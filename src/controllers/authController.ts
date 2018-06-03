@@ -28,6 +28,7 @@ export class AuthController extends BaseController {
                     email: user.email
                 }
             })
+            employee.dataValues.role = "ADMIN"
             employee.dataValues.access_token = await tokenService.createJwtToken(employee);
             return employee;
         }

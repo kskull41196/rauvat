@@ -28,13 +28,14 @@ export class TokenService {
     async decodeToken(token: string, option?: IDecodeTokenOption) {
         let result = undefined
         try {
-            const secret = option.secret || config.server.secret
+            const secret = (option && option.secret) || config.server.secret
             result = jwt.decode(token, secret);
         } catch (err) {
             throw errorService.auth.badToken();
+
         }
         if (result) {
-            if ((new Date(result.exp)).getTime() <= Date.now()) {
+            if ((new Date(result.exp)).getTime() <= (Date.now() / 1000)) {
                 throw errorService.auth.tokenExpired()
             }
             return result;

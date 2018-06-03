@@ -15,10 +15,13 @@ import {
     Wallet_import,
     Wallet_export,
     PaidHistory,
-    Employee
+    Employee,
+    GlobalAttribute,
+    GlobalCategory,
+    GlobalCategoryAndAttribute
  
  } from "@/models/tables";
-//post
+ //post
 Post.belongsTo(User, {
     foreignKey: 'user_id',
     as: 'user'
@@ -43,6 +46,32 @@ Product.belongsTo(Global_area, {
 Global_area.hasMany(Product, {
     foreignKey: 'global_area_id',
     as: 'product'
+});
+Product.belongsTo(GlobalCategory, {
+    foreignKey: 'global_category_id',
+    as: 'global_category'
+});
+GlobalCategory.hasMany(Product, {
+    foreignKey: 'global_category_id',
+    as: 'product'
+});
+//Category & Attribute
+GlobalCategoryAndAttribute.belongsTo(GlobalCategory, {
+    foreignKey: 'global_category_id',
+    as: 'global_category'
+});
+GlobalCategory.hasMany(GlobalCategoryAndAttribute, {
+    foreignKey: 'global_category_id',
+    as: 'global_category_and_attribute'
+});
+
+GlobalCategoryAndAttribute.belongsTo(GlobalAttribute, {
+    foreignKey: 'global_attribute_id',
+    as: 'global_attribute'
+});
+GlobalAttribute.hasMany(GlobalCategoryAndAttribute, {
+    foreignKey: 'global_category_id',
+    as: 'global_category_and_attribute'
 });
 //BillItem
 BillItem.belongsTo(Product, {

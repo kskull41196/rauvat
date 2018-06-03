@@ -8,6 +8,13 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         super(userController)
 
     }
+    customRouting(){
+        this.router.post('/check_username', this.route(this.checkUsername))
+    }
+    async checkUsername(req: Request, res: Response) {
+        const result = await this.controller.checkUsername(req.body)
+        this.onSuccess(res,result)
+    }
     async update(req: Request, res: Response) {
         const { id } = req.params
         const result = await this.controller.update(req.body, {
@@ -63,18 +70,18 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     async getItem(req: Request, res: Response) {
         const { id } = req.params
         req.queryInfo.filter.id = id
-        var objects = await this.controller.getItem(req.queryInfo)
-        objects = objects || {}
+        var object = await this.controller.getItem(req.queryInfo)
+        object = object || {}
         var resultNotPass = Object.assign({
-            objects
+            object
         }, undefined)
-        var rowJson = resultNotPass.objects;
+        var rowJson = resultNotPass.object;
 
         var jsonObject = rowJson.dataValues;
         delete jsonObject["password"]
-        resultNotPass.objects.dataValues = jsonObject;
+        resultNotPass.object.dataValues = jsonObject;
 
-        if (Object.keys(objects).length === 0) {
+        if (Object.keys(object).length === 0) {
             res.json({
                 code: 200
             })

@@ -49,6 +49,15 @@ import {
 import {
     EmployeeController
 } from './crud/employeeController'
+import {
+    GlobalAttributeController
+} from './crud/globalAttributeController'
+import {
+    GlobalCategoryController
+} from './crud/globalCategoryController'
+import {
+    GlobalCategoryAndAttributeController
+} from './crud/globalCategoryAndAttributeController'
 
 
 
@@ -72,6 +81,9 @@ const walletImportController = new WalletimportController()
 const walletExportController = new WalletexportController()
 const paidHistoryController = new PaidHistoryController()
 const employeeController = new EmployeeController()
+const globalAttributeController = new GlobalAttributeController()
+const globalCategoryController = new GlobalCategoryController()
+const globalCategoryAndAttributeController = new GlobalCategoryAndAttributeController()
 
 export {
     CrudController,
@@ -91,5 +103,8 @@ export {
     walletImportController,
     walletExportController,
     paidHistoryController,
-    employeeController
+    employeeController,
+    globalAttributeController,
+    globalCategoryController,
+    globalCategoryAndAttributeController
 }

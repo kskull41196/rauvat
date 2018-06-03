@@ -8,6 +8,9 @@ import {
 } from '@/services'
 import { config } from '@/config'
 import * as _ from 'lodash'
+
+var Raven = require('raven');
+
 export interface Request extends express.Request {
   queryInfo?: ICrudOption
   tokenInfo?: {
@@ -37,6 +40,7 @@ export interface IValidateSchemaProperties {
 }
 export class BaseRouter {
   onError(res: Response, error: any) {
+    Raven.captureException(error);
     if (!error.options) {
       console.log("UNKNOW ERROR", error)
       const err = errorService.router.somethingWentWrong()
@@ -45,6 +49,7 @@ export class BaseRouter {
       res.status(error.options.code).json(error.options)
     }
   }
+
   onSuccess(res: Response, object: any = {}, extras: any = {}) {
     object = object || {}
     if (Object.keys(object).length === 0) {
