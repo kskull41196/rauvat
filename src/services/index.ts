@@ -44,6 +44,15 @@ import {
 import {
     EmployeeService
 } from './crud/employeeService'
+import {
+    GlobalCategoryService
+} from './crud/globalCategoryService'
+import {
+    GlobalAttributeService
+} from './crud/globalAttributeService'
+import {
+    GlobalCategoryAndAttributeService
+} from './crud/globalCategoryAndAttributeService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -70,6 +79,9 @@ const walletImportService = new WalletImportService()
 const walletExportService = new WalletExportService()
 const paidHistoryService = new PaidHistoryService()
 const employeeService = new EmployeeService()
+const globalCategoryService = new GlobalCategoryService()
+const globalAttributeService = new GlobalAttributeService()
+const globalCategoryAndAttributeService = new GlobalCategoryAndAttributeService()
 
 // Crud
 
@@ -96,5 +108,8 @@ export {
     walletImportService,
     walletExportService,
     paidHistoryService,
-    employeeService
+    employeeService,
+    globalCategoryService,
+    globalAttributeService,
+    globalCategoryAndAttributeService
 }
