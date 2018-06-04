@@ -9,7 +9,7 @@ import {
 import { config } from '@/config'
 import * as _ from 'lodash'
 
-var Raven = require('raven');
+let Raven = require('raven');
 
 export interface Request extends express.Request {
   queryInfo?: ICrudOption
