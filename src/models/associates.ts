@@ -28,7 +28,7 @@ Post.belongsTo(User, {
 });
 User.hasMany(Post, {
     foreignKey: 'user_id',
-    as: 'post'
+    as: 'posts'
 });
 //product
 Product.belongsTo(User, {
@@ -37,7 +37,7 @@ Product.belongsTo(User, {
 });
 User.hasMany(Product, {
     foreignKey: 'user_id',
-    as: 'product'
+    as: 'products'
 });
 Product.belongsTo(Global_area, {
     foreignKey: 'global_area_id',
@@ -45,7 +45,7 @@ Product.belongsTo(Global_area, {
 });
 Global_area.hasMany(Product, {
     foreignKey: 'global_area_id',
-    as: 'product'
+    as: 'products'
 });
 Product.belongsTo(GlobalCategory, {
     foreignKey: 'global_category_id',
@@ -53,7 +53,7 @@ Product.belongsTo(GlobalCategory, {
 });
 GlobalCategory.hasMany(Product, {
     foreignKey: 'global_category_id',
-    as: 'product'
+    as: 'products'
 });
 //Category & Attribute
 GlobalCategoryAndAttribute.belongsTo(GlobalCategory, {
@@ -62,7 +62,7 @@ GlobalCategoryAndAttribute.belongsTo(GlobalCategory, {
 });
 GlobalCategory.hasMany(GlobalCategoryAndAttribute, {
     foreignKey: 'global_category_id',
-    as: 'global_category_and_attribute'
+    as: 'attributes'
 });
 
 GlobalCategoryAndAttribute.belongsTo(GlobalAttribute, {
@@ -71,7 +71,7 @@ GlobalCategoryAndAttribute.belongsTo(GlobalAttribute, {
 });
 GlobalAttribute.hasMany(GlobalCategoryAndAttribute, {
     foreignKey: 'global_category_id',
-    as: 'global_category_and_attribute'
+    as: 'categories'
 });
 //BillItem
 BillItem.belongsTo(Product, {
@@ -124,7 +124,7 @@ Bill.belongsTo(Global_promotion, {
 });
 Global_promotion.hasMany(Bill, {
     foreignKey: 'promotion_id',
-    as: 'bill'
+    as: 'bills'
 });
 Bill.belongsTo(BillActivity, {
     foreignKey: 'current_bill_activity_id',
@@ -142,7 +142,7 @@ Like.belongsTo(User, {
 });
 User.hasMany(Like, {
     foreignKey: 'user_id',
-    as: 'like'
+    as: 'likes'
 });
 //rate
 Rate.belongsTo(User, {
@@ -151,7 +151,7 @@ Rate.belongsTo(User, {
 });
 User.hasMany(Rate, {
     foreignKey: 'user_id',
-    as: 'rate'
+    as: 'rates'
 });
 //comment
 Comment.belongsTo(User, {
@@ -160,7 +160,7 @@ Comment.belongsTo(User, {
 });
 User.hasMany(Comment, {
     foreignKey: 'user_id',
-    as: 'comment'
+    as: 'comments'
 });
 //user
 User.hasOne(Wallet, {
@@ -178,7 +178,7 @@ Wallet_import.belongsTo(Wallet, {
 });
 Wallet.hasMany(Wallet_import, {
     foreignKey: 'wallet_id',
-    as: 'wallet_import'
+    as: 'imports'
 });
 Wallet_import.belongsTo(Employee, {
     foreignKey: 'employee_id',
@@ -186,7 +186,7 @@ Wallet_import.belongsTo(Employee, {
 });
 Employee.hasMany(Wallet_import, {
     foreignKey: 'employee_id',
-    as: 'wallet_import'
+    as: 'wallet_imports'
 });
 //wallet_export
 Wallet_export.belongsTo(Wallet, {
@@ -195,7 +195,7 @@ Wallet_export.belongsTo(Wallet, {
 });
 Wallet.hasMany(Wallet_export, {
     foreignKey: 'wallet_id',
-    as: 'wallet_export'
+    as: 'exports'
 });
 Wallet_export.belongsTo(Employee, {
     foreignKey: 'employee_id',
@@ -203,7 +203,7 @@ Wallet_export.belongsTo(Employee, {
 });
 Employee.hasMany(Wallet_export, {
     foreignKey: 'employee_id',
-    as: 'Wallet_export'
+    as: 'Wallet_exports'
 });
 //paid_histry
 PaidHistory.belongsTo(Bill, {
