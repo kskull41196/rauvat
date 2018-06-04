@@ -1,7 +1,7 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { productController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
+import { authInfoMiddleware, queryMiddleware, blockMiddleware,adminAuthInfoMiddleware } from '@/middlewares'
 
 export default class ProductRouter extends CrudRouter<typeof productController> {
     constructor() {
@@ -22,10 +22,10 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
         return [authInfoMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return [adminAuthInfoMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        return [adminAuthInfoMiddleware.run()]
     }
     createMiddlewares(): any[] {
         return []

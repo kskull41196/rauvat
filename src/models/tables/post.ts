@@ -25,15 +25,29 @@ export const Post = sequelize.define(
     },
     amount_of_like: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0,
+      allowNull: false
     },
     amount_of_comment: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      validate: {
+        min: 0,
+      },
+      defaultValue: 0,
+      allowNull: false
     },
     is_from_store: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
+      allowNull: false
+    },
+    privacy: {
+      type: Sequelize.ENUM,
+      values: ['PUBLIC', 'FRIEND', 'ONLY_ME'],
+      defaultValue: 'PUBLIC',
       allowNull: false
     },
     status: {

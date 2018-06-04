@@ -1,19 +1,26 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { userController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware ,adminAuthInfoMiddleware} from '@/middlewares'
+import { authInfoMiddleware, queryMiddleware, blockMiddleware, adminAuthInfoMiddleware } from '@/middlewares'
 import * as _ from 'lodash'
 export default class UserRouter extends CrudRouter<typeof userController> {
     constructor() {
         super(userController)
 
     }
-    customRouting(){
+    customRouting() {
         this.router.post('/check_username', this.route(this.checkUsername))
     }
     async checkUsername(req: Request, res: Response) {
         const result = await this.controller.checkUsername(req.body)
-        this.onSuccess(res,result)
+        if (result['duplicate'] == true) {
+            res.status(201).json({
+                code: 201,
+                results: { object: { message: result['resultOfCheckUser'] } }
+            })
+        } else {
+            this.onSuccess(res, result)
+        }
     }
     async update(req: Request, res: Response) {
         const { id } = req.params
@@ -106,7 +113,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         return [adminAuthInfoMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        return [adminAuthInfoMiddleware.run()]
     }
     createMiddlewares(): any[] {
         return [adminAuthInfoMiddleware.run()]

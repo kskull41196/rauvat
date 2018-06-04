@@ -96,7 +96,9 @@ export class UserService extends CrudService<typeof User> {
             where: { username: params.username }
         });
         if (result == 1) {
-            throw errorService.database.queryFail(params.username + " đã tồn tại, vui lòng chọn username khác")
+            const duplicate = true
+            const resultOfCheckUser = params.username+ " đã tồn tại, vui lòng chọn username khác"
+            return { duplicate, resultOfCheckUser };
         } else {
             const resultOfCheckUser = "Có thể sử dụng " + params.username
             return { message: resultOfCheckUser };
