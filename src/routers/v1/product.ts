@@ -1,7 +1,7 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { productController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
+import { authInfoMiddleware, queryMiddleware, blockMiddleware, adminAuthInfoMiddleware } from '@/middlewares'
 
 export default class ProductRouter extends CrudRouter<typeof productController> {
     constructor() {

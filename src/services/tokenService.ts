@@ -74,4 +74,16 @@ export class TokenService {
             secret
         })
     }
+
+    async getEmployeeToken(employee_id: string, secret: string = ""){
+        secret = secret + config.server.secret
+        return await this.generateToken({
+            employee_id,
+            role: 'ADMIN'
+        }, 'ADMIN' , {
+            exp: moment().add(1, 'days'),
+            secret
+        })
+    }
+
 }
