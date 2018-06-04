@@ -29,7 +29,7 @@ export class AuthController extends BaseController {
                 }
             })
             employee.dataValues.role = "admin"
-            employee.dataValues.access_token = await tokenService.generateToken({}, "admin");
+            employee.dataValues.access_token = await tokenService.getEmployeeToken(employee.id);
             return employee;
         }
         else throw errorService.auth.emailNotVerified();

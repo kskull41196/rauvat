@@ -5,19 +5,11 @@ import { Request, Response } from '@/routers/base'
 const HEADERS = 'authorization'
 export class AdminAuthInfoMiddleware extends BaseMiddleware {
   async use(req: Request, res: Response, next: express.NextFunction, providers: string[] = []) {
-    if (req.headers[HEADERS] !== 'undefined') {
-      const bearerHeader = req.headers[HEADERS].toString()
-      const bearer = bearerHeader.split(' ');
-      const bearerToken = bearer[1];
-      const result = await tokenService.decodeToken(bearerToken);
-      if (result.payload.role == 'ADMIN') {
-        req.body.employee_from_token = result.payload
+    if (req.tokenInfo) {
+      if (req.tokenInfo.role === 'ADMIN')
         next()
-      } else {
-        throw errorService.auth.unauthorized();
-      }
-    } else {
-      throw errorService.auth.unauthorized();
+      else throw errorService.auth.permissionDeny();
     }
+    else throw errorService.auth.badToken();
   }
 }
