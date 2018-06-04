@@ -58,6 +58,9 @@ import {
 import {
     GlobalCategoryAndAttributeController
 } from './crud/globalCategoryAndAttributeController'
+import {
+    UserSettingController
+} from './crud/userSettingController'
 
 
 
@@ -84,6 +87,7 @@ const employeeController = new EmployeeController()
 const globalAttributeController = new GlobalAttributeController()
 const globalCategoryController = new GlobalCategoryController()
 const globalCategoryAndAttributeController = new GlobalCategoryAndAttributeController()
+const userSettingController = new UserSettingController()
 
 export {
     CrudController,
@@ -106,5 +110,6 @@ export {
     employeeController,
     globalAttributeController,
     globalCategoryController,
-    globalCategoryAndAttributeController
+    globalCategoryAndAttributeController,
+    userSettingController
 }

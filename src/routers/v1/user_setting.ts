@@ -1,11 +1,11 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
-import { walletImportController } from '@/controllers'
+import { userSettingController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
 
-export default class Wallet_importRouter extends CrudRouter<typeof walletImportController> {
+export default class UserSettingRouter extends CrudRouter<typeof userSettingController> {
     constructor() {
-        super(walletImportController)
+        super(userSettingController)
 
     }
     getListMiddlewares(): any[] {
@@ -15,7 +15,7 @@ export default class Wallet_importRouter extends CrudRouter<typeof walletImportC
         return [queryMiddleware.run()]
     }
     updateMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        return [authInfoMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
         return [blockMiddleware.run()]

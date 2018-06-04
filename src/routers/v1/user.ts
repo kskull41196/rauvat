@@ -110,12 +110,12 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         return [authInfoMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return [adminAuthInfoMiddleware.run()]
+        return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
-        return [adminAuthInfoMiddleware.run()]
+        return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return [adminAuthInfoMiddleware.run()]
+        return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
 }

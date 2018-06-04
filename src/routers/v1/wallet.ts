@@ -31,10 +31,10 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
 
 
     exportMiddlewares(): any[] {
-        return [adminAuthInfoMiddleware.run()]
+        return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
     importMiddlewares(): any[] {
-        return [adminAuthInfoMiddleware.run()]
+        return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
@@ -43,15 +43,15 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
         return [queryMiddleware.run()]
     }
     updateMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return [blockMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return []
+        return [blockMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
         return [blockMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return []
+        return [blockMiddleware.run()]
     }
 }

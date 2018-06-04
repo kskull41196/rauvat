@@ -2,7 +2,7 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import {
     errorService,
 } from '@/services'
-import { User, Wallet } from '@/models/tables'
+import { User, Wallet, UserSetting } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 import { config } from '@/config'
@@ -73,7 +73,8 @@ export class UserService extends CrudService<typeof User> {
             const createdUser = await this.exec(this.model.create(params, this.applyCreateOptions(option)))
             //tạo ví cho username vừa tạo ở trên với amount_of_purchase mặc định = 0       
             const createWallet = await this.exec(Wallet.create({ user_id: createdUser.id }, this.applyCreateOptions(option)))
-            return { createdUser, createWallet };
+            const createUseSetting = await this.exec(UserSetting.create({ user_id: createdUser.id }, this.applyCreateOptions(option)))
+            return { createdUser, createWallet, createUseSetting };
         }
     }
     async checkLogin(params: any, option?: ICrudOption) {
@@ -97,7 +98,7 @@ export class UserService extends CrudService<typeof User> {
         });
         if (result == 1) {
             const duplicate = true
-            const resultOfCheckUser = params.username+ " đã tồn tại, vui lòng chọn username khác"
+            const resultOfCheckUser = params.username + " đã tồn tại, vui lòng chọn username khác"
             return { duplicate, resultOfCheckUser };
         } else {
             const resultOfCheckUser = "Có thể sử dụng " + params.username

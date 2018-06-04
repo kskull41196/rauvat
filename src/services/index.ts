@@ -53,6 +53,9 @@ import {
 import {
     GlobalCategoryAndAttributeService
 } from './crud/globalCategoryAndAttributeService'
+import {
+    UserSettingService
+} from './crud/userSettingService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -82,6 +85,7 @@ const employeeService = new EmployeeService()
 const globalCategoryService = new GlobalCategoryService()
 const globalAttributeService = new GlobalAttributeService()
 const globalCategoryAndAttributeService = new GlobalCategoryAndAttributeService()
+const userSettingService = new UserSettingService()
 
 // Crud
 
@@ -111,5 +115,6 @@ export {
     employeeService,
     globalCategoryService,
     globalAttributeService,
-    globalCategoryAndAttributeService
+    globalCategoryAndAttributeService,
+    userSettingService
 }

@@ -15,15 +15,15 @@ export default class Wallet_exportRouter extends CrudRouter<typeof walletExportC
         return [queryMiddleware.run()]
     }
     updateMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return [blockMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return [blockMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
         return [blockMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return [authInfoMiddleware.run()]
+        return [blockMiddleware.run()]
     }
 }

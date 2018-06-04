@@ -18,7 +18,8 @@ import {
     Employee,
     GlobalAttribute,
     GlobalCategory,
-    GlobalCategoryAndAttribute
+    GlobalCategoryAndAttribute,
+    UserSetting
  
  } from "@/models/tables";
  //post
@@ -168,6 +169,14 @@ User.hasOne(Wallet, {
     as: 'wallet'
 });
 Wallet.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasOne(UserSetting, {
+    foreignKey: 'user_id',
+    as: 'user_setting'
+});
+UserSetting.belongsTo(User, {
     foreignKey: 'user_id',
     as: 'user'
 });
