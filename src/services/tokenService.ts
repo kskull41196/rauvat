@@ -2,7 +2,6 @@ import { errorService } from '@/services'
 import { config } from '@/config'
 import * as moment from 'moment'
 import * as jwt from 'jwt-simple'
-import * as jsonwebtoken from 'jsonwebtoken'
 export interface IGenerateTokenOption {
     exp?: moment.Moment
     secret?: string
@@ -16,7 +15,7 @@ export class TokenService {
     }
 
     async generateToken(payload: any, role: string, option: IGenerateTokenOption = {
-        exp : moment().add(5, "minutes")
+        exp: moment().add(2, "months")
     }) {
         const secret = option.secret || config.server.secret
         return jwt.encode({
@@ -65,8 +64,26 @@ export class TokenService {
         })
     }
 
-    async createJwtToken(payload: any){
-        let secret = config.server.secret;
-        return await jsonwebtoken.sign({ payload }, secret, { expiresIn: 60 * 24 * 60 * 60 });
+    async getUserToken(user_id: string, secret: string = "") {
+        secret = secret + config.server.secret
+        return await this.generateToken({
+            user_id,
+            role: 'USER'
+        }, 'USER' , {
+            exp: moment().add(7, 'days'),
+            secret
+        })
     }
+
+    async getEmployeeToken(employee_id: string, secret: string = ""){
+        secret = secret + config.server.secret
+        return await this.generateToken({
+            employee_id,
+            role: 'ADMIN'
+        }, 'ADMIN' , {
+            exp: moment().add(1, 'days'),
+            secret
+        })
+    }
+
 }

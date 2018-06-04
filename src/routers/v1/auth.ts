@@ -10,11 +10,9 @@ import {
     authInfoMiddleware,
     adminAuthInfoMiddleware
 } from '@/middlewares'
-import * as jwt from 'jsonwebtoken'
 import { token } from 'morgan';
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
-const SECRET_KEY = 'caco3+hno3'
 const ENCODING = 'hex'
 const TWO_MONTHS_IN_SECONDS = 2 * 30 * 24 * 60 * 60
 export default class AuthRouter extends BaseRouter {
@@ -36,13 +34,12 @@ export default class AuthRouter extends BaseRouter {
         ]
     }
     async getToken(req: Request, res: Response) {
-        const getToken ="ADMIN";
-        var token = await tokenService.createJwtToken(getToken);
-        this.onSuccess(res, getToken, { token })
+        const token = await tokenService.generateToken({}, "admin");
+        this.onSuccess(res, "admin", { token })
 
     }
     async getPassword(req: Request, res: Response) {
-        var md5Password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest(ENCODING);
+        const md5Password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest(ENCODING);
         req.body.password = md5Password;
         const result = await userController.getPassword(req.body)
         this.onSuccess(res, result)
@@ -69,11 +66,12 @@ export default class AuthRouter extends BaseRouter {
 
     }
     async login(req: Request, res: Response) {
-        var md5_password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
+        const md5_password = crypto.createHash(CONVERT_MD5).update(req.body.password).digest('hex');
         req.body.password = md5_password;
         const dataObtained = await userController.checkLogin(req.body)
         dataObtained.dataValues.role = "USER";
-        var token = await tokenService.createJwtToken(dataObtained);
+        // var token = await tokenService.createJwtToken(dataObtained);
+        const token = await tokenService.getUserToken(dataObtained.id)
         this.onSuccess(res, dataObtained, { token })
     }
 
