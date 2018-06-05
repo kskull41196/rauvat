@@ -3,11 +3,13 @@ import {
     ICrudOption,
     errorService,
     billService,
-    billActivityService
+    billActivityService,
+    billItemService
 } from '@/services'
 import {
     ICreateOrder
 } from '@/interfaces'
+import { billItemController } from '@/controllers';
 
 export class BillController extends CrudController<typeof billService> {
     constructor() {
@@ -51,5 +53,36 @@ export class BillController extends CrudController<typeof billService> {
             ]
         })
     }
+
+    async getBillItems(params: {
+        user_id: string,
+        id: string
+    }) {
+        return await billItemService.getList({
+            filter: {
+                bill_id: params.id
+            },
+            include: [
+                {
+                    association: 'bill',
+                    where: {
+                        $or: [
+                            {
+                                seller_id: params.user_id
+                            }, {
+                                buyer_id: params.user_id
+                            }
+                        ]
+                    },
+                    attributes: []
+                },
+                {
+                    association: 'product'
+                }
+            ]
+        })
+    }
+
+
 
 }

@@ -2,6 +2,7 @@ import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { billController } from '@/controllers'
 import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
+import { auth } from 'firebase-admin';
 
 export default class BillRouter extends CrudRouter<typeof billController> {
     constructor() {
@@ -12,6 +13,8 @@ export default class BillRouter extends CrudRouter<typeof billController> {
     customRouting() {
         this.router.post('/order', this.createOrderMiddlewares(), this.route(this.createOrder));
         this.router.get('/:id/activities', this.getBillActivitiesMiddlewares(), this.route(this.getBillActivities));
+        this.router.get('/:id/items', this.getBillItemsMiddlewares(), this.route(this.getBillItems));
+   
     }
 
     createOrderMiddlewares(): any[] {
@@ -86,7 +89,6 @@ export default class BillRouter extends CrudRouter<typeof billController> {
     }
 
     async getItem(req: Request, res: Response) {
-        const { id } = req.params
         req.params.user_id = req.tokenInfo.payload.user_id;
 
         await this.validateJSON(req.params, {
@@ -104,7 +106,6 @@ export default class BillRouter extends CrudRouter<typeof billController> {
             required: ['user_id', 'id']
         })
 
-        //req.body.filter.id = id
         const result = await this.controller.getBill(req.params)
         this.onSuccess(res, result)
     }
@@ -118,7 +119,49 @@ export default class BillRouter extends CrudRouter<typeof billController> {
     async getBillActivities(req: Request, res: Response) {
         req.params.user_id = req.tokenInfo.payload.user_id;
 
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'id']
+        })
+
         const result = await this.controller.getBillActivities(req.params);
+        this.onSuccess(res, result);
+    }
+
+    getBillItemsMiddlewares(): any[]{
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async getBillItems(req: Request, res: Response){
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'id']
+        })
+
+        const result = await this.controller.getBillItems(req.params);
         this.onSuccess(res, result);
     }
 
