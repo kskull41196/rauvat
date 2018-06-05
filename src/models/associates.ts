@@ -19,7 +19,8 @@ import {
     GlobalAttribute,
     GlobalCategory,
     GlobalCategoryAndAttribute,
-    UserSetting
+    UserSetting,
+    FavoriteProduct
  
  } from "@/models/tables";
  //post
@@ -59,7 +60,7 @@ GlobalCategory.hasMany(Product, {
 //Category & Attribute
 GlobalCategoryAndAttribute.belongsTo(GlobalCategory, {
     foreignKey: 'global_category_id',
-    as: 'global_category'
+    as: 'category'
 });
 GlobalCategory.hasMany(GlobalCategoryAndAttribute, {
     foreignKey: 'global_category_id',
@@ -68,11 +69,29 @@ GlobalCategory.hasMany(GlobalCategoryAndAttribute, {
 
 GlobalCategoryAndAttribute.belongsTo(GlobalAttribute, {
     foreignKey: 'global_attribute_id',
-    as: 'global_attribute'
+    as: 'attribute'
 });
 GlobalAttribute.hasMany(GlobalCategoryAndAttribute, {
     foreignKey: 'global_category_id',
     as: 'categories'
+});
+//FavoriteProduct
+FavoriteProduct.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasMany(FavoriteProduct, {
+    foreignKey: 'user_id',
+    as: 'favorites'
+});
+
+FavoriteProduct.belongsTo(Product, {
+    foreignKey: 'product_id',
+    as: 'product'
+});
+Product.hasMany(FavoriteProduct, {
+    foreignKey: 'product_id',
+    as: 'favorites'
 });
 //BillItem
 BillItem.belongsTo(Product, {
