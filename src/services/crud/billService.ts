@@ -117,4 +117,38 @@ export class BillService extends CrudService<typeof Bill> {
         }
     }
 
+    async getBill(option: {
+        user_id: string,
+        id: string
+    }) {
+
+        return await this.exec(Bill.findOne({
+            where: {
+                $or: [
+                    {
+                        id: option.id,
+                        buyer_id: option.user_id
+                    },
+                    {
+                        id: option.id,
+                        seller_id: option.user_id
+                    }
+                ]
+            },
+            include: [
+                {
+                    association: 'activity'
+                },
+                {
+                    association: 'items',
+                    include: {
+                        association: 'product'
+                    }
+                }
+                
+            ]
+        }))
+    }
+
+
 }

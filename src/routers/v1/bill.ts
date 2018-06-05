@@ -84,6 +84,30 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         ]
     }
 
+    async getItem(req: Request, res: Response) {
+        const { id } = req.params
+        req.params.user_id = req.tokenInfo.payload.user_id;
+
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'id']
+        })
+
+        //req.body.filter.id = id
+        const result = await this.controller.getBill(req.params)
+        this.onSuccess(res, result)
+    }
+
     // updateMiddlewares(): any[] {
     //     return [authInfoMiddleware.run()]
     // }
