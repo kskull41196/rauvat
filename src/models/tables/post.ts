@@ -23,6 +23,14 @@ export const Post = sequelize.define(
       },
       allowNull: false
     },
+    product_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_product',
+        key: 'id'
+      },
+      allowNull: false
+    },
     amount_of_like: {
       type: Sequelize.INTEGER,
       validate: {

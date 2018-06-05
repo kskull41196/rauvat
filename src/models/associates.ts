@@ -32,6 +32,14 @@ User.hasMany(Post, {
     foreignKey: 'user_id',
     as: 'posts'
 });
+Post.belongsTo(Product, {
+    foreignKey: 'product_id',
+    as: 'product'
+});
+Product.hasMany(Post, {
+    foreignKey: 'product_id',
+    as: 'posts'
+});
 //product
 Product.belongsTo(User, {
     foreignKey: 'user_id',
