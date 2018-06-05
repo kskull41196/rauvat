@@ -1,5 +1,10 @@
 import { CrudController } from '../crudController'
-import { ICrudOption, errorService ,billService} from '@/services'
+import {
+    ICrudOption,
+    errorService,
+    billService,
+    billActivityService
+} from '@/services'
 import {
     ICreateOrder
 } from '@/interfaces'
@@ -9,7 +14,7 @@ export class BillController extends CrudController<typeof billService> {
         super(billService)
     }
 
-    async createOrder(params: ICreateOrder){
+    async createOrder(params: ICreateOrder) {
         params.buyer_id = params.user_id
         return await this.service.createOrder(params);
     }
@@ -20,6 +25,31 @@ export class BillController extends CrudController<typeof billService> {
     }) {
         return await this.service.getBill(option)
     }
-    
+
+    async getBillActivities(params: {
+        user_id: string,
+        id: string
+    }) {
+        return await billActivityService.getList({
+            filter: {
+                bill_id: params.id
+            },
+            include: [
+                {
+                    association: 'bill',
+                    where: {
+                        $or: [
+                            {
+                                seller_id: params.user_id
+                            }, {
+                                buyer_id: params.user_id
+                            }
+                        ]
+                    },
+                    attributes: []
+                }
+            ]
+        })
+    }
+
 }
-    

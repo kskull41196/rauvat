@@ -11,6 +11,7 @@ export default class BillRouter extends CrudRouter<typeof billController> {
 
     customRouting() {
         this.router.post('/order', this.createOrderMiddlewares(), this.route(this.createOrder));
+        this.router.get('/:id/activities', this.getBillActivitiesMiddlewares(), this.route(this.getBillActivities));
     }
 
     createOrderMiddlewares(): any[] {
@@ -106,6 +107,19 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         //req.body.filter.id = id
         const result = await this.controller.getBill(req.params)
         this.onSuccess(res, result)
+    }
+
+    getBillActivitiesMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async getBillActivities(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+
+        const result = await this.controller.getBillActivities(req.params);
+        this.onSuccess(res, result);
     }
 
     // updateMiddlewares(): any[] {
