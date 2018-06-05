@@ -9,8 +9,8 @@ class DatabaseException extends BaseError {
     }
 }
 export class DatabaseErrorService {
-    recordNotFound() {
-        return new DatabaseException('record_not_found', 'Record Not Found')
+    recordNotFound(message: string = "Record Not Found") {
+        return new DatabaseException('record_not_found', message)
     }
     queryFail(message: string = "Query Fail") {
         return new DatabaseException('query_fail', message)
