@@ -3,17 +3,13 @@ import {
   Sequelize
 } from '../base'
 
-export const Post = sequelize.define(
-  'tbl_post',
+export const FavoriteProduct = sequelize.define(
+  'tbl_favorite_product',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
-    },
-    content: {
-      type: Sequelize.STRING,
-      allowNull: false
     },
     user_id: {
       type: Sequelize.UUID,
@@ -29,33 +25,6 @@ export const Post = sequelize.define(
         model: 'tbl_product',
         key: 'id'
       },
-      allowNull: false
-    },
-    amount_of_like: {
-      type: Sequelize.INTEGER,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
-      allowNull: false
-    },
-    amount_of_comment: {
-      type: Sequelize.INTEGER,
-      validate: {
-        min: 0,
-      },
-      defaultValue: 0,
-      allowNull: false
-    },
-    is_from_store: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-      allowNull: false
-    },
-    privacy: {
-      type: Sequelize.ENUM,
-      values: ['PUBLIC', 'FRIEND', 'ONLY_ME'],
-      defaultValue: 'PUBLIC',
       allowNull: false
     },
     status: {
