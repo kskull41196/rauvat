@@ -145,9 +145,49 @@ export class BillService extends CrudService<typeof Bill> {
                         association: 'product'
                     }
                 }
-                
-            ]
+
+            ],
+            attributes: {
+                include: [
+                    [sequelize.where(sequelize.col('buyer_id'), option.user_id), 'is_buy']
+                ]
+            }
         }))
+    }
+
+    async changeBillActivity(params: any) {
+        let {
+            bill_id,
+            action
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let bill_activity = await this.exec(BillActivity.create({
+                bill_id,
+                action
+            }, {
+                    transaction: t
+                }))
+
+            await this.exec(Bill.update({
+                current_bill_activity_id: bill_activity.id
+            }, {
+                    where: {
+                        id: bill_id
+                    },
+                    transaction: t
+                }))
+            t.commit();
+            return bill_activity
+        }
+
+        catch (e) {
+            t.rollback();
+            throw e;
+        }
+
     }
 
 

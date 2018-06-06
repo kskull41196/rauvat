@@ -9,6 +9,10 @@ import {
 import {
     ICreateOrder
 } from '@/interfaces'
+
+import {
+    CONST
+} from '@/const'
 import { billItemController } from '@/controllers';
 
 export class BillController extends CrudController<typeof billService> {
@@ -83,6 +87,55 @@ export class BillController extends CrudController<typeof billService> {
         })
     }
 
+    async changeOrderedStatus(params: {
+        user_id: string,
+        bill_id: string
+    }) {
+        let {
+            bill_id,
+            user_id
+        } = params;
 
+        let action = CONST.ORDERED;
+
+        return await this.service.changeBillActivity({
+            bill_id,
+            action
+        })
+    }
+
+    async changeSuccessedStatus(params: {
+        user_id: string,
+        bill_id: string
+    }) {
+        let {
+            bill_id,
+            user_id
+        } = params;
+
+        let action = CONST.SUCCESSED;
+
+        return await this.service.changeBillActivity({
+            bill_id,
+            action
+        })
+    }
+
+    async changeFailedStatus(params: {
+        user_id: string,
+        bill_id: string
+    }) {
+        let {
+            bill_id,
+            user_id
+        } = params;
+
+        let action = CONST.FAILED;
+
+        return await this.service.changeBillActivity({
+            bill_id,
+            action
+        })
+    }
 
 }

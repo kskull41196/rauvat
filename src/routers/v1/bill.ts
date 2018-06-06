@@ -14,7 +14,9 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         this.router.post('/order', this.createOrderMiddlewares(), this.route(this.createOrder));
         this.router.get('/:id/activities', this.getBillActivitiesMiddlewares(), this.route(this.getBillActivities));
         this.router.get('/:id/items', this.getBillItemsMiddlewares(), this.route(this.getBillItems));
-   
+        this.router.post('/:bill_id/ordered', this.changeOrderedStatusMiddlewares(), this.route(this.changeOrderedStatus));
+        this.router.post('/:bill_id/successed', this.changeSuccessedStatusMiddlewares(), this.route(this.changeSuccessedStatus));
+        this.router.post('/:bill_id/failed', this.changeFailedStatusMiddlewares(), this.route(this.changeFailedStatus));
     }
 
     createOrderMiddlewares(): any[] {
@@ -138,13 +140,13 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         this.onSuccess(res, result);
     }
 
-    getBillItemsMiddlewares(): any[]{
+    getBillItemsMiddlewares(): any[] {
         return [
             authInfoMiddleware.run()
         ]
     }
 
-    async getBillItems(req: Request, res: Response){
+    async getBillItems(req: Request, res: Response) {
         req.params.user_id = req.tokenInfo.payload.user_id;
         await this.validateJSON(req.params, {
             type: 'object',
@@ -162,6 +164,72 @@ export default class BillRouter extends CrudRouter<typeof billController> {
         })
 
         const result = await this.controller.getBillItems(req.params);
+        this.onSuccess(res, result);
+    }
+
+    changeOrderedStatusMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async changeOrderedStatus(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                bill_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['bill_id']
+        })
+        const result = await this.controller.changeOrderedStatus(req.params);
+        this.onSuccess(res, result);
+    }
+
+    changeSuccessedStatusMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async changeSuccessedStatus(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                bill_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['bill_id']
+        })
+        const result = await this.controller.changeSuccessedStatus(req.params);
+        this.onSuccess(res, result);
+    }
+
+    changeFailedStatusMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async changeFailedStatus(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                bill_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['bill_id']
+        })
+        const result = await this.controller.changeFailedStatus(req.params);
         this.onSuccess(res, result);
     }
 
