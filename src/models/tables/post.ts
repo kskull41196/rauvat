@@ -58,6 +58,13 @@ export const Post = sequelize.define(
       defaultValue: 'PUBLIC',
       allowNull: false
     },
+    list_image: {
+      type: Sequelize.ARRAY({type:Sequelize.STRING}),
+      validate:{
+        isUrl:true
+      },
+      allowNull: false
+    },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
