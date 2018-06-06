@@ -10,8 +10,8 @@ export interface ICrudOption {
     offset?: number
     scope?: string[]
     order?: any[]
-    attributes?: any[]
-    includes?: any[]
+    attributes?: any
+    include?: any[]
     distinct?: boolean
     paranoid?: boolean
     transaction?: any
