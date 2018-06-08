@@ -27,15 +27,15 @@ export class BillService extends CrudService<typeof Bill> {
             amount: number
         }[]
     }, bill_id: string) {
-        let {
+        const {
             items
         } = params;
 
-        let bulk_items = []
+        const bulk_items = []
         let total_price = 0;
 
-        for (let item of items) {
-            let product = await Product.findOne({
+        for (const item of items) {
+            const product = await Product.findOne({
                 where: {
                     id: item.product_id
                 }
@@ -56,7 +56,7 @@ export class BillService extends CrudService<typeof Bill> {
         };
     }
     async createOrder(params: ICreateOrder) {
-        let {
+        const {
             items
         } = params;
 
@@ -67,25 +67,25 @@ export class BillService extends CrudService<typeof Bill> {
                 transaction: t
             }))
 
-            let {
+            const {
                 bulk_items,
                 total_price
             } = await this.bulkCreateBillItem({
                 items: items
             }, bill.id)
 
-            let bill_items = await this.exec(BillItem.bulkCreate(bulk_items, {
+            const bill_items = await this.exec(BillItem.bulkCreate(bulk_items, {
                 transaction: t
             }))
 
-            let bill_activity = await this.exec(BillActivity.create({
+            const bill_activity = await this.exec(BillActivity.create({
                 action: 'ORDERED',
                 bill_id: bill.id
             }, {
                     transaction: t
                 }));
 
-            let paid_history = await this.exec(PaidHistory.create({
+            const paid_history = await this.exec(PaidHistory.create({
                 bill_id: bill.id,
                 remain_amount: total_price
             }, {
@@ -134,29 +134,29 @@ export class BillService extends CrudService<typeof Bill> {
                         seller_id: option.user_id
                     }
                 ]
-            },
+            }, 
             include: [
-                {
-                    association: 'activity'
-                },
-                {
-                    association: 'items',
-                    include: {
-                        association: 'product'
-                    }
-                }
+                // {
+                //     association: 'activity'
+                // },
+                // {
+                //     association: 'items',
+                //     include: {
+                //         association: 'product'
+                //     }
+                // }
 
             ],
             attributes: {
-                include: [
-                    [sequelize.where(sequelize.col('buyer_id'), option.user_id), 'is_buy']
-                ]
+                // include: [
+                //     [sequelize.where(sequelize.col('buyer_id'), option.user_id), 'is_buy']
+                // ]
             }
         }))
     }
 
     async changeBillActivity(params: any) {
-        let {
+        const {
             bill_id,
             action
         } = params;
@@ -164,7 +164,7 @@ export class BillService extends CrudService<typeof Bill> {
         const t = await sequelize.transaction();
 
         try {
-            let bill_activity = await this.exec(BillActivity.create({
+            const bill_activity = await this.exec(BillActivity.create({
                 bill_id,
                 action
             }, {
