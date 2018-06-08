@@ -3,8 +3,8 @@ import { TokenService } from './tokenService'
 import { UtilService } from './utilService'
 import { FirebaseService } from './firebaseService'
 import { UserService } from './crud/userService'
-import { PostService } from './crud/PostService'
-import { ProductService } from './crud/ProductService'
+import { PostService } from './crud/postService'
+import { ProductService } from './crud/productService'
 import {
     GlobalAreaService
 } from './crud/globalAreaService'

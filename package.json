@@ -67,6 +67,7 @@
     ]
   },
   "dependencies": {
+    "@types/sequelize": "^4.27.20",
     "ajv": "^5.2.3",
     "ajv-errors": "^1.0.0",
     "ajv-keywords": "^2.1.0",
