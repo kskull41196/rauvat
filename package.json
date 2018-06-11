@@ -67,6 +67,7 @@
     ]
   },
   "dependencies": {
+    "@types/sequelize": "^4.27.20",
     "ajv": "^5.2.3",
     "ajv-errors": "^1.0.0",
     "ajv-keywords": "^2.1.0",
@@ -95,7 +96,8 @@
     "raven": "^2.6.2",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
-    "sequelize": "^4.4.2"
+    "sequelize": "^4.4.2",
+    "sequelize-replace-enum-postgres": "^1.4.0"
   },
   "devDependencies": {
     "@types/async": "^2.0.40",
