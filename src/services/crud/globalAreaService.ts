@@ -1,11 +1,11 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { Global_area } from '@/models/tables'
+import { GlobalArea } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 
-export class GlobalAreaService extends CrudService<typeof Global_area> {
+export class GlobalAreaService extends CrudService<typeof GlobalArea> {
     constructor() {
-        super(Global_area)
+        super(GlobalArea)
     }
     async getItemWithParents(params: any, option?: ICrudOption) {
        let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })  

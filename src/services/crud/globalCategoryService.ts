@@ -54,7 +54,6 @@ export class GlobalCategoryService extends CrudService<typeof GlobalCategory> {
                 product_attributes
             }
 
-            return;
         }
         catch (e) {
             t.rollback();

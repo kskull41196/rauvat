@@ -1,7 +1,8 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
 import {
     Product,
-    GlobalCategory
+    GlobalCategory,
+    GlobalArea
 } from '@/models'
 import {
     Sequelize,
@@ -36,7 +37,9 @@ export class ProductService extends CrudService<typeof Product> {
             radius
         } = params;
 
-        let query: any = {
+        console.log(params);
+
+        const query: any = {
             where: {
 
             }
@@ -49,13 +52,35 @@ export class ProductService extends CrudService<typeof Product> {
             query.where.global_category_id = global_category_id
         }
         if (area_id) {
-            query.where.global_area_id = area_id;
-        }
-        if (is_quick_post) {
+            const area_ids = [];
+            let global_area;
+            while (true) {
+                global_area = await this.exec(GlobalArea.findOne({
+                    where: {
+                        id: area_id
+                    }
+                }))
 
+                area_ids.push(area_id);
+
+                if (global_area.parent_id) {
+                    area_id = global_area.parent_id;
+                }
+                else break;
+            }
+            query.where.global_area_id = {
+                $in: area_ids
+            }
+        }
+        if (is_quick_post == true || is_quick_post == false) {
+            if (is_quick_post == true)
+                query.where.is_limit_duration = false;
+            else if (is_quick_post == false) query.where.is_limit_duration = true;
         }
         if (trade_type) {
-
+            query.where = Object.assign(query.where, {
+                type: trade_type
+            });
         }
         if (point && radius) {
             query.where = Sequelize.and(Sequelize.where(
@@ -75,13 +100,10 @@ export class ProductService extends CrudService<typeof Product> {
             this.modelWithScope(option.scope)
                 .findAndCountAll(this.applyFindOptions(option))
         )
-
-        // return await this.exec(Product.findAndCountAll(query));
-
     }
 
     async postProduct(params: IPostProduct) {
-        let {
+        const {
             global_category_id,
             is_buy
         } = params;
@@ -94,11 +116,11 @@ export class ProductService extends CrudService<typeof Product> {
         const t = await sequelize.transaction();
 
         try {
-            let product = await this.exec(Product.create(params, {
+            const product = await this.exec(Product.create(params, {
                 transaction: t
             }))
 
-            let global_category = await this.exec(GlobalCategory.findOne({
+            const global_category = await this.exec(GlobalCategory.findOne({
                 where: {
                     id: global_category_id
                 },
@@ -125,7 +147,7 @@ export class ProductService extends CrudService<typeof Product> {
     }
 
     async postQuickProduct(params: IPostQuickProduct) {
-        let {
+        const {
             global_category_id,
             is_buy
         } = params;
@@ -138,11 +160,11 @@ export class ProductService extends CrudService<typeof Product> {
         const t = await sequelize.transaction();
 
         try {
-            let product = await this.exec(Product.create(params, {
+            const product = await this.exec(Product.create(params, {
                 transaction: t
             }))
 
-            let global_category = await this.exec(GlobalCategory.findOne({
+            const global_category = await this.exec(GlobalCategory.findOne({
                 where: {
                     id: global_category_id
                 },

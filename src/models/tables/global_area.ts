@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Global_area = sequelize.define(
+export const GlobalArea = sequelize.define(
   'tbl_global_area',
   {
     id: {

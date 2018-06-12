@@ -3,7 +3,7 @@ import {
     User,
     Post,
     Product,
-    Global_area,
+    GlobalArea,
     BillItem,
     BillActivity,
     Global_promotion,
@@ -51,11 +51,11 @@ User.hasMany(Product, {
     foreignKey: 'user_id',
     as: 'products'
 });
-Product.belongsTo(Global_area, {
+Product.belongsTo(GlobalArea, {
     foreignKey: 'global_area_id',
     as: 'global_area'
 });
-Global_area.hasMany(Product, {
+GlobalArea.hasMany(Product, {
     foreignKey: 'global_area_id',
     as: 'products'
 });
