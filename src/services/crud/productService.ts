@@ -55,10 +55,8 @@ export class ProductService extends CrudService<typeof Product> {
 
         }
         if (trade_type) {
-            query.where = Object.assign(query.where, {
-                type: trade_type
-            });
-        } 
+
+        }
         if (point && radius) {
             query.where = Sequelize.and(Sequelize.where(
                 Sequelize.fn('ST_DWithin',

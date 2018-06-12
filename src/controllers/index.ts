@@ -45,7 +45,7 @@ import {
 } from './crud/walletexportController'
 import {
     PaidHistoryController
-} from './crud/paidHistoryController'
+} from './crud/paidhistoryController'
 import {
     EmployeeController
 } from './crud/employeeController'

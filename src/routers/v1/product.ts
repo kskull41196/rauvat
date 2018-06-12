@@ -60,10 +60,7 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
                     type: 'boolean'
                 },
                 trade_type: {
-                    enum: [
-                        'BUY',
-                        'SELL'
-                    ]
+                    type: 'string'
                 },
                 point: {
                     type: 'object',

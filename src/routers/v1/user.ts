@@ -10,7 +10,6 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     }
     customRouting() {
         this.router.post('/check_username', this.route(this.checkUsername))
-        this.router.get('/bills', this.getBillsMiddlewares(), this.route(this.getBills));
     }
     async checkUsername(req: Request, res: Response) {
         const result = await this.controller.checkUsername(req.body)
@@ -99,23 +98,6 @@ export default class UserRouter extends CrudRouter<typeof userController> {
                 results: resultNotPass
             })
         }
-    }
-
-    getBillsMiddlewares() :any[]{
-        return [
-            
-            authInfoMiddleware.run()
-        ]
-    }
-
-    async getBills(req: Request, res: Response){
-        req.pageInfo = {
-
-        }
-        req.pageInfo.limit = parseInt(req.query.limit) || 10;
-        req.pageInfo.offset = parseInt(req.query.page) || 1;
-        const result = await this.controller.getBills(req.tokenInfo.payload.user_id);
-        this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     getListMiddlewares(): any[] {
