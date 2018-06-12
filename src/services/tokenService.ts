@@ -1,4 +1,4 @@
-import { errorService } from '@/services'
+import { errorService, userService } from '@/services'
 import { config } from '@/config'
 import * as moment from 'moment'
 import * as jwt from 'jwt-simple'
@@ -66,24 +66,30 @@ export class TokenService {
 
     async getUserToken(user_id: string, secret: string = "") {
         secret = secret + config.server.secret
+        let user = await userService.getItem({
+            filter: {
+                id: user_id
+            }
+        });
+
         return await this.generateToken({
             user_id,
-            role: 'USER'
-        }, 'USER' , {
-            exp: moment().add(7, 'days'),
-            secret
-        })
+            role: user.user_type
+        }, user.user_type, {
+                exp: moment().add(7, 'days'),
+                secret
+            })
     }
 
-    async getEmployeeToken(employee_id: string, secret: string = ""){
+    async getEmployeeToken(employee_id: string, secret: string = "") {
         secret = secret + config.server.secret
         return await this.generateToken({
             employee_id,
             role: 'ADMIN'
-        }, 'ADMIN' , {
-            exp: moment().add(1, 'days'),
-            secret
-        })
+        }, 'ADMIN', {
+                exp: moment().add(1, 'days'),
+                secret
+            })
     }
 
 }

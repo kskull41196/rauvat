@@ -1,19 +1,22 @@
 import { AuthInfoMiddleware } from './authMiddleware'
 import { AdminAuthInfoMiddleware } from './adminAuthMiddleware'
 import { BlockMiddleware } from './blockMiddleware'
-import { QueryMiddleware } from './queryMiddleware' 
+import { QueryMiddleware } from './queryMiddleware'
 import { FirebaseAuthInfoMiddleware } from './firebaseAuthMiddleware'
+import { UserRoleMiddleware } from './userRoleMiddleware'
 
 const authInfoMiddleware = new AuthInfoMiddleware()
 const adminAuthInfoMiddleware = new AdminAuthInfoMiddleware()
 const blockMiddleware = new BlockMiddleware()
 const queryMiddleware = new QueryMiddleware()
 const firebaseAuthMiddleware = new FirebaseAuthInfoMiddleware()
+const userRoleMiddleware = new UserRoleMiddleware()
 
-export { 
+export {
     authInfoMiddleware,
     blockMiddleware,
     queryMiddleware,
     firebaseAuthMiddleware,
-    adminAuthInfoMiddleware
+    adminAuthInfoMiddleware,
+    userRoleMiddleware
 }

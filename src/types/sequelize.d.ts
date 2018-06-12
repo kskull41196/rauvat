@@ -1660,7 +1660,7 @@ declare namespace sequelize {
          * something than can be evaluated to an empty object.
          */
         dialectTypes: string;
-
+        
     }
 
     interface DataTypeAbstractString<T> extends DataTypeAbstract {

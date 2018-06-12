@@ -1,8 +1,17 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { userController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware, adminAuthInfoMiddleware } from '@/middlewares'
+import {
+    authInfoMiddleware,
+    queryMiddleware,
+    blockMiddleware,
+    adminAuthInfoMiddleware,
+    userRoleMiddleware
+} from '@/middlewares'
 import * as _ from 'lodash'
+import {
+    USER_ROLES
+} from '@/const'
 export default class UserRouter extends CrudRouter<typeof userController> {
     constructor() {
         super(userController)
@@ -49,16 +58,16 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.onSuccess(res, result)
     }
     async getList(req: Request, res: Response) {
-        var objects = await this.controller.getList(req.queryInfo)
+        let objects = await this.controller.getList(req.queryInfo)
         if (objects.toJSON) {
             objects = objects.toJSON()
         }
-        var resultNotPass = Object.assign({
+        const resultNotPass = Object.assign({
             objects
         }, undefined)
-        var rowJson = resultNotPass.objects.rows;
-        for (var i = 0; i < rowJson.length; i++) {
-            var jsonObject = rowJson[i].dataValues;
+        const rowJson = resultNotPass.objects.rows;
+        for (let i = 0; i < rowJson.length; i++) {
+            const jsonObject = rowJson[i].dataValues;
             delete jsonObject["password"]
             resultNotPass.objects.rows[i].dataValues = jsonObject;
         }
@@ -77,14 +86,14 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     async getItem(req: Request, res: Response) {
         const { id } = req.params
         req.queryInfo.filter.id = id
-        var object = await this.controller.getItem(req.queryInfo)
+        let object = await this.controller.getItem(req.queryInfo)
         object = object || {}
-        var resultNotPass = Object.assign({
+        const resultNotPass = Object.assign({
             object
         }, undefined)
-        var rowJson = resultNotPass.object;
+        const rowJson = resultNotPass.object;
 
-        var jsonObject = rowJson.dataValues;
+        const jsonObject = rowJson.dataValues;
         delete jsonObject["password"]
         resultNotPass.object.dataValues = jsonObject;
 
@@ -98,6 +107,24 @@ export default class UserRouter extends CrudRouter<typeof userController> {
                 results: resultNotPass
             })
         }
+    }
+
+    getBillsMiddlewares(): any[] {
+        return [
+
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async getBills(req: Request, res: Response) {
+        req.pageInfo = {
+
+        }
+        req.pageInfo.limit = parseInt(req.query.limit) || 10;
+        req.pageInfo.offset = parseInt(req.query.page) || 1;
+        req.pageInfo.offset = (req.pageInfo.offset - 1) * req.pageInfo.limit;
+        const result = await this.controller.getBills(req.tokenInfo.payload.user_id);
+        this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     getListMiddlewares(): any[] {
