@@ -64,9 +64,8 @@ import {
 import {
     FavoriteProductController
 } from './crud/favoriteProductController'
-import {
-    HistoryMembershipController
-} from './crud/historyMembershipController'
+import { HistoryMembershipController } from './crud/historyMembershipController'
+import { ProductGlobalAttributeController } from './crud/productGlobalAttributeController'
 
 
 
@@ -96,6 +95,7 @@ const globalCategoryAndAttributeController = new GlobalCategoryAndAttributeContr
 const userSettingController = new UserSettingController()
 const favoriteProductController = new FavoriteProductController()
 const historyMembershipController = new HistoryMembershipController()
+const productGlobalAttributeController = new ProductGlobalAttributeController()
 
 
 export {
@@ -123,4 +123,5 @@ export {
     userSettingController,
     favoriteProductController,
     historyMembershipController,
+    productGlobalAttributeController,
 }

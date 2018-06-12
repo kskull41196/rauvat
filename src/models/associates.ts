@@ -1,5 +1,5 @@
-import { 
-   
+import {
+
     User,
     Post,
     Product,
@@ -21,10 +21,11 @@ import {
     GlobalCategoryAndAttribute,
     UserSetting,
     FavoriteProduct,
-    HistoryMembership
- 
- } from "@/models/tables";
- //post
+    HistoryMembership,
+    ProductGlobalAttribute
+
+} from "@/models/tables";
+//post
 Post.belongsTo(User, {
     foreignKey: 'user_id',
     as: 'user'
@@ -261,5 +262,23 @@ User.hasMany(HistoryMembership, {
     foreignKey: 'user_id',
     as: 'history_memberships'
 });
+
+// ProductGlobalAttribute
+ProductGlobalAttribute.belongsTo(Product, {
+    foreignKey: 'product_id',
+    as: 'product'
+})
+Product.hasMany(ProductGlobalAttribute, {
+    foreignKey: 'product_id',
+    as: 'global_attributes'
+});
+ProductGlobalAttribute.belongsTo(GlobalAttribute, {
+    foreignKey: 'global_attribute_id',
+    as: 'global_attribute'
+})
+GlobalAttribute.hasMany(ProductGlobalAttribute, {
+    foreignKey: 'global_attribute_id',
+    as: 'products'
+})
 
 console.log('run associates')
