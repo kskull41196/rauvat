@@ -6,6 +6,5 @@ export class GlobalAttributeController extends CrudController<typeof globalAttri
     constructor() {
         super(globalAttributeService)
     }
-    
 }
     
