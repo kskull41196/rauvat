@@ -59,6 +59,7 @@ import {
 import {
     FavoriteProductService
 } from './crud/favoriteProductService'
+import { HistoryMembershipService } from './crud/historyMembershipService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -90,6 +91,7 @@ const globalAttributeService = new GlobalAttributeService()
 const globalCategoryAndAttributeService = new GlobalCategoryAndAttributeService()
 const userSettingService = new UserSettingService()
 const favoriteProductService = new FavoriteProductService()
+const historyMembershipService = new HistoryMembershipService()
 
 // Crud
 
@@ -121,5 +123,6 @@ export {
     globalAttributeService,
     globalCategoryAndAttributeService,
     userSettingService,
-    favoriteProductService
+    favoriteProductService,
+    historyMembershipService,
 }
