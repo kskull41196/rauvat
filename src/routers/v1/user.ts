@@ -19,6 +19,9 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     }
     customRouting() {
         this.router.post('/check_username', this.route(this.checkUsername))
+        this.router.get('/bills', this.getBillsMiddlewares(), this.route(this.getBills));
+        this.router.post('/upgrade', this.upgradeMiddlewares(), this.route(this.upgrade));
+        this.router.post('/downgrade', this.downgradeMiddlewares(), this.route(this.downgrade));
     }
     async checkUsername(req: Request, res: Response) {
         const result = await this.controller.checkUsername(req.body)
@@ -123,7 +126,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         req.pageInfo.limit = parseInt(req.query.limit) || 10;
         req.pageInfo.offset = parseInt(req.query.page) || 1;
         req.pageInfo.offset = (req.pageInfo.offset - 1) * req.pageInfo.limit;
-        const result = await this.controller.getBills(req.tokenInfo.payload.user_id);
+        const result = await this.controller.getBills(req.tokenInfo.payload.user_id, req.pageInfo);
         this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
@@ -145,4 +148,52 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     createMiddlewares(): any[] {
         return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
+
+    upgradeMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run(),
+            adminAuthInfoMiddleware.run()
+        ]
+    }
+
+    async upgrade(req: Request, res: Response) {
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id']
+        })
+
+        const result = await this.controller.upgrade(req.body)
+        this.onSuccess(res, result);
+    }
+
+    downgradeMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run(),
+            adminAuthInfoMiddleware.run()
+        ]
+    }
+
+    async downgrade(req: Request, res: Response) {
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id']
+        })
+
+        const result = await this.controller.downgrade(req.body)
+        this.onSuccess(res, result);
+    }
+
+
 }

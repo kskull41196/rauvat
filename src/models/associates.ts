@@ -20,7 +20,8 @@ import {
     GlobalCategory,
     GlobalCategoryAndAttribute,
     UserSetting,
-    FavoriteProduct
+    FavoriteProduct,
+    HistoryMembership
  
  } from "@/models/tables";
  //post
@@ -249,6 +250,16 @@ PaidHistory.belongsTo(Bill, {
 Bill.hasMany(PaidHistory, {
     foreignKey: 'bill_id',
     as: 'paid_histories'
+});
+
+// History Membership
+HistoryMembership.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+})
+User.hasMany(HistoryMembership, {
+    foreignKey: 'user_id',
+    as: 'history_memberships'
 });
 
 console.log('run associates')

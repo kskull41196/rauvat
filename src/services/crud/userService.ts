@@ -2,12 +2,21 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import {
     errorService,
 } from '@/services'
-import { User, Wallet, UserSetting } from '@/models/tables'
-import * as jsonexport from 'jsonexport'
+import {
+    User,
+    Wallet,
+    UserSetting,
+    HistoryMembership
+} from '@/models'
 import * as crypto from 'crypto'
-import { config } from '@/config'
 const CONVERT_MD5 = 'md5'
 const ENCODING = 'hex'
+import {
+    sequelize,
+    Sequelize
+} from '@/models/base'
+import * as moment from 'moment'
+
 export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
@@ -105,4 +114,100 @@ export class UserService extends CrudService<typeof User> {
             return { message: resultOfCheckUser };
         }
     }
+
+    async upgrade(params: {
+        user_id: string
+    }) {
+        let {
+            user_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let history_membership = await this.exec(HistoryMembership.create({
+                user_id: user_id,
+                type: 'UPGRADE'
+            }, {
+                    transaction: t
+                }));
+
+            await this.exec(User.update({
+                user_type: 'PREMIUM',
+                latest_updated_membership: moment().format()
+            }, {
+                    where: {
+                        id: user_id
+                    },
+                    transaction: t
+                }))
+
+            let user = await this.exec(User.findOne({
+                where: {
+                    id: user_id
+                },
+                include: [
+                    {
+                        association: 'history_memberships'
+                    }
+                ],
+                transaction: t
+            }))
+
+            t.commit();
+            return user;
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+        }
+    }
+
+    async downgrade(params: {
+        user_id: string
+    }) {
+        let {
+            user_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let history_membership = await this.exec(HistoryMembership.create({
+                user_id: user_id,
+                type: 'DOWNGRADE'
+            }, {
+                    transaction: t
+                }));
+
+            await this.exec(User.update({
+                user_type: 'NORMAL'
+            }, {
+                    where: {
+                        id: user_id
+                    },
+                    transaction: t
+                }))
+
+            let user = await this.exec(User.findOne({
+                where: {
+                    id: user_id
+                },
+                include: [
+                    {
+                        association: 'history_memberships'
+                    }
+                ],
+                transaction: t
+            }))
+
+            t.commit();
+            return user;
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+        }
+    }
+
 }
