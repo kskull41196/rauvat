@@ -32,17 +32,17 @@ import {
     RateController
 } from './crud/rateController'
 import {
-    GlobalpromotionController
-} from './crud/globalpromotionController'
+    GlobalPromotionController
+} from './crud/globalPromotionController'
 import {
     WalletController
 } from './crud/walletController'
 import {
-    WalletimportController
-} from './crud/walletimportController'
+    WalletImportController
+} from './crud/walletImportController'
 import {
-    WalletexportController
-} from './crud/walletexportController'
+    WalletExportController
+} from './crud/walletExportController'
 import {
     PaidHistoryController
 } from './crud/paidHistoryController'
@@ -83,10 +83,10 @@ const billController = new BillController()
 const likeController = new LikeController()
 const rateController = new RateController()
 const commentController = new CommentController()
-const globalPromotionController = new GlobalpromotionController()
+const globalPromotionController = new GlobalPromotionController()
 const walletController = new WalletController()
-const walletImportController = new WalletimportController()
-const walletExportController = new WalletexportController()
+const walletImportController = new WalletImportController()
+const walletExportController = new WalletExportController()
 const paidHistoryController = new PaidHistoryController()
 const employeeController = new EmployeeController()
 const globalAttributeController = new GlobalAttributeController()
