@@ -163,9 +163,16 @@ export default class UserRouter extends CrudRouter<typeof userController> {
                 user_id: {
                     type: 'string',
                     format: 'uuid'
+                },
+                user_type: {
+                    enum: [
+                        'SILVER',
+                        'GOLD',
+                        'DIAMOND'
+                    ]
                 }
             },
-            required: ['user_id']
+            required: ['user_id', 'user_type']
         })
 
         const result = await this.controller.upgrade(req.body)

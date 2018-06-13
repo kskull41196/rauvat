@@ -39,8 +39,7 @@ export const User = sequelize.define(
     user_type: {
       type: Sequelize.ENUM,
       values: [
-        'NORMAL',
-        'PREMIUM'
+        'NORMAL', 'SILVER', 'GOLD', 'DIAMOND'
       ],
       defaultValue: 'NORMAL'
     },

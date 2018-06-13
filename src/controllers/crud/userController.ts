@@ -50,7 +50,8 @@ export class UserController extends CrudController<typeof userService> {
     }
 
     async upgrade(params: {
-        user_id: string
+        user_id: string,
+        user_type: string
     }) {
         return await this.service.upgrade(params);
     }

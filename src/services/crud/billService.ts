@@ -8,8 +8,6 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 
 export class BillService extends CrudService<typeof Bill> {
     constructor() {
-
-        console.log("bambi", Bill);
         super(Bill)
     }
 
