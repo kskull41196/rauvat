@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Wallet_import = sequelize.define(
+export const WalletImport = sequelize.define(
   'tbl_wallet_import',
   {
     id: {

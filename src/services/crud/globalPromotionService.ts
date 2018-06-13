@@ -1,6 +1,6 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
 import {
-    Global_promotion,
+    GlobalPromotion,
     Employee,
     User
 } from '@/models/tables'
@@ -8,9 +8,9 @@ import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 import * as moment from 'moment'
 
-export class GlobalPromotionService extends CrudService<typeof Global_promotion> {
+export class GlobalPromotionService extends CrudService<typeof GlobalPromotion> {
     constructor() {
-        super(Global_promotion)
+        super(GlobalPromotion)
     }
     splitTimeMonth(from_date: any, start_date: any) {
         let time = [];
@@ -68,7 +68,7 @@ export class GlobalPromotionService extends CrudService<typeof Global_promotion>
                 end.set('hour', 23);
                 end.set('minute', 59);
                 end.set('second', 59);
-                const itemPromotion = await Global_promotion.count({
+                const itemPromotion = await GlobalPromotion.count({
                     where: {
                         created_at: {
                             $gte: start.format(),
@@ -127,7 +127,7 @@ export class GlobalPromotionService extends CrudService<typeof Global_promotion>
                 let start = moment(time);
                 let end = moment(time);
                 end.set('date', end.get('date') + 1);
-                const itemPromotion = await Global_promotion.count({
+                const itemPromotion = await GlobalPromotion.count({
                     where: {
                         created_at: {
                             $gte: start.format(),
@@ -183,7 +183,7 @@ export class GlobalPromotionService extends CrudService<typeof Global_promotion>
             for (let time of times) {
                 let start = moment(time).startOf('week');
                 let end = moment(time).endOf('week');
-                const itemPromotion = await Global_promotion.count({
+                const itemPromotion = await GlobalPromotion.count({
                     where: {
                         created_at: {
                             $gte: start.format(),

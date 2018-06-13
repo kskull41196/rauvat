@@ -6,14 +6,14 @@ import {
     GlobalArea,
     BillItem,
     BillActivity,
-    Global_promotion,
+    GlobalPromotion,
     Bill,
     Like,
     Comment,
     Rate,
     Wallet,
-    Wallet_import,
-    Wallet_export,
+    WalletImport,
+    WalletExport,
     PaidHistory,
     Employee,
     GlobalAttribute,
@@ -148,11 +148,11 @@ User.hasMany(Bill, {
     foreignKey: 'seller_id',
     as: 'bill_sellers'
 });
-Bill.belongsTo(Global_promotion, {
+Bill.belongsTo(GlobalPromotion, {
     foreignKey: 'promotion_id',
     as: 'global_promotion'
 });
-Global_promotion.hasMany(Bill, {
+GlobalPromotion.hasMany(Bill, {
     foreignKey: 'promotion_id',
     as: 'bills'
 });
@@ -210,36 +210,36 @@ UserSetting.belongsTo(User, {
     as: 'user'
 });
 //wallet_import
-Wallet_import.belongsTo(Wallet, {
+WalletImport.belongsTo(Wallet, {
     foreignKey: 'wallet_id',
     as: 'wallet'
 });
-Wallet.hasMany(Wallet_import, {
+Wallet.hasMany(WalletImport, {
     foreignKey: 'wallet_id',
     as: 'imports'
 });
-Wallet_import.belongsTo(Employee, {
+WalletImport.belongsTo(Employee, {
     foreignKey: 'employee_id',
     as: 'employee'
 });
-Employee.hasMany(Wallet_import, {
+Employee.hasMany(WalletImport, {
     foreignKey: 'employee_id',
     as: 'wallet_imports'
 });
 //wallet_export
-Wallet_export.belongsTo(Wallet, {
+WalletExport.belongsTo(Wallet, {
     foreignKey: 'wallet_id',
     as: 'wallet'
 });
-Wallet.hasMany(Wallet_export, {
+Wallet.hasMany(WalletExport, {
     foreignKey: 'wallet_id',
     as: 'exports'
 });
-Wallet_export.belongsTo(Employee, {
+WalletExport.belongsTo(Employee, {
     foreignKey: 'employee_id',
     as: 'employee'
 });
-Employee.hasMany(Wallet_export, {
+Employee.hasMany(WalletExport, {
     foreignKey: 'employee_id',
     as: 'Wallet_exports'
 });

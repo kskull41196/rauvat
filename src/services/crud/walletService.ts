@@ -2,7 +2,7 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import {
     errorService,
 } from '@/services'
-import { Wallet, Wallet_export, Wallet_import } from '@/models/tables'
+import { Wallet, WalletExport, WalletImport } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 
@@ -18,7 +18,7 @@ export class WalletService extends CrudService<typeof Wallet> {
             throw errorService.database.queryFail("Số tiền hiện tại không đủ để xuất")
         } else {        
             params.employee_id = params.employee_from_token.id
-            const createExport = await this.exec(Wallet_export.create(params, this.applyCreateOptions(option)))
+            const createExport = await this.exec(WalletExport.create(params, this.applyCreateOptions(option)))
             params.amount_of_purchase = parseInt(item.amount_of_purchase) - parseInt(amount);//sau khi xuất tiền trong ví = tiền đang có - tiền vừa xuất         
             const updateWallet = await this.exec(item.update(params))//cập nhật số tiền sao khi đã xuất
             return {  createExport, updateWallet }
@@ -29,7 +29,7 @@ export class WalletService extends CrudService<typeof Wallet> {
         params.wallet_id = item.id
         var amount = params.amount
         params.employee_id = params.employee_from_token.id
-        const createImport = await this.exec(Wallet_import.create(params, this.applyCreateOptions(option)))
+        const createImport = await this.exec(WalletImport.create(params, this.applyCreateOptions(option)))
         params.amount_of_purchase = parseInt(item.amount_of_purchase) + parseInt(amount);//sau khi thêm tiền trong ví = tiền đang có + tiền vừa thêm         
         const updateWallet = await this.exec(item.update(params))//cập nhật số tiền sao khi đã xuất
         return {  createImport, updateWallet }

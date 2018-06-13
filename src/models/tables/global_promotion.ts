@@ -3,7 +3,7 @@ import {
   Sequelize
 } from '../base'
 
-export const Global_promotion = sequelize.define(
+export const GlobalPromotion = sequelize.define(
   'tbl_global_promotion',
   {
     id: {
