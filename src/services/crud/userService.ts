@@ -116,10 +116,12 @@ export class UserService extends CrudService<typeof User> {
     }
 
     async upgrade(params: {
-        user_id: string
+        user_id: string,
+        user_type: string
     }) {
         let {
-            user_id
+            user_id,
+            user_type
         } = params;
 
         const t = await sequelize.transaction();
@@ -133,7 +135,7 @@ export class UserService extends CrudService<typeof User> {
                 }));
 
             await this.exec(User.update({
-                user_type: 'PREMIUM',
+                user_type: user_type,
                 latest_updated_membership: moment().format()
             }, {
                     where: {
