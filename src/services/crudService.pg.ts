@@ -11,7 +11,7 @@ export interface ICrudOption {
     scope?: string[]
     order?: any[]
     attributes?: any
-    includes?: any[]
+    include?: any[]
     distinct?: boolean
     paranoid?: boolean
     transaction?: any

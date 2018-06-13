@@ -1,8 +1,15 @@
+import { errorService } from '@/services'
+import { ICreateOrder } from '@/interfaces'
+import {
+    sequelize,
+    Bill, Product, BillItem, BillActivity, PaidHistory
+} from '@/models'
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { Bill } from '@/models/tables'
 
 export class BillService extends CrudService<typeof Bill> {
     constructor() {
+
+        console.log("bambi", Bill);
         super(Bill)
     }
 

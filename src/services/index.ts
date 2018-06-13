@@ -65,7 +65,7 @@ import { HistoryMembershipService } from './crud/historyMembershipService'
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
 // import { SampleCrudService } from './crud/sampleCrudService.mongo'
-
+console.log("@@@@@@@@@@@")
 
 const errorService = new ErrorService()
 const tokenService = new TokenService()
