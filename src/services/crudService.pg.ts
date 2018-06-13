@@ -10,7 +10,7 @@ export interface ICrudOption {
     offset?: number
     scope?: string[]
     order?: any[]
-    attributes?: any[]
+    attributes?: any
     includes?: any[]
     distinct?: boolean
     paranoid?: boolean
@@ -31,7 +31,7 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
     }
     async exec(promise: any, option: ICrudExecOption = { allowNull: true }) {
         try {
-            let result = await promise
+            const result = await promise
             if ((result === undefined || result === null) && !option.allowNull)
                 throw errorService.database.recordNotFound()
             return result;
@@ -81,10 +81,10 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
         return await this.exec(item.destroy())
     }
     async deleteAll(option?: ICrudOption) {
-        let t = await this.transaction()
+        const t = await this.transaction()
         option.transaction = t
         try {
-            let result = await this.exec(this.model.destroy(this.applyDestroyOptions(option)))
+            const result = await this.exec(this.model.destroy(this.applyDestroyOptions(option)))
             t.commit()
             return result;
         } catch (err) {
