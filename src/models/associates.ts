@@ -21,6 +21,7 @@ import {
     GlobalCategoryAndAttribute,
     UserSetting,
     FavoriteProduct,
+    FavoritePost,
     HistoryMembership,
     ProductGlobalAttribute
 
@@ -92,7 +93,7 @@ FavoriteProduct.belongsTo(User, {
 });
 User.hasMany(FavoriteProduct, {
     foreignKey: 'user_id',
-    as: 'favorites'
+    as: 'favorite_products'
 });
 
 FavoriteProduct.belongsTo(Product, {
@@ -101,6 +102,24 @@ FavoriteProduct.belongsTo(Product, {
 });
 Product.hasMany(FavoriteProduct, {
     foreignKey: 'product_id',
+    as: 'favorites'
+});
+//FavoritePost
+FavoritePost.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasMany(FavoritePost, {
+    foreignKey: 'user_id',
+    as: 'favorite_posts'
+});
+
+FavoritePost.belongsTo(Post, {
+    foreignKey: 'post_id',
+    as: 'post'
+});
+Post.hasMany(FavoritePost, {
+    foreignKey: 'post_id',
     as: 'favorites'
 });
 //BillItem
