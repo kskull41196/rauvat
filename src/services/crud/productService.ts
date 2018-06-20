@@ -37,8 +37,6 @@ export class ProductService extends CrudService<typeof Product> {
             radius
         } = params;
 
-        console.log(params);
-
         const query: any = {
             where: {
 
@@ -52,22 +50,29 @@ export class ProductService extends CrudService<typeof Product> {
             query.where.global_category_id = global_category_id
         }
         if (area_id) {
-            const area_ids = [];
-            let global_area;
+            let area_ids:any[] = [area_id];
+
+            let parent_ids = [area_id];
             while (true) {
-                global_area = await this.exec(GlobalArea.findOne({
+                let global_areas = await this.exec(GlobalArea.findAndCountAll({
                     where: {
-                        id: area_id
-                    }
+                        parent_id: {
+                            $in: parent_ids
+                        }
+                    },
+                    attributes: ['id']
                 }))
 
-                area_ids.push(area_id);
+                if (global_areas.count === 0) break;
 
-                if (global_area.parent_id) {
-                    area_id = global_area.parent_id;
-                }
-                else break;
+                parent_ids = global_areas.rows.map((area: {
+                    id: string
+                }) => {
+                    area_ids.push(area.id);
+                    return area.id
+                })
             }
+
             query.where.global_area_id = {
                 $in: area_ids
             }
