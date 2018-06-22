@@ -8,6 +8,18 @@ export default class FavoritePostRouter extends CrudRouter<typeof favoritePostCo
         super(favoritePostController)
 
     }
+    customRouting(){
+        this.router.post('/add',this.createMiddlewares(),this.route(this.addFavoritePost));
+        this.router.delete('/remove', this.deleteMiddlewares(), this.route(this.removeFavoritePost))
+    }
+    async addFavoritePost(req: Request, res: Response) {
+        const result = await this.controller.addFavoritePost(req.body)
+        this.onSuccess(res, result)
+    }
+    async removeFavoritePost(req: Request, res: Response) {
+        const result = await this.controller.removeFavoritePost(req.body)
+        this.onSuccess(res, result)
+    }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
     }

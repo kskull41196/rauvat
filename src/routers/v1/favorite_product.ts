@@ -8,6 +8,18 @@ export default class FavoriteProductRouter extends CrudRouter<typeof favoritePro
         super(favoriteProductController)
 
     }
+    customRouting(){
+        this.router.post('/add',this.createMiddlewares(),this.route(this.addFavoriteProduct));
+        this.router.delete('/remove', this.deleteMiddlewares(), this.route(this.removeFavoriteProduct))
+    }
+    async addFavoriteProduct(req: Request, res: Response) {
+        const result = await this.controller.addFavoriteProduct(req.body)
+        this.onSuccess(res, result)
+    }
+    async removeFavoriteProduct(req: Request, res: Response) {
+        const result = await this.controller.removeFavoriteProduct(req.body)
+        this.onSuccess(res, result)
+    }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
     }
