@@ -62,6 +62,9 @@ import {
 import {
     FavoritePostService
 } from './crud/favoritePostService'
+import {
+    NotificationService
+} from './crud/notificationService'
 import { ProductGlobalAttributeService } from './crud/productGlobalAttributeService'
 import { HistoryMembershipService } from './crud/historyMembershipService'
 
@@ -97,6 +100,7 @@ const favoriteProductService = new FavoriteProductService()
 const favoritePostService = new FavoritePostService()
 const historyMembershipService = new HistoryMembershipService()
 const productGlobalAttributeService = new ProductGlobalAttributeService()
+const notificationService = new NotificationService()
 
 // Crud
 
@@ -131,5 +135,6 @@ export {
     favoriteProductService,
     historyMembershipService,
     productGlobalAttributeService,
-    favoritePostService
+    favoritePostService,
+    notificationService
 }

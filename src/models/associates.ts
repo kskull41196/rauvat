@@ -23,9 +23,19 @@ import {
     FavoriteProduct,
     FavoritePost,
     HistoryMembership,
-    ProductGlobalAttribute
+    ProductGlobalAttribute,
+    Notification
 
 } from "@/models/tables";
+//Notification
+Notification.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasMany(Notification, {
+    foreignKey: 'user_id',
+    as: 'notifications'
+});
 //post
 Post.belongsTo(User, {
     foreignKey: 'user_id',

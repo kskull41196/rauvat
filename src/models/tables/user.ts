@@ -64,6 +64,9 @@ export const User = sequelize.define(
     password: {
       type: Sequelize.STRING
     },
+    registation_id: {
+      type: Sequelize.STRING
+    },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
