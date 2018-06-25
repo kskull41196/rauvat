@@ -23,6 +23,8 @@ export class ProductController extends CrudController<typeof productService> {
     async postQuickProduct(params: IPostQuickProduct){
         return await this.service.postQuickProduct(params);
     }
-    
+    async getProductWithHistory(params: any, option?: ICrudOption) {
+        return await this.service.getProductWithHistory(params, option)
+    }
 }
     

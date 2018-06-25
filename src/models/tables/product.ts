@@ -115,6 +115,14 @@ export const Product = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true
     },
+    origin_id: {
+      type: Sequelize.UUID,       
+      allowNull: true
+    },
+    edittor: {
+      type: Sequelize.UUID,       
+      allowNull: true
+    },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,

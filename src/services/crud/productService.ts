@@ -50,7 +50,7 @@ export class ProductService extends CrudService<typeof Product> {
             query.where.global_category_id = global_category_id
         }
         if (area_id) {
-            let area_ids:any[] = [area_id];
+            let area_ids: any[] = [area_id];
 
             let parent_ids = [area_id];
             while (true) {
@@ -193,5 +193,33 @@ export class ProductService extends CrudService<typeof Product> {
             throw e;
         }
     }
+    async update(params: any, option?: ICrudOption) {
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        //get data from params to item
+        var keys = Object.keys(params);
+        for (var j = 0; j < keys.length; j++) {
+            item.dataValues[keys[j]] = params[keys[j]];
+        }
+        item.dataValues.origin_id = item.id
+        item.dataValues.id = undefined
+        item.dataValues.created_at = undefined
+        item.dataValues.updated_at = undefined
+        item.dataValues.deleted_at = undefined
+        item.dataValues.status = undefined
+        const createProduct = await this.exec(
+            this.model.create(item.dataValues, this.applyCreateOptions(option))
+        )
+        return createProduct
+    }
+    async getProductWithHistory(params: any, option?: ICrudOption) {
+        let productCurrent = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        let object = [];
+        while (item.origin_id != undefined) {
+            item = await this.exec(this.model.findOne({ where: { id: item.origin_id } }), { allowNull: false })
+            object.push(item);
+        }
 
+        return { productCurrent, history: object }
+    }
 }

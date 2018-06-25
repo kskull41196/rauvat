@@ -14,6 +14,14 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
         this.router.post('/filter', this.filterMiddlewares(), this.route(this.filter));
         this.router.post('/post_product', this.postProductMiddlewares(), this.route(this.postProduct));
         this.router.post('/post_quick_product', this.postQuickProductMiddlewares(), this.route(this.postQuickProduct));
+        this.router.get('/get_product_with_history/:id', this.route(this.getProductWithHistory))
+    }
+    async getProductWithHistory(req: Request, res: Response) {
+        const { id } = req.params
+        const result = await this.controller.getProductWithHistory(req.body,{
+            filter: { id }
+        })
+        this.onSuccess(res, result)
     }
     getListMiddlewares(): any[] {
         return [queryMiddleware.run()]
