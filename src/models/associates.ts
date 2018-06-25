@@ -24,9 +24,21 @@ import {
     FavoritePost,
     HistoryMembership,
     ProductGlobalAttribute,
-    Notification
+    Notification,
+    Store,
+    Report
 
 } from "@/models/tables";
+
+//report
+Report.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasMany(Report, {
+    foreignKey: 'user_id',
+    as: 'reports'
+});
 //Notification
 Notification.belongsTo(User, {
     foreignKey: 'user_id',
@@ -235,6 +247,14 @@ User.hasOne(UserSetting, {
     as: 'user_setting'
 });
 UserSetting.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasOne(Store, {
+    foreignKey: 'user_id',
+    as: 'store'
+});
+Store.belongsTo(User, {
     foreignKey: 'user_id',
     as: 'user'
 });

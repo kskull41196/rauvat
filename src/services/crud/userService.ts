@@ -6,7 +6,8 @@ import {
     User,
     Wallet,
     UserSetting,
-    HistoryMembership
+    HistoryMembership,
+    Store
 } from '@/models'
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
@@ -118,7 +119,7 @@ export class UserService extends CrudService<typeof User> {
     async upgrade(params: {
         user_id: string,
         user_type: string
-    }) {
+    }, option?: ICrudOption) {
         let {
             user_id,
             user_type
@@ -143,7 +144,26 @@ export class UserService extends CrudService<typeof User> {
                     },
                     transaction: t
                 }))
-
+            const result: any = await Store.count({
+                where: {
+                    user_id,
+                }
+            });
+            if (result == 1) {
+                var createStoreFail = "Cửa Hàng Đã Được Tạo Rồi"
+            } else {
+                const item = await this.exec(User.findOne({ where: { id: user_id } }), { allowNull: false })
+                var createStore = await this.exec(Store.create({
+                    user_id: user_id,
+                    working_time_from: 0,
+                    working_time_to: 0,
+                    phone: item.phone,
+                    description: "",
+                    address: item.address,
+                    name: "Cửa Hàng Của " + item.fullname,
+                    avatar: item.avatar,
+                }, this.applyCreateOptions(option)))
+            }
             let user = await this.exec(User.findOne({
                 where: {
                     id: user_id
@@ -157,7 +177,7 @@ export class UserService extends CrudService<typeof User> {
             }))
 
             t.commit();
-            return user;
+            return { user, message: createStore || createStoreFail};
         }
         catch (e) {
             t.rollback();
