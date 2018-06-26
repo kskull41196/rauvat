@@ -14,6 +14,7 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
     }
     async export(req: Request, res: Response) {
         const { id } = req.params
+        req.body.employee_id = req.tokenInfo.payload.employee_id
         const result = await this.controller.export(req.body, {
             filter: { id }
         })
@@ -21,6 +22,7 @@ export default class WalletRouter extends CrudRouter<typeof walletController> {
     };
     async import(req: Request, res: Response) {
         const { id } = req.params
+        req.body.employee_id = req.tokenInfo.payload.employee_id
         const result = await this.controller.import(req.body, {
             filter: { id }
         })

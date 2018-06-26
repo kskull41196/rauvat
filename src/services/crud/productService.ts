@@ -2,7 +2,9 @@ import { CrudService, ICrudOption } from '../crudService.pg'
 import {
     Product,
     GlobalCategory,
-    GlobalArea
+    GlobalArea,
+    User,
+    Employee
 } from '@/models'
 import {
     Sequelize,
@@ -200,6 +202,11 @@ export class ProductService extends CrudService<typeof Product> {
         for (var j = 0; j < keys.length; j++) {
             item.dataValues[keys[j]] = params[keys[j]];
         }
+        if (params.editor_role == 'ADMIN') {
+            item.dataValues.editor_type = "EMPLOYEE"
+        }else{
+            item.dataValues.editor_type = "USER"
+        }
         item.dataValues.origin_id = item.id
         item.dataValues.id = undefined
         item.dataValues.created_at = undefined
@@ -212,14 +219,31 @@ export class ProductService extends CrudService<typeof Product> {
         return createProduct
     }
     async getProductWithHistory(params: any, option?: ICrudOption) {
-        let productCurrent = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
         let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const product = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        if (item.editor_type == 'USER') {
+            var editor_user = await this.exec(User.findOne({ where: { id: item.editor } }), { allowNull: false })
+        }
+        if (item.editor_type == 'EMPLOYEE') {
+            var editor_employee = await this.exec(Employee.findOne({ where: { id: item.editor } }), { allowNull: false })
+        }
+        const current_product = { product, editor: editor_user || editor_employee }
         let object = [];
         while (item.origin_id != undefined) {
             item = await this.exec(this.model.findOne({ where: { id: item.origin_id } }), { allowNull: false })
             object.push(item);
         }
 
-        return { productCurrent, history: object }
+        return { current_product, history: object }
+    }
+    async getList(option: ICrudOption = {
+        limit: config.database.defaultPageSize,
+        offset: 0,
+        scope: ['defaultScope']
+    }) {
+        return await this.exec(
+            this.modelWithScope(option.scope)
+                .findAndCountAll({ where: { origin_id: null } })
+        )
     }
 }

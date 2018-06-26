@@ -116,11 +116,16 @@ export const Product = sequelize.define(
       allowNull: true
     },
     origin_id: {
-      type: Sequelize.UUID,       
+      type: Sequelize.UUID,
       allowNull: true
     },
-    edittor: {
-      type: Sequelize.UUID,       
+    editor_type: {
+      type: Sequelize.ENUM,
+      values: ['USER', 'EMPLOYEE'],
+      allowNull: true
+    },
+    editor: {
+      type: Sequelize.UUID,
       allowNull: true
     },
     status: {

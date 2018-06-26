@@ -6,7 +6,12 @@ module.exports = {
       type: Sequelize.UUID,
       allowNull: true
     });
-    return await queryInterface.addColumn('tbl_product', 'edittor', {
+    await queryInterface.addColumn('tbl_product', 'editor_type', {
+      type: Sequelize.ENUM,
+      values: ['USER', 'EMPLOYEE'],
+      allowNull: true
+    });
+    return await queryInterface.addColumn('tbl_product', 'editor', {
       type: Sequelize.UUID,
       allowNull: true
     });
@@ -14,6 +19,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('tbl_product', 'origin_id');
-    return await queryInterface.removeColumn('tbl_product', 'edittor');
+    await queryInterface.removeColumn('tbl_product', 'editor_type');
+    return await queryInterface.removeColumn('tbl_product', 'editor');
   }
 };

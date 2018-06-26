@@ -2,7 +2,7 @@ import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { productController } from '@/controllers'
 
-import { authInfoMiddleware, queryMiddleware, blockMiddleware,adminAuthInfoMiddleware } from '@/middlewares'
+import { authInfoMiddleware, queryMiddleware, blockMiddleware, adminAuthInfoMiddleware } from '@/middlewares'
 
 export default class ProductRouter extends CrudRouter<typeof productController> {
     constructor() {
@@ -16,9 +16,18 @@ export default class ProductRouter extends CrudRouter<typeof productController> 
         this.router.post('/post_quick_product', this.postQuickProductMiddlewares(), this.route(this.postQuickProduct));
         this.router.get('/get_product_with_history/:id', this.route(this.getProductWithHistory))
     }
+    async update(req: Request, res: Response) {
+        const { id } = req.params
+        req.body.editor = req.tokenInfo.payload.employee_id || req.tokenInfo.payload.user_id
+        req.body.editor_role = req.tokenInfo.role
+        const result = await this.controller.update(req.body, {
+            filter: { id }
+        })
+        this.onSuccess(res, result)
+    }
     async getProductWithHistory(req: Request, res: Response) {
         const { id } = req.params
-        const result = await this.controller.getProductWithHistory(req.body,{
+        const result = await this.controller.getProductWithHistory(req.body, {
             filter: { id }
         })
         this.onSuccess(res, result)
