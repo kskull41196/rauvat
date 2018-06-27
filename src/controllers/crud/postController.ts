@@ -6,6 +6,8 @@ export class PostController extends CrudController<typeof postService> {
     constructor() {
         super(postService)
     }
-    
+    async getPostWithHistory(params: any, option?: ICrudOption) {
+        return await this.service.getPostWithHistory(params, option)
+    }
 }
     

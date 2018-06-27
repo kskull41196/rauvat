@@ -2,13 +2,65 @@ import { errorService } from '@/services'
 import { ICreateOrder } from '@/interfaces'
 import {
     sequelize,
-    Bill, Product, BillItem, BillActivity, PaidHistory
+    Bill, Product, BillItem, BillActivity, PaidHistory, User, Employee
 } from '@/models'
 import { CrudService, ICrudOption } from '../crudService.pg'
+import { config } from '@/config'
 
 export class BillService extends CrudService<typeof Bill> {
     constructor() {
         super(Bill)
+    }
+    async update(params: any, option?: ICrudOption) {
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        //get data from params to item
+        var keys = Object.keys(params);
+        for (var j = 0; j < keys.length; j++) {
+            item.dataValues[keys[j]] = params[keys[j]];
+        }
+        if (params.editor_role == 'ADMIN') {
+            item.dataValues.editor_type = "EMPLOYEE"
+        } else {
+            item.dataValues.editor_type = "USER"
+        }
+        item.dataValues.origin_id = item.id
+        item.dataValues.id = undefined
+        item.dataValues.created_at = undefined
+        item.dataValues.updated_at = undefined
+        item.dataValues.deleted_at = undefined
+        item.dataValues.status = undefined
+        const createBill = await this.exec(
+            this.model.create(item.dataValues, this.applyCreateOptions(option))
+        )
+        return createBill
+    }
+    async getBillWithHistory(params: any, option?: ICrudOption) {
+        let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const bill = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        if (item.editor_type == 'USER') {
+            var editor_user = await this.exec(User.findOne({ where: { id: item.editor } }), { allowNull: false })
+        }
+        if (item.editor_type == 'EMPLOYEE') {
+            var editor_employee = await this.exec(Employee.findOne({ where: { id: item.editor } }), { allowNull: false })
+        }
+        const current_bill = { bill, editor: editor_user || editor_employee }
+        let object = [];
+        while (item.origin_id != undefined) {
+            item = await this.exec(this.model.findOne({ where: { id: item.origin_id } }), { allowNull: false })
+            object.push(item);
+        }
+
+        return { current_bill, history: object }
+    }
+    async getList(option: ICrudOption = {
+        limit: config.database.defaultPageSize,
+        offset: 0,
+        scope: ['defaultScope']
+    }) {
+        return await this.exec(
+            this.modelWithScope(option.scope)
+                .findAndCountAll({ where: { origin_id: null } })
+        )
     }
 
     async bulkCreateBillItem(params: {

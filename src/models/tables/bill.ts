@@ -103,6 +103,19 @@ export const Bill = sequelize.define(
     note: {
       type: Sequelize.TEXT
     },
+    origin_id: {
+      type: Sequelize.UUID,
+      allowNull: true
+    },
+    editor_type: {
+      type: Sequelize.ENUM,
+      values: ['USER', 'EMPLOYEE'],
+      allowNull: true
+    },
+    editor: {
+      type: Sequelize.UUID,
+      allowNull: true
+    },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
