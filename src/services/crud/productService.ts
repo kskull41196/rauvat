@@ -241,9 +241,10 @@ export class ProductService extends CrudService<typeof Product> {
         offset: 0,
         scope: ['defaultScope']
     }) {
+        option.filter['origin_id'] = null
         return await this.exec(
             this.modelWithScope(option.scope)
-                .findAndCountAll({ where: { origin_id: null } })
+                .findAndCountAll(this.applyFindOptions(option))
         )
     }
 }

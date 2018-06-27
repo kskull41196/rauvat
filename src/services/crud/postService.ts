@@ -53,9 +53,10 @@ export class PostService extends CrudService<typeof Post> {
         offset: 0,
         scope: ['defaultScope']
     }) {
+        option.filter['origin_id'] = null
         return await this.exec(
             this.modelWithScope(option.scope)
-                .findAndCountAll({ where: { origin_id: null } })
+                .findAndCountAll(this.applyFindOptions(option))
         )
     }
 }

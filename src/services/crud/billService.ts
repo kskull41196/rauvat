@@ -57,12 +57,12 @@ export class BillService extends CrudService<typeof Bill> {
         offset: 0,
         scope: ['defaultScope']
     }) {
+        option.filter['origin_id'] = null
         return await this.exec(
             this.modelWithScope(option.scope)
-                .findAndCountAll({ where: { origin_id: null } })
+                .findAndCountAll(this.applyFindOptions(option))
         )
     }
-
     async bulkCreateBillItem(params: {
         items: {
             product_id: string,
