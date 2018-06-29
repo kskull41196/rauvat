@@ -4,7 +4,8 @@ dotenv.config({silent: true})
 export default {
     server: {
         host: 'rauvat.herokuapp.com',
-        protocol: 'https',
+        // protocol: 'https',
+        protocol: 'http',
         debug: true,
         name: 'SERVER NAME',
         port: process.env.PORT || 5000,
