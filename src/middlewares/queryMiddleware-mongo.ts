@@ -49,7 +49,7 @@ export class QueryMiddleware extends BaseMiddleware {
       order = undefined
     }
     return order || [
-      ['updated_at', 'asc']
+      ['updated_at', 'desc']
     ]
   }
   _parseFields(req: Request) {
