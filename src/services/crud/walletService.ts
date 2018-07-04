@@ -14,7 +14,7 @@ export class WalletService extends CrudService<typeof Wallet> {
         const item = await this.exec(Wallet.findById(option.filter.id), { allowNull: false })
         params.wallet_id = item.id
         var amount = params.amount
-        if (item.amount_of_purchase <= amount) {
+        if (item.amount_of_purchase < amount) {
             throw errorService.database.queryFail("Số tiền hiện tại không đủ để xuất")
         } else {        
             const createExport = await this.exec(WalletExport.create(params, this.applyCreateOptions(option)))
