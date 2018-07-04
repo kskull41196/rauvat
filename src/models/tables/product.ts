@@ -115,7 +115,7 @@ export const Product = sequelize.define(
       type: Sequelize.STRING,
       allowNull: true
     },
-    origin_id: {
+    updated_id: {
       type: Sequelize.UUID,
       allowNull: true
     },

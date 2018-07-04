@@ -103,7 +103,7 @@ export const Bill = sequelize.define(
     note: {
       type: Sequelize.TEXT
     },
-    origin_id: {
+    updated_id: {
       type: Sequelize.UUID,
       allowNull: true
     },

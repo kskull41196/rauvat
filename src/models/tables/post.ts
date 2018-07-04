@@ -65,7 +65,7 @@ export const Post = sequelize.define(
       },
       allowNull: false
     },
-    origin_id: {
+    updated_id: {
       type: Sequelize.UUID,
       allowNull: true
     },

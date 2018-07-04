@@ -12,44 +12,68 @@ export class BillService extends CrudService<typeof Bill> {
         super(Bill)
     }
     async update(params: any, option?: ICrudOption) {
-        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const item = await this.exec(Bill.findById(option.filter.id), { allowNull: false })
         //get data from params to item
         var keys = Object.keys(params);
         for (var j = 0; j < keys.length; j++) {
             item.dataValues[keys[j]] = params[keys[j]];
         }
-        if (params.editor_role == 'ADMIN') {
-            item.dataValues.editor_type = "EMPLOYEE"
-        } else {
-            item.dataValues.editor_type = "USER"
-        }
-        item.dataValues.origin_id = item.id
         item.dataValues.id = undefined
         item.dataValues.created_at = undefined
         item.dataValues.updated_at = undefined
         item.dataValues.deleted_at = undefined
         item.dataValues.status = undefined
+        item.dataValues.editor = undefined
+        item.dataValues.editor_type = undefined
         const createBill = await this.exec(
             this.model.create(item.dataValues, this.applyCreateOptions(option))
         )
+        item.dataValues.id = option.filter.id;
+
+        params.updated_id = createBill.id;
+        var editor_type;
+        if (params.editor_role == 'ADMIN') {
+            params.editor_type = "EMPLOYEE"
+            editor_type = params.editor_type
+        } else {
+            params.editor_type = "USER"
+            editor_type = params.editor_type
+        }
+        const updated_id = params.updated_id;
+        const editor = params.editor;
+        await this.exec(item.update({ editor_type, updated_id, editor }))
         return createBill
     }
     async getBillWithHistory(params: any, option?: ICrudOption) {
         let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
-        const bill = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
-        if (item.editor_type == 'USER') {
-            var editor_user = await this.exec(User.findOne({ where: { id: item.editor } }), { allowNull: false })
-        }
-        if (item.editor_type == 'EMPLOYEE') {
-            var editor_employee = await this.exec(Employee.findOne({ where: { id: item.editor } }), { allowNull: false })
-        }
-        const current_bill = { bill, editor: editor_user || editor_employee }
+        var bill = JSON.parse(JSON.stringify(item));
+
         let object = [];
-        while (item.origin_id != undefined) {
-            item = await this.exec(this.model.findOne({ where: { id: item.origin_id } }), { allowNull: false })
-            object.push(item);
+        let findBillHistory;
+        try {
+            findBillHistory = await this.exec(Bill.findOne({ where: { updated_id: item.id } }), { allowNull: false })
+        } catch (e) {
+            return { current_bill: bill }
         }
 
+        object.push(findBillHistory);
+        if (findBillHistory.editor_type == 'USER') {
+            var editor_user = await this.exec(User.findOne({ where: { id: findBillHistory.editor } }), { allowNull: false })
+        }
+        if (findBillHistory.editor_type == 'EMPLOYEE') {
+            var editor_employee = await this.exec(Employee.findOne({ where: { id: findBillHistory.editor } }), { allowNull: false })
+        }
+
+        while (true) {
+            try {
+                findBillHistory = await this.exec(Bill.findOne({ where: { updated_id: findBillHistory.id } }), { allowNull: false })
+                object.push(findBillHistory);
+            } catch (e) {
+                break;
+            }
+        }
+
+        const current_bill = { bill, editor: editor_user || editor_employee }
         return { current_bill, history: object }
     }
     async getList(option: ICrudOption = {
@@ -57,7 +81,7 @@ export class BillService extends CrudService<typeof Bill> {
         offset: 0,
         scope: ['defaultScope']
     }) {
-        option.filter['origin_id'] = null
+        option.filter['updated_id'] = null
         return await this.exec(
             this.modelWithScope(option.scope)
                 .findAndCountAll(this.applyFindOptions(option))
