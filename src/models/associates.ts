@@ -26,7 +26,8 @@ import {
     ProductGlobalAttribute,
     Notification,
     Store,
-    Report
+    Report,
+    ProductPost
 
 } from "@/models/tables";
 
@@ -55,14 +56,6 @@ Post.belongsTo(User, {
 });
 User.hasMany(Post, {
     foreignKey: 'user_id',
-    as: 'posts'
-});
-Post.belongsTo(Product, {
-    foreignKey: 'product_id',
-    as: 'product'
-});
-Product.hasMany(Post, {
-    foreignKey: 'product_id',
     as: 'posts'
 });
 //product
@@ -143,6 +136,24 @@ FavoritePost.belongsTo(Post, {
 Post.hasMany(FavoritePost, {
     foreignKey: 'post_id',
     as: 'favorites'
+});
+//Product_Post
+ProductPost.belongsTo(Post, {
+    foreignKey: 'post_id',
+    as: 'post'
+});
+Post.hasMany(ProductPost, {
+    foreignKey: 'post_id',
+    as: 'product_posts'
+});
+
+ProductPost.belongsTo(Product, {
+    foreignKey: 'product_id',
+    as: 'product'
+});
+Product.hasMany(ProductPost, {
+    foreignKey: 'product_id',
+    as: 'post_products'
 });
 //BillItem
 BillItem.belongsTo(Product, {

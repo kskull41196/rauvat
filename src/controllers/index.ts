@@ -76,6 +76,9 @@ import {
 import {
     ReportController
 } from './crud/reportController'
+import {
+    ProductPostController
+} from './crud/productPostController'
 import { HistoryMembershipController } from './crud/historyMembershipController'
 import { ProductGlobalAttributeController } from './crud/productGlobalAttributeController'
 
@@ -112,6 +115,7 @@ const productGlobalAttributeController = new ProductGlobalAttributeController()
 const notificationController = new NotificationController()
 const storeController = new StoreController()
 const reportController = new ReportController()
+const productPostController = new ProductPostController()
 
 
 export {
@@ -143,5 +147,6 @@ export {
     productGlobalAttributeController,
     notificationController,
     storeController,
-    reportController
+    reportController,
+    productPostController
 }
