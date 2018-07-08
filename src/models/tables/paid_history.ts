@@ -19,6 +19,14 @@ export const PaidHistory = sequelize.define(
       },
       allowNull: false
     },
+    vnpay_history_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_vnpay_history',
+        key: 'id'
+      },
+      allowNull: true
+    },
     pay_amount: {
       type: Sequelize.DOUBLE,
       validate: {

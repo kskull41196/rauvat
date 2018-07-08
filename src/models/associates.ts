@@ -27,7 +27,8 @@ import {
     Notification,
     Store,
     Report,
-    ProductPost
+    ProductPost,
+    VnpayHistory
 
 } from "@/models/tables";
 
@@ -340,5 +341,15 @@ GlobalAttribute.hasMany(ProductGlobalAttribute, {
     foreignKey: 'global_attribute_id',
     as: 'products'
 })
+
+// Vnpay History
+PaidHistory.belongsTo(VnpayHistory, {
+    foreignKey: 'vnpay_history_id',
+    as: 'vnpay_history'
+})
+VnpayHistory.hasOne(PaidHistory, {
+    foreignKey: 'vnpay_history_id',
+    as: 'paid_history'
+});
 
 console.log('run associates')
