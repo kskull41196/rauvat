@@ -1,5 +1,6 @@
 import { CrudController } from './crudController'
 import { AuthController } from './authController'
+import { VnpayController } from './vnpayController'
 
 import {
     UserController
@@ -85,6 +86,7 @@ import { VnpayHistoryController } from './crud/vnpayHistoryController'
 
 
 const authController = new AuthController()
+const vnpayController= new VnpayController()
 
 // Crud
 
@@ -151,4 +153,5 @@ export {
     reportController,
     productPostController,
     vnpayHistoryController,
+    vnpayController,
 }

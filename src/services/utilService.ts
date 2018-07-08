@@ -2,6 +2,8 @@ import * as Ajv from 'ajv'
 import * as AjvError from 'ajv-errors'
 import * as AjvKeyWords from 'ajv-keywords'
 import * as _ from 'lodash'
+import * as md5 from 'md5'
+import * as querystring from 'qs'
 export class UtilService {
     validateJSON(schema: any, json: any = {}) {
         const ajv = new Ajv({ allErrors: true, jsonPointers: true });
@@ -79,4 +81,28 @@ export class UtilService {
         arrElement.push(arr2);
         return arrElement;
     }
+
+    sortObject(o: any) {
+        var sorted: any = {},
+            key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
+
+    secureHash(o: any, secretKey: string) {
+        var signData = secretKey + querystring.stringify(o, { encode: false });
+        return md5(signData);
+    }
+
 }
