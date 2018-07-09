@@ -22,6 +22,12 @@ export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
     }
+    async updateRegistrationId(params: any, option?: ICrudOption) {
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const registation_id = params.registation_id
+        await this.exec(item.update({ registation_id }))
+        return await this.getItem(option)
+    }
     async update(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
         if (params.username != item.username && params.username != undefined) {
@@ -177,7 +183,7 @@ export class UserService extends CrudService<typeof User> {
             }))
 
             t.commit();
-            return { user, message: createStore || createStoreFail};
+            return { user, message: createStore || createStoreFail };
         }
         catch (e) {
             t.rollback();
