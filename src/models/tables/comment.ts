@@ -11,10 +11,6 @@ export const Comment = sequelize.define(
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    content: {
-      type: Sequelize.TEXT,
-      allowNull: false
-    },
     user_id: {
       type: Sequelize.UUID,
       references: {
@@ -23,18 +19,29 @@ export const Comment = sequelize.define(
       },
       allowNull: false
     },
+    entity_type: {
+      type: Sequelize.STRING,
+      validate: {
+        isIn: [
+          [
+            'POST'
+          ]
+        ]
+      },
+      defaultValue: 'POST',
+      allowNull: false
+    },
     entity_id: {
       type: Sequelize.UUID,
       allowNull: false
     },
-    entity_type: {
-      type: Sequelize.ENUM,
-      values: ['POST', 'CMT'],
-      allowNull: false
+    content: {
+      type: Sequelize.TEXT
     },
     status: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
+      allowNull: false
     },
     created_at: {
       type: 'TIMESTAMP',

@@ -263,6 +263,14 @@ User.hasMany(Comment, {
     foreignKey: 'user_id',
     as: 'comments'
 });
+Comment.belongsTo(Post, {
+    foreignKey: 'entity_id',
+    as: 'post'
+})
+Post.hasMany(Comment, {
+    foreignKey: 'entity_id',
+    as: 'comments'
+})
 //user
 User.hasOne(Wallet, {
     foreignKey: 'user_id',
