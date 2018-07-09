@@ -28,7 +28,8 @@ import {
     Store,
     Report,
     ProductPost,
-    VnpayHistory
+    VnpayHistory,
+    RelationshipHistory
 
 } from "@/models/tables";
 
@@ -351,5 +352,23 @@ VnpayHistory.hasOne(PaidHistory, {
     foreignKey: 'vnpay_history_id',
     as: 'paid_history'
 });
+
+// Relationship History
+RelationshipHistory.belongsTo(User, {
+    foreignKey: 'sender_id',
+    as: 'sender'
+})
+User.hasMany(RelationshipHistory, {
+    foreignKey: 'sender_id',
+    as: 'relationship_sends'
+})
+RelationshipHistory.belongsTo(User, {
+    foreignKey: 'receiver_id',
+    as: 'receiver'
+})
+User.hasMany(RelationshipHistory, {
+    foreignKey: 'receiver_id',
+    as: 'relationship_receives'
+})
 
 console.log('run associates')

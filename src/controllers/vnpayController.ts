@@ -54,7 +54,7 @@ export class VnpayController extends BaseController {
             bill_id
         });
         vnp_Params['vnp_OrderType'] = 'topup';
-        vnp_Params['vnp_BankCode'] = "NCB";
+        // vnp_Params['vnp_BankCode'] = "NCB";
         vnp_Params['vnp_Amount'] = params.amount * 100;
         vnp_Params['vnp_ReturnUrl'] = payReturnUrl;
         vnp_Params['vnp_IpAddr'] = params.ipAddr;
