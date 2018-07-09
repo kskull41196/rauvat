@@ -228,6 +228,23 @@ User.hasMany(Like, {
     foreignKey: 'user_id',
     as: 'likes'
 });
+Like.belongsTo(Post, {
+    foreignKey: 'entity_id',
+    as: 'post'
+})
+Post.hasMany(Like, {
+    foreignKey: 'entity_id',
+    as: 'likes'
+})
+Like.belongsTo(Comment, {
+    foreignKey: 'entity_id',
+    as: 'comment'
+})
+Comment.hasMany(Like, {
+    foreignKey: 'entity_id',
+    as: 'likes'
+})
+
 //rate
 Rate.belongsTo(User, {
     foreignKey: 'user_id',
@@ -370,5 +387,7 @@ User.hasMany(RelationshipHistory, {
     foreignKey: 'receiver_id',
     as: 'relationship_receives'
 })
+
+
 
 console.log('run associates')
