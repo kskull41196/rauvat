@@ -3,59 +3,25 @@ import {
   Sequelize
 } from '../base'
 
-export const PaidHistory = sequelize.define(
-  'tbl_paid_history',
+export const VnpayHistory = sequelize.define(
+  'tbl_vnpay_history',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    bill_id: {
+    session_id: {
       type: Sequelize.UUID,
-      references: {
-        model: 'tbl_bill',
-        key: 'id'
-      },
       allowNull: false
     },
-    vnpay_history_id: {
-      type: Sequelize.UUID,
-      references: {
-        model: 'tbl_vnpay_history',
-        key: 'id'
-      },
-      allowNull: true
-    },
-    pay_amount: {
+    amount: {
       type: Sequelize.DOUBLE,
-      validate: {
-        min: 0,
-      },
       defaultValue: 0,
-      allowNull: false
-    },
-    type: {
-      type: Sequelize.ENUM,
-      values: [
-        'PARTIAL', 'FULL'
-      ],
-      defaultValue: 'PARTIAL',
-      allowNull: false
-    },
-    remain_amount: {
-      type: Sequelize.DOUBLE,
+      allowNull: false,
       validate: {
-        min: 0,
-      },
-      defaultValue: 0,
-      allowNull: false
-    },
-    payment_method: {
-      type: Sequelize.ENUM,
-      values: ['COD', 'ONLINE', 'WALLET'],
-      defaultValue: 'COD',
-      allowNull: false
+        min: 0
+      }
     },
     status: {
       type: Sequelize.BOOLEAN,

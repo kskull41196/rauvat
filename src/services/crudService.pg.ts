@@ -64,7 +64,7 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
         return await this.exec(
             this.modelWithScope(option.scope)
                 .findOne(this.applyFindOptions(option))
-            , { allowNull: false })
+            , { allowNull: true })
     }
     async create(params: any, option?: ICrudOption) {
         return await this.exec(
