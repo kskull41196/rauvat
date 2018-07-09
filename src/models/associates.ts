@@ -144,7 +144,7 @@ ProductPost.belongsTo(Post, {
 });
 Post.hasMany(ProductPost, {
     foreignKey: 'post_id',
-    as: 'product_posts'
+    as: 'products'
 });
 
 ProductPost.belongsTo(Product, {
@@ -153,7 +153,7 @@ ProductPost.belongsTo(Product, {
 });
 Product.hasMany(ProductPost, {
     foreignKey: 'product_id',
-    as: 'post_products'
+    as: 'posts'
 });
 //BillItem
 BillItem.belongsTo(Product, {

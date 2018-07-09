@@ -6,12 +6,12 @@ module.exports = {
     "database": process.env.DB_NAME,
     "host": process.env.HOST,
     "dialect": "postgresql",
-    "ssl": true,
-    "dialectOptions": {
-      "ssl": {
-        "require": true
-      }
-    }
+    // "ssl": true,
+    // "dialectOptions": {
+    //   "ssl": {
+    //     "require": true
+    //   }
+    // }
   },
   "test": {
     "username": process.env.DB_USER,
