@@ -59,7 +59,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
             req.body.fullname = "";
         }
         if (req.body.sex == undefined) {
-            req.body.sex = "Other"
+            req.body.sex = "OTHER"
         }
         if (req.body.birthday == undefined) {
             req.body.birthday = new Date();
