@@ -30,11 +30,11 @@ if (process.env.NODE_ENV === "production") {
             idle: 10000
         },
         timezone: "+07:00",
-        "dialectOptions": {
-          "ssl": {
-              "require": true
-          }
-        }
+        // "dialectOptions": {
+        //   "ssl": {
+        //       "require": true
+        //   }
+        // }
     }
 }
 const sequelize = new Sequelize(

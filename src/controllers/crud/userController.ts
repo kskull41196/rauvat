@@ -16,6 +16,12 @@ export class UserController extends CrudController<typeof userService> {
     async getPassword(params: any, option?: ICrudOption) {
         return await this.service.getPassword(params, option)
     }
+    async sendNotification(params: any, option?: ICrudOption) {
+        return await this.service.sendNotification(params, option)
+    }
+    async updateRegistrationId(params: any, option?: ICrudOption) {
+        return await this.service.updateRegistrationId(params, option)
+    }
     async checkUsername(params: any, option?: ICrudOption) {
         return await this.service.checkUsername(params, option)
     }

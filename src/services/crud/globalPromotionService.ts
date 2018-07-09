@@ -50,7 +50,7 @@ export class GlobalPromotionService extends CrudService<typeof GlobalPromotion> 
         return time;
     }
 
-    async statisticPromotion(params: any, option?: ICrudOption) {
+    async statisticGeneral(params: any, option?: ICrudOption) {
         let {
             from_date,
             to_date,

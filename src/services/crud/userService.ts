@@ -1,6 +1,6 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
 import {
-    errorService,
+    errorService, firebaseService
 } from '@/services'
 import {
     User,
@@ -17,10 +17,37 @@ import {
     Sequelize
 } from '@/models/base'
 import * as moment from 'moment'
+import * as admin from "firebase-admin";
 
 export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
+    }
+    async sendNotification(params: any, option?: ICrudOption) {
+        var registrationToken = params.registation_id;
+        var payload = {
+            data: {
+                message: params.message
+            }
+        };
+        var options = {
+            priority: "high",
+            timeToLive: 2 * 30 * 60 * 24
+        };
+        admin.messaging().sendToDevice(registrationToken, payload, options)
+            .then(function (response) {
+                console.log("Successful sent message : ", response)
+            })
+            .catch(function (error: any) {
+                console.log("Error sent message : ", error)
+            });
+        return { registrationToken, payload }
+    }
+    async updateRegistrationId(params: any, option?: ICrudOption) {
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const registation_id = params.registation_id
+        await this.exec(item.update({ registation_id }))
+        return await this.getItem(option)
     }
     async update(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
@@ -177,7 +204,7 @@ export class UserService extends CrudService<typeof User> {
             }))
 
             t.commit();
-            return { user, message: createStore || createStoreFail};
+            return { user, message: createStore || createStoreFail };
         }
         catch (e) {
             t.rollback();

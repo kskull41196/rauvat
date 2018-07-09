@@ -22,6 +22,19 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.get('/bills', this.getBillsMiddlewares(), this.route(this.getBills));
         this.router.post('/upgrade', this.upgradeMiddlewares(), this.route(this.upgrade));
         this.router.post('/downgrade', this.downgradeMiddlewares(), this.route(this.downgrade));
+        this.router.put('/update_registration_id/:id', this.updateMiddlewares(), this.route(this.updateRegistrationId));
+        this.router.post('/send_notification', this.createMiddlewares(), this.route(this.sendNotification));
+    }
+    async sendNotification(req: Request, res: Response) {
+        const result = await userController.sendNotification(req.body)
+        this.onSuccess(res, result)
+    }
+    async updateRegistrationId(req: Request, res: Response) {
+        const { id } = req.params
+        const result = await this.controller.updateRegistrationId(req.body, {
+            filter: { id }
+        })
+        this.onSuccess(res, result)
     }
     async checkUsername(req: Request, res: Response) {
         const result = await this.controller.checkUsername(req.body)
