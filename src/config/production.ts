@@ -33,7 +33,7 @@ export default {
         tmnCode: "WWL6JHNV",
         hashSecret: "SPIAUVDJMSLKACAROXJLBGMOLFPZABEP",
         url: "http://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
-        payReturnUrl: "http://localhost:5000/api/v1/vnpay/pay_return",
+        payReturnUrl: "http://localhost:5000/api/v1/vnpay/ipn",
         refundReturnUrl: "http://localhost:5000/api/v1/vnpay/refund_return",
         domain: 'http://localhost:5000'
     },

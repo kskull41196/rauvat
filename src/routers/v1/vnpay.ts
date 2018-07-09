@@ -19,6 +19,7 @@ export default class AuthRouter extends BaseRouter {
         super()
         this.router = express.Router()
         this.router.post('/create_payment_bill_url', this.createPaymentBillUrlMiddlewares(), this.route(this.createPaymentBillUrl));
+        this.router.get('/ipn', this.route(this.ipn));
         this.controller = vnpayController;
     }
 
@@ -50,6 +51,11 @@ export default class AuthRouter extends BaseRouter {
 
         const result = await this.controller.createPaymentBillUrl(req.body);
         this.onSuccess(res, result);
+    }
+
+    async ipn(req: Request, res: Response) {
+        res.item = await this.controller.ipn(req.query);
+        res.status(200).json(res.item);
     }
 
 
