@@ -4,7 +4,8 @@ import * as express from 'express'
 import { Request, Response, BaseRouter } from '../base'
 import {
     authController,
-    globalPromotionController
+    globalPromotionController,
+    storeController
 } from '@/controllers';
 import {
     authInfoMiddleware,
@@ -15,14 +16,19 @@ export default class AuthRouter extends BaseRouter {
     constructor() {
         super()
         this.router = express.Router()
-        this.router.post('/general', this.statisticPromotionMiddlewares(), this.route(this.statisticPromotion));
+        this.router.post('/general', this.statisticMiddlewares(), this.route(this.statisticGeneral));
+        this.router.post('/trading', this.statisticMiddlewares(), this.route(this.statisticTrading));
     }
 
-    async statisticPromotion(req: Request, res: Response) {
-        const result = await globalPromotionController.statisticPromotion(req.body);
+    async statisticGeneral(req: Request, res: Response) {
+        const result = await globalPromotionController.statisticGeneral(req.body);
         this.onSuccess(res, result);
     }
-    statisticPromotionMiddlewares(): any[] {
+    async statisticTrading(req: Request, res: Response) {
+        const result = await storeController.statisticTrading(req.body);
+        this.onSuccess(res, result);
+    }
+    statisticMiddlewares(): any[] {
         return [authInfoMiddleware.run(), adminAuthInfoMiddleware.run()]
     }
     

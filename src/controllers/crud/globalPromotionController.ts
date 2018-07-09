@@ -6,8 +6,8 @@ export class GlobalPromotionController extends CrudController<typeof globalPromo
     constructor() {
         super(globalPromotionService)
     }
-    async statisticPromotion(params : any){
-        return await this.service.statisticPromotion(params);
+    async statisticGeneral(params : any){
+        return await this.service.statisticGeneral(params);
     }
     
 }
