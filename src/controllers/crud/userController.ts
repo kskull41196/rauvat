@@ -68,4 +68,8 @@ export class UserController extends CrudController<typeof userService> {
         return await this.service.downgrade(params);
     }
 
+    async likePost(params: any){
+       return await this.service.likePost(params);
+    }
+
 }

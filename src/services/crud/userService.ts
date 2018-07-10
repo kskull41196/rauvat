@@ -7,7 +7,9 @@ import {
     Wallet,
     UserSetting,
     HistoryMembership,
-    Store
+    Store,
+    Like,
+    Comment
 } from '@/models'
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
@@ -257,6 +259,45 @@ export class UserService extends CrudService<typeof User> {
             t.rollback();
             throw e;
         }
+    }
+
+    async likePost(params: any) {
+        let {
+            post_id,
+            user_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let like = await this.exec(Like.findOne({
+                where: {
+                    user_id,
+                    entity_type: 'POST',
+                    entity_id: post_id
+                },
+                transaction: t
+            }))
+
+            if (!like) {
+                like = await this.exec(Like.create({
+                    user_id,
+                    entity_type: 'POST',
+                    entity_id: post_id
+                }, {
+                        transaction: t
+                    }));
+            }
+
+            t.commit();
+
+            return like;
+        }
+        catch (e) {
+            throw e;
+            t.rollback();
+        }
+
     }
 
 }

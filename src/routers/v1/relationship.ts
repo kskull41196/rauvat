@@ -8,5 +8,5 @@ export default class Relationship extends CrudRouter<typeof relationshipControll
         super(relationshipController)
 
     }
-   
+
 }

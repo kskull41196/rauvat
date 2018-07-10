@@ -24,6 +24,15 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.post('/downgrade', this.downgradeMiddlewares(), this.route(this.downgrade));
         this.router.put('/update_registration_id/:id', this.updateMiddlewares(), this.route(this.updateRegistrationId));
         this.router.post('/send_notification', this.createMiddlewares(), this.route(this.sendNotification));
+
+        this.router.post('/like/post/:post_id', this.likePostMiddlewares(), this.route(this.likePost));
+        this.router.post('/like/post/:comment_id');
+        this.router.post('/comment/:post_id');
+        this.router.get('/likes');
+        this.router.get('/comments');
+        this.router.post('/unlike/post/:post_id');
+        this.router.post('/unlike/comment/:comment_id');
+        this.router.delete('/comment/:post_id');
     }
     async sendNotification(req: Request, res: Response) {
         const result = await userController.sendNotification(req.body)
@@ -212,6 +221,33 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         })
 
         const result = await this.controller.downgrade(req.body)
+        this.onSuccess(res, result);
+    }
+
+    likePostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async likePost(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                post_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'post_id']
+        })
+
+        const result = await  this.controller.likePost(req.params);
         this.onSuccess(res, result);
     }
 
