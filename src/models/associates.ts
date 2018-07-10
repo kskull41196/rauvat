@@ -30,7 +30,8 @@ import {
     ProductPost,
     VnpayHistory,
     RelationshipHistory,
-    Following
+    Following,
+    Relationship
 
 } from "@/models/tables";
 
@@ -415,6 +416,23 @@ User.hasMany(Following, {
     as: 'followers'
 })
 
+// Relationship
+Relationship.belongsTo(User, {
+    foreignKey: 'sender_id',
+    as: 'sender'
+})
+Relationship.belongsTo(User, {
+    foreignKey: 'receiver_id',
+    as: 'receiver'
+})
+Relationship.belongsTo(RelationshipHistory, {
+    foreignKey: 'relationship_history_id',
+    as: 'history'
+})
+RelationshipHistory.hasOne(Relationship, {
+    foreignKey: 'relationship_history_id',
+    as: 'relationship'
+})
 
 
 console.log('run associates')

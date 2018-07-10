@@ -85,6 +85,7 @@ import { ProductGlobalAttributeController } from './crud/productGlobalAttributeC
 import { VnpayHistoryController } from './crud/vnpayHistoryController'
 import { RelationshipHistoryController } from './crud/relationshipHistoryController'
 import { FollowingController } from './crud/followingController'
+import { RelationshipController } from './crud/relationshipController'
 
 const authController = new AuthController()
 const vnpayController = new VnpayController()
@@ -122,6 +123,7 @@ const productPostController = new ProductPostController()
 const vnpayHistoryController = new VnpayHistoryController()
 const relationshipHistoryController = new RelationshipHistoryController()
 const followingController = new FollowingController()
+const relationshipController = new RelationshipController()
 
 export {
     CrudController,
@@ -158,5 +160,5 @@ export {
     vnpayController,
     relationshipHistoryController,
     followingController,
-
+    relationshipController,
 }
