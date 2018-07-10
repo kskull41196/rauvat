@@ -78,6 +78,7 @@ import { ProductGlobalAttributeService } from './crud/productGlobalAttributeServ
 import { HistoryMembershipService } from './crud/historyMembershipService'
 import { VnpayHistoryService } from './crud/vnpayHistoryService'
 import { RelationshipHistoryService } from './crud/relationshipHistoryService'
+import { FollowingService } from './crud/followingService'
 
 // Crud
 import { ICrudExecOption, ICrudOption, CrudService } from './crudService'
@@ -117,6 +118,7 @@ const reportService = new ReportService()
 const productPostService = new ProductPostService()
 const vnpayHistoryService = new VnpayHistoryService()
 const relationshipHistoryService = new RelationshipHistoryService()
+const followingService = new FollowingService()
 
 // Crud
 
@@ -158,5 +160,5 @@ export {
     productPostService,
     vnpayHistoryService,
     relationshipHistoryService,
-
+    followingService
 }

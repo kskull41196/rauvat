@@ -29,7 +29,8 @@ import {
     Report,
     ProductPost,
     VnpayHistory,
-    RelationshipHistory
+    RelationshipHistory,
+    Following
 
 } from "@/models/tables";
 
@@ -394,6 +395,24 @@ RelationshipHistory.belongsTo(User, {
 User.hasMany(RelationshipHistory, {
     foreignKey: 'receiver_id',
     as: 'relationship_receives'
+})
+
+// Following
+Following.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+})
+User.hasMany(Following, {
+    foreignKey: 'user_id',
+    as: 'followings'
+})
+Following.belongsTo(User, {
+    foreignKey: 'follower_id',
+    as: 'follower'
+})
+User.hasMany(Following, {
+    foreignKey: 'follower_id',
+    as: 'followers'
 })
 
 
