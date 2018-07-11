@@ -25,23 +25,13 @@ export class UserService extends CrudService<typeof User> {
     }
     async sendNotification(params: any, option?: ICrudOption) {
         var registrationToken = params.registation_id;
-        var payload = {
-            data: {
-                message: params.message
-            }
-        };
-        var options = {
-            priority: "high",
-            timeToLive: 2 * 30 * 60 * 24
-        };
-        admin.messaging().sendToDevice(registrationToken, payload, options)
-            .then(function (response) {
-                console.log("Successful sent message : ", response)
-            })
-            .catch(function (error: any) {
-                console.log("Error sent message : ", error)
-            });
-        return { registrationToken, payload }
+        var message = params.message;
+        try {
+            firebaseService.sendNotification(registrationToken, message)
+            return { registrationToken, message }
+        } catch (error) {
+            return { registrationToken, error }
+        }
     }
     async updateRegistrationId(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })

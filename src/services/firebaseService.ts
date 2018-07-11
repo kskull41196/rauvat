@@ -51,6 +51,23 @@ export class FirebaseService {
             return await admin.auth().getUserByPhoneNumber(params.phone);
         } catch (err) {
             throw err;
+        };
+    }
+
+    async sendNotification(registation_id: string, message: string, options: any = {
+        priority: "high",
+        timeToLive: 2 * 30 * 60 * 24
+    }) {
+        var registrationToken = registation_id;
+        var payload = {
+            data: {
+                message
+            }
+        };
+        try {
+            return await admin.messaging().sendToDevice(registrationToken, payload, options)
+        } catch (error) {
+            throw error;
         }
     }
 }

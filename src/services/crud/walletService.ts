@@ -23,16 +23,8 @@ export class WalletService extends CrudService<typeof Wallet> {
             const updateWallet = await this.exec(item.update(params))//cập nhật số tiền sao khi đã xuất
             const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
             const registrationToken = itemUser.registation_id;
-            const payload = {
-                data: {
-                    message: itemUser.fullname + ", bạn đã rút " + amount + " khỏi ví của mình."
-                }
-            };
-            const options = {
-                priority: "high",
-                timeToLive: 2 * 30 * 60 * 24
-            };
-            admin.messaging().sendToDevice(registrationToken, payload, options)
+            var message = itemUser.fullname + ", bạn đã rút " + amount + " khỏi ví của mình.";
+            firebaseService.sendNotification(registrationToken, message)
             return { createExport, updateWallet }
         }
     }
@@ -45,16 +37,8 @@ export class WalletService extends CrudService<typeof Wallet> {
         const updateWallet = await this.exec(item.update(params))//cập nhật số tiền sao khi đã xuất
         const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
         const registrationToken = itemUser.registation_id;
-        const payload = {
-            data: {
-                message: itemUser.fullname + ", bạn đã nạp " + amount + " vào ví của mình."
-            }
-        };
-        const options = {
-            priority: "high",
-            timeToLive: 2 * 30 * 60 * 24
-        };
-        admin.messaging().sendToDevice(registrationToken, payload, options)
+        var message = itemUser.fullname + ", bạn đã nạp " + amount + " vào ví của mình."
+        firebaseService.sendNotification(registrationToken, message)
         return { createImport, updateWallet }
     }
 
