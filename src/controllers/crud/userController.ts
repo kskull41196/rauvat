@@ -72,4 +72,12 @@ export class UserController extends CrudController<typeof userService> {
        return await this.service.likePost(params);
     }
 
+    async likeComment(params: any){
+        return await this.service.likeComment(params);
+     }
+
+     async commentOnPost(params: any){
+         return await this.service.commentOnPost(params);
+     }
+
 }

@@ -26,8 +26,8 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.post('/send_notification', this.createMiddlewares(), this.route(this.sendNotification));
 
         this.router.post('/like/post/:post_id', this.likePostMiddlewares(), this.route(this.likePost));
-        this.router.post('/like/post/:comment_id');
-        this.router.post('/comment/:post_id');
+        this.router.post('/like/comment/:comment_id', this.likeCommentMiddlewares(), this.route(this.likeComment));
+        this.router.post('/comment/:post_id', this.commentOnPostMiddlewares(), this.route(this.commentOnPost));
         this.router.get('/likes');
         this.router.get('/comments');
         this.router.post('/unlike/post/:post_id');
@@ -247,9 +247,66 @@ export default class UserRouter extends CrudRouter<typeof userController> {
             required: ['user_id', 'post_id']
         })
 
-        const result = await  this.controller.likePost(req.params);
+        const result = await this.controller.likePost(req.params);
         this.onSuccess(res, result);
     }
 
+    likeCommentMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async likeComment(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                comment_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'comment_id']
+        })
+
+        const result = await this.controller.likeComment(req.params);
+        this.onSuccess(res, result);
+    }
+
+    commentOnPostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async commentOnPost(req: Request, res: Response) {
+        req.body.user_id = req.tokenInfo.payload.user_id;
+        req.body = Object.assign(req.body, req.params);
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                post_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                content: {
+                    type: 'string'
+                }
+            },
+            required: ['user_id', 'post_id', 'content']
+        })
+
+        const result = await this.controller.commentOnPost(req.params);
+        this.onSuccess(res, result);
+    }
 
 }
