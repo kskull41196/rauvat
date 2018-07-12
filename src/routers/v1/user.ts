@@ -28,8 +28,8 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.post('/like/post/:post_id', this.likePostMiddlewares(), this.route(this.likePost));
         this.router.post('/like/comment/:comment_id', this.likeCommentMiddlewares(), this.route(this.likeComment));
         this.router.post('/comment/:post_id', this.commentOnPostMiddlewares(), this.route(this.commentOnPost));
-        this.router.get('/likes');
-        this.router.get('/comments');
+        this.router.get('/likes', this.getLikesMiddlewares(), this.route(this.getLikes));
+        this.router.get('/comments', this.getCommentsMiddlewares(), this.route(this.getComments));
         this.router.post('/unlike/post/:post_id');
         this.router.post('/unlike/comment/:comment_id');
         this.router.delete('/comment/:post_id');
@@ -307,6 +307,32 @@ export default class UserRouter extends CrudRouter<typeof userController> {
 
         const result = await this.controller.commentOnPost(req.params);
         this.onSuccess(res, result);
+    }
+
+    getLikesMiddlewares(): any {
+        return [
+            authInfoMiddleware.run(),
+            queryMiddleware.run()
+        ]
+    }
+
+    async getLikes(req: Request, res: Response) {
+        req.queryInfo.filter.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getLikes(req.queryInfo)
+        this.onSuccessAsList(res, result, undefined, req.queryInfo)
+    }
+
+    getCommentsMiddlewares(): any {
+        return [
+            authInfoMiddleware.run(),
+            queryMiddleware.run()
+        ]
+    }
+
+    async getComments(req: Request, res: Response) {
+        req.queryInfo.filter.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getComments(req.queryInfo)
+        this.onSuccessAsList(res, result, undefined, req.queryInfo)
     }
 
 }

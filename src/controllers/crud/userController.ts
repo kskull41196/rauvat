@@ -1,6 +1,13 @@
 import { CrudController } from '../crudController'
 
-import { ICrudOption, errorService, userService, billService } from '@/services'
+import {
+    ICrudOption,
+    errorService,
+    userService,
+    billService,
+    likeService,
+    commentService
+} from '@/services'
 import {
     sequelize,
     Sequelize
@@ -68,16 +75,24 @@ export class UserController extends CrudController<typeof userService> {
         return await this.service.downgrade(params);
     }
 
-    async likePost(params: any){
-       return await this.service.likePost(params);
+    async likePost(params: any) {
+        return await this.service.likePost(params);
     }
 
-    async likeComment(params: any){
+    async likeComment(params: any) {
         return await this.service.likeComment(params);
-     }
+    }
 
-     async commentOnPost(params: any){
-         return await this.service.commentOnPost(params);
-     }
+    async commentOnPost(params: any) {
+        return await this.service.commentOnPost(params);
+    }
+
+    async getLikes(query: any) {
+        return likeService.getList(query)
+    }
+
+    async getComments(query: any) {
+        return commentService.getList(query)
+    }
 
 }
