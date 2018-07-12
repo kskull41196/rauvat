@@ -77,7 +77,7 @@ export class CrudService<T extends Sequelize.Model<{}, {}>> {
         return await this.getItem(option)
     }
     async delete(option?: ICrudOption) {
-        const item = await this.exec(this.getItem(option), { allowNull: false })
+        const item = await this.exec(this.getItem(option), { allowNull: true })
         return await this.exec(item.destroy())
     }
     async deleteAll(option?: ICrudOption) {

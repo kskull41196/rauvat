@@ -94,5 +94,36 @@ export class UserController extends CrudController<typeof userService> {
     async getComments(query: any) {
         return commentService.getList(query)
     }
+    async unlikePost(params: any) {
+        let {
+            user_id,
+            post_id
+        } = params;
+
+        return await likeService.delete({
+            filter: {
+                user_id,
+                entity_type: 'POST',
+                entity_id: post_id
+            }
+        })
+    }
+
+    async unlikeComment(params: any) {
+        let {
+            user_id,
+            comment_id
+        } = params;
+
+        console.log(params);
+
+        return await likeService.delete({
+            filter: {
+                user_id,
+                entity_type: 'CMT',
+                entity_id: comment_id
+            }
+        })
+    }
 
 }
