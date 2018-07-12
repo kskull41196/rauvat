@@ -32,7 +32,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.get('/comments', this.getCommentsMiddlewares(), this.route(this.getComments));
         this.router.post('/unlike/post/:post_id', this.unlikePostMiddlewares(), this.route(this.unlikePost));
         this.router.post('/unlike/comment/:comment_id', this.unlikeCommentMiddlewares(), this.route(this.unlikeComment));
-        this.router.delete('/comment/:post_id', this.deleteCommentOnPostMiddlewares(), this.route(this.deleteCommentOnPost));
+        this.router.delete('/comment/:id', this.deleteCommentOnPostMiddlewares(), this.route(this.deleteCommentOnPost));
     }
     async sendNotification(req: Request, res: Response) {
         const result = await userController.sendNotification(req.body)
@@ -337,8 +337,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
 
     unlikePostMiddlewares(): any[] {
         return [
-            authInfoMiddleware.run(),
-            queryMiddleware.run()
+            authInfoMiddleware.run()
         ]
     }
 
@@ -365,8 +364,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
 
     unlikeCommentMiddlewares(): any[] {
         return [
-            authInfoMiddleware.run(),
-            queryMiddleware.run()
+            authInfoMiddleware.run()
         ]
     }
 
@@ -393,13 +391,29 @@ export default class UserRouter extends CrudRouter<typeof userController> {
 
     deleteCommentOnPostMiddlewares(): any[] {
         return [
-            authInfoMiddleware.run(),
-            queryMiddleware.run()
+            authInfoMiddleware.run()
         ]
     }
 
     async deleteCommentOnPost(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['id', 'user_id']
+        })
 
+        const result = await this.controller.deleteCommentOnPost(req.params);
+        this.onSuccess(res, result);
     }
 
 }

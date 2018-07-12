@@ -126,4 +126,11 @@ export class UserController extends CrudController<typeof userService> {
         })
     }
 
+    async deleteCommentOnPost(params: any){
+        console.log(params);
+        return await commentService.delete({
+            filter: params
+        })
+    }
+
 }
