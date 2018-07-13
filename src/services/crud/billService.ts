@@ -11,39 +11,39 @@ export class BillService extends CrudService<typeof Bill> {
     constructor() {
         super(Bill)
     }
-    // async update(params: any, option?: ICrudOption) {
-    //     const item = await this.exec(Bill.findById(option.filter.id), { allowNull: false })
-    //     //get data from params to item
-    //     var keys = Object.keys(params);
-    //     for (var j = 0; j < keys.length; j++) {
-    //         item.dataValues[keys[j]] = params[keys[j]];
-    //     }
-    //     item.dataValues.id = undefined
-    //     item.dataValues.created_at = undefined
-    //     item.dataValues.updated_at = undefined
-    //     item.dataValues.deleted_at = undefined
-    //     item.dataValues.status = undefined
-    //     item.dataValues.editor = undefined
-    //     item.dataValues.editor_type = undefined
-    //     const createBill = await this.exec(
-    //         this.model.create(item.dataValues, this.applyCreateOptions(option))
-    //     )
-    //     item.dataValues.id = option.filter.id;
+    async update(params: any, option?: ICrudOption) {
+        const item = await this.exec(Bill.findById(option.filter.id), { allowNull: false })
+        //get data from params to item
+        var keys = Object.keys(params);
+        for (var j = 0; j < keys.length; j++) {
+            item.dataValues[keys[j]] = params[keys[j]];
+        }
+        item.dataValues.id = undefined
+        item.dataValues.created_at = undefined
+        item.dataValues.updated_at = undefined
+        item.dataValues.deleted_at = undefined
+        item.dataValues.status = undefined
+        item.dataValues.editor = undefined
+        item.dataValues.editor_type = undefined
+        const createBill = await this.exec(
+            this.model.create(item.dataValues, this.applyCreateOptions(option))
+        )
+        item.dataValues.id = option.filter.id;
 
-    //     params.updated_id = createBill.id;
-    //     var editor_type;
-    //     if (params.editor_role == 'ADMIN') {
-    //         params.editor_type = "EMPLOYEE"
-    //         editor_type = params.editor_type
-    //     } else {
-    //         params.editor_type = "USER"
-    //         editor_type = params.editor_type
-    //     }
-    //     const updated_id = params.updated_id;
-    //     const editor = params.editor;
-    //     await this.exec(item.update({ editor_type, updated_id, editor }))
-    //     return createBill
-    // }
+        params.updated_id = createBill.id;
+        var editor_type;
+        if (params.editor_role == 'ADMIN') {
+            params.editor_type = "EMPLOYEE"
+            editor_type = params.editor_type
+        } else {
+            params.editor_type = "USER"
+            editor_type = params.editor_type
+        }
+        const updated_id = params.updated_id;
+        const editor = params.editor;
+        await this.exec(item.update({ editor_type, updated_id, editor }))
+        return createBill
+    }
     async getBillWithHistory(params: any, option?: ICrudOption) {
         let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
         var bill = JSON.parse(JSON.stringify(item));
