@@ -1,4 +1,4 @@
-import { errorService } from '@/services'
+import { errorService, firebaseService } from '@/services'
 import { ICreateOrder } from '@/interfaces'
 import {
     sequelize,
@@ -41,6 +41,13 @@ export class BillService extends CrudService<typeof Bill> {
         }
         const updated_id = params.updated_id;
         const editor = params.editor;
+        const itemBuyer = await this.exec(User.findOne({ where: { id: item.buyer_id } }), { allowNull: false })
+        const itemSeller = await this.exec(User.findOne({ where: { id: item.seller_id } }), { allowNull: false })
+        const registrationTokenBuyer = itemBuyer.registation_id;
+        const registrationTokenSeller = itemSeller.registation_id;
+        var message = "Cập Nhật Thông Tin Đơn Hàng Của Tài Khoản " + itemBuyer.username + "Và" + itemSeller.username + " Thành công"
+        firebaseService.sendNotification(registrationTokenBuyer, message)
+
         await this.exec(item.update({ editor_type, updated_id, editor }))
         return createBill
     }

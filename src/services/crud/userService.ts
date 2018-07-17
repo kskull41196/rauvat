@@ -7,7 +7,8 @@ import {
     Wallet,
     UserSetting,
     HistoryMembership,
-    Store
+    Store,
+    Notification
 } from '@/models'
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
@@ -26,6 +27,14 @@ export class UserService extends CrudService<typeof User> {
     async sendNotification(params: any, option?: ICrudOption) {
         var registrationToken = params.registation_id;
         var message = params.message;
+        const item = await this.exec(User.findOne({ where: { registation_id: registrationToken } }), { allowNull: false })
+        const user_id = item.id;
+        params.title = params.message;
+        const title = params.title
+        params.content = params.message;
+        const content = params.title
+        const data = { "message": params.message }
+        await this.exec(Notification.create({ user_id, title, content, data }, this.applyCreateOptions(option)))
         try {
             firebaseService.sendNotification(registrationToken, message)
             return { registrationToken, message }
@@ -48,6 +57,9 @@ export class UserService extends CrudService<typeof User> {
                 var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)
                 params.password = md5Password;
             }
+            const registrationToken = item.registation_id;
+            var message = "Cập Nhật Thông Tin Tài Khoản " + item.username + " Thành công"
+            firebaseService.sendNotification(registrationToken, message)
             let updatedItem = await this.exec(item.update(params))
             updatedItem.password = undefined
             return updatedItem;
