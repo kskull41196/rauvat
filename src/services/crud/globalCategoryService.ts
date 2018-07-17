@@ -3,7 +3,8 @@ import {
     GlobalCategory,
     Product,
     ProductGlobalAttribute,
-    GlobalAttribute
+    GlobalAttribute,
+    GlobalCategoryAndAttribute
 } from '@/models'
 import {
     sequelize,
@@ -27,31 +28,38 @@ export class GlobalCategoryService extends CrudService<typeof GlobalCategory> {
                 transaction: t
             }));
 
-            let products = await this.exec(Product.findAll({
-                where: {
-                    global_category_id: category_id
-                },
-                attributes: ['id'],
-                transaction: t
-            }))
+            // let products = await this.exec(Product.findAll({
+            //     where: {
+            //         global_category_id: category_id
+            //     },
+            //     attributes: ['id'],
+            //     transaction: t
+            // }))
 
-            let bulk_products = products.map((product: any) => {
-                return {
-                    product_id: product.id,
-                    global_attribute_id: attribute.id
-                }
-            });
+            // let bulk_products = products.map((product: any) => {
+            //     return {
+            //         product_id: product.id,
+            //         global_attribute_id: attribute.id
+            //     }
+            // });
 
-            let product_attributes = await this.exec(ProductGlobalAttribute.bulkCreate(bulk_products, {
-                transaction: t
-            }));
+            // let product_attributes = await this.exec(ProductGlobalAttribute.bulkCreate(bulk_products, {
+            //     transaction: t
+            // }));
+
+            let category_attributes = await this.exec(GlobalCategoryAndAttribute.create({
+                global_category_id: category_id,
+                global_attribute_id: attribute.id
+            }, {
+                    transaction: t
+                }));
 
             t.commit();
 
 
             return {
                 attribute,
-                product_attributes
+                category_attributes
             }
 
         }
@@ -68,22 +76,20 @@ export class GlobalCategoryService extends CrudService<typeof GlobalCategory> {
             attribute_id
         } = params;
 
-        let products = await Product.findAll({
-            where: {
-                global_category_id: category_id
-            },
-            attributes: ['id']
-        });
+        // let products = await Product.findAll({
+        //     where: {
+        //         global_category_id: category_id
+        //     },
+        //     attributes: ['id']
+        // });
 
-        let product_ids = products.map((product: any) => {
-            return product.id;
-        });
+        // let product_ids = products.map((product: any) => {
+        //     return product.id;
+        // });
 
-        return await this.exec(ProductGlobalAttribute.destroy({
+        return await this.exec(GlobalCategoryAndAttribute.destroy({
             where: {
-                product_id: {
-                    $in: product_ids
-                },
+                global_category_id: category_id,
                 global_attribute_id: attribute_id
             }
         }));
