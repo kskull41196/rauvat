@@ -230,10 +230,10 @@ export class ProductService extends CrudService<typeof Product> {
         const updated_id = params.updated_id;
         const editor = params.editor;
         await this.exec(item.update({ editor_type, updated_id, editor }))
-        await this.exec(FavoriteProduct.update({ bill_id: createProduct.id }, { where: { bill_id: item.id } }))
-        await this.exec(ProductPost.update({ bill_id: createProduct.id }, { where: { bill_id: item.id } }))
-        await this.exec(BillItem.update({ bill_id: createProduct.id }, { where: { bill_id: item.id } }))
-        await this.exec(ProductGlobalAttribute.update({ bill_id: createProduct.id }, { where: { bill_id: item.id } }))
+        await this.exec(FavoriteProduct.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(ProductPost.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(BillItem.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(ProductGlobalAttribute.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
         return createProduct
     }
     async getProductWithHistory(params: any, option?: ICrudOption) {

@@ -38,8 +38,8 @@ export class PostService extends CrudService<typeof Post> {
         const updated_id = params.updated_id;
         const editor = params.editor;
         await this.exec(item.update({ editor_type, updated_id, editor }))
-        await this.exec(FavoritePost.update({ bill_id: createPost.id }, { where: { bill_id: item.id } }))
-        await this.exec(ProductPost.update({ bill_id: createPost.id }, { where: { bill_id: item.id } }))
+        await this.exec(FavoritePost.update({ post_id: createPost.id }, { where: { post_id: item.id } }))
+        await this.exec(ProductPost.update({ post_id: createPost.id }, { where: { post_id: item.id } }))
         return createPost
     }
     async getPostWithHistory(params: any, option?: ICrudOption) {
