@@ -29,7 +29,6 @@ export class BillService extends CrudService<typeof Bill> {
             this.model.create(item.dataValues, this.applyCreateOptions(option))
         )
         item.dataValues.id = option.filter.id;
-
         params.updated_id = createBill.id;
         var editor_type;
         if (params.editor_role == 'ADMIN') {
@@ -49,6 +48,9 @@ export class BillService extends CrudService<typeof Bill> {
         firebaseService.sendNotification(registrationTokenBuyer, message)
 
         await this.exec(item.update({ editor_type, updated_id, editor }))
+        await this.exec(BillItem.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
+        await this.exec(BillActivity.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
+        await this.exec(PaidHistory.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
         return createBill
     }
     async getBillWithHistory(params: any, option?: ICrudOption) {

@@ -1,5 +1,5 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
-import { Post, User, Employee } from '@/models/tables'
+import { Post, User, Employee, FavoritePost, ProductPost } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 import { config } from '@/config'
@@ -38,6 +38,8 @@ export class PostService extends CrudService<typeof Post> {
         const updated_id = params.updated_id;
         const editor = params.editor;
         await this.exec(item.update({ editor_type, updated_id, editor }))
+        await this.exec(FavoritePost.update({ bill_id: createPost.id }, { where: { bill_id: item.id } }))
+        await this.exec(ProductPost.update({ bill_id: createPost.id }, { where: { bill_id: item.id } }))
         return createPost
     }
     async getPostWithHistory(params: any, option?: ICrudOption) {
