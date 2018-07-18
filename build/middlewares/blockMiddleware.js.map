@@ -1,0 +1,1 @@
+{"version":3,"file":"blockMiddleware.js","sourceRoot":"","sources":["../../src/middlewares/blockMiddleware.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,iCAAuC;AACvC,yCAEmB;AAGnB,qBAA6B,SAAQ,qBAAc;IAC3C,GAAG,CAAC,GAAY,EAAE,GAAa,EAAE,IAA0B;;YAC/D,MAAM,uBAAY,CAAC,IAAI,CAAC,cAAc,EAAE,CAAA;QAC1C,CAAC;KAAA;CACF;AAJD,0CAIC"}

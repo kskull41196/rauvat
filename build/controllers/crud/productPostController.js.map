@@ -1,0 +1,1 @@
+{"version":3,"file":"productPostController.js","sourceRoot":"","sources":["../../../src/controllers/crud/productPostController.ts"],"names":[],"mappings":";;AAAA,sDAAkD;AAClD,yCAAyE;AAGzE,2BAAmC,SAAQ,+BAAyC;IAChF;QACI,KAAK,CAAC,6BAAkB,CAAC,CAAA;IAC7B,CAAC;CAEJ;AALD,sDAKC"}

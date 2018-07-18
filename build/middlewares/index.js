@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const authMiddleware_1 = require("./authMiddleware");
+const adminAuthMiddleware_1 = require("./adminAuthMiddleware");
+const blockMiddleware_1 = require("./blockMiddleware");
+const queryMiddleware_1 = require("./queryMiddleware");
+const firebaseAuthMiddleware_1 = require("./firebaseAuthMiddleware");
+const userRoleMiddleware_1 = require("./userRoleMiddleware");
+const authInfoMiddleware = new authMiddleware_1.AuthInfoMiddleware();
+exports.authInfoMiddleware = authInfoMiddleware;
+const adminAuthInfoMiddleware = new adminAuthMiddleware_1.AdminAuthInfoMiddleware();
+exports.adminAuthInfoMiddleware = adminAuthInfoMiddleware;
+const blockMiddleware = new blockMiddleware_1.BlockMiddleware();
+exports.blockMiddleware = blockMiddleware;
+const queryMiddleware = new queryMiddleware_1.QueryMiddleware();
+exports.queryMiddleware = queryMiddleware;
+const firebaseAuthMiddleware = new firebaseAuthMiddleware_1.FirebaseAuthInfoMiddleware();
+exports.firebaseAuthMiddleware = firebaseAuthMiddleware;
+const userRoleMiddleware = new userRoleMiddleware_1.UserRoleMiddleware();
+exports.userRoleMiddleware = userRoleMiddleware;
+//# sourceMappingURL=index.js.map
