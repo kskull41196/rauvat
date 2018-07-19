@@ -40,7 +40,7 @@ export default class PostRouter extends CrudRouter<typeof postController> {
         return [authInfoMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        return [authInfoMiddleware.run()]
     }
     createMiddlewares(): any[] {
         return [authInfoMiddleware.run()]
