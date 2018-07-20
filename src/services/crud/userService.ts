@@ -19,7 +19,7 @@ import {
 } from '@/models/base'
 import * as moment from 'moment'
 import * as admin from "firebase-admin";
-
+import { FCM_ACTIONS } from '../../const'
 export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
@@ -36,7 +36,7 @@ export class UserService extends CrudService<typeof User> {
         const data = { "message": params.message }
         await this.exec(Notification.create({ user_id, title, content, data }, this.applyCreateOptions(option)))
         try {
-            firebaseService.sendNotification(registrationToken, message)
+            firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.SEND_NOTIFIATION)
             return { registrationToken, message }
         } catch (error) {
             return { registrationToken, error }
@@ -59,7 +59,7 @@ export class UserService extends CrudService<typeof User> {
             }
             const registrationToken = item.registation_id;
             var message = "Cập Nhật Thông Tin Tài Khoản " + item.username + " Thành công"
-            firebaseService.sendNotification(registrationToken, message)
+            firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.EDIT_USER)
             let updatedItem = await this.exec(item.update(params))
             updatedItem.password = undefined
             return updatedItem;
