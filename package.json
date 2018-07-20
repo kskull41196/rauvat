@@ -14,7 +14,7 @@
     "sequelize:migrate": "./node_modules/.bin/sequelize db:migrate",
     "deploy:gcloud": "npm run build && rm -rf ./dist && gcloud app deploy",
     "serve:gcloud": "npm run build-babel && node dist/server.js",
-    "build": "npm run clear && npm run build-sass && npm run build-ts && npm run copy-static-assets && npm run build-babel",
+    "build": "npm run clear && npm run build-ts && npm run build-babel",
     "serve": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-babel\" \"npm run serve\"",
     "test": "jest --forceExit",
