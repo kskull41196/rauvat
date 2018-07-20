@@ -6,7 +6,7 @@ import {
 } from '@/models'
 import { CrudService, ICrudOption } from '../crudService.pg'
 import { config } from '@/config'
-
+import { FCM_ACTIONS } from '../../const'
 export class BillService extends CrudService<typeof Bill> {
     constructor() {
         super(Bill)
@@ -45,12 +45,12 @@ export class BillService extends CrudService<typeof Bill> {
         const registrationTokenBuyer = itemBuyer.registation_id;
         const registrationTokenSeller = itemSeller.registation_id;
         var message = "Cập Nhật Thông Tin Đơn Hàng Của Tài Khoản " + itemBuyer.username + "Và" + itemSeller.username + " Thành công"
-        firebaseService.sendNotification(registrationTokenBuyer, message)
+        firebaseService.sendNotification(registrationTokenBuyer, message, FCM_ACTIONS.BILL)
 
         await this.exec(item.update({ editor_type, updated_id, editor }))
-        await this.exec(BillItem.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
-        await this.exec(BillActivity.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
-        await this.exec(PaidHistory.update({ bill_id: createBill.id },{ where: { bill_id: item.id } }))
+        await this.exec(BillItem.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
+        await this.exec(BillActivity.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
+        await this.exec(PaidHistory.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
         return createBill
     }
     async getBillWithHistory(params: any, option?: ICrudOption) {

@@ -54,14 +54,15 @@ export class FirebaseService {
         };
     }
 
-    async sendNotification(registation_id: string, message: string, options: any = {
+    async sendNotification(registation_id: string, message: string, action: string, options: any = {
         priority: "high",
         timeToLive: 2 * 30 * 60 * 24
     }) {
         var registrationToken = registation_id;
         var payload = {
             data: {
-                message
+                message,
+                action
             }
         };
         try {

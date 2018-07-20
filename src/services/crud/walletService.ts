@@ -6,7 +6,7 @@ import { Wallet, WalletExport, WalletImport, User } from '@/models/tables'
 import * as jsonexport from 'jsonexport'
 import * as crypto from 'crypto'
 import * as admin from "firebase-admin";
-
+import { FCM_ACTIONS } from '../../const'
 export class WalletService extends CrudService<typeof Wallet> {
     constructor() {
         super(Wallet)
@@ -24,7 +24,7 @@ export class WalletService extends CrudService<typeof Wallet> {
             const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
             const registrationToken = itemUser.registation_id;
             var message = itemUser.fullname + ", bạn đã rút " + amount + " khỏi ví của mình.";
-            firebaseService.sendNotification(registrationToken, message)
+            firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.WALLET)
             return { createExport, updateWallet }
         }
     }
@@ -38,7 +38,7 @@ export class WalletService extends CrudService<typeof Wallet> {
         const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
         const registrationToken = itemUser.registation_id;
         var message = itemUser.fullname + ", bạn đã nạp " + amount + " vào ví của mình."
-        firebaseService.sendNotification(registrationToken, message)
+        firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.WALLET)
         return { createImport, updateWallet }
     }
 
