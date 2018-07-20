@@ -1,4 +1,5 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
+import { errorService, firebaseService } from '@/services'
 import {
     Product,
     GlobalCategory,
@@ -229,6 +230,10 @@ export class ProductService extends CrudService<typeof Product> {
         }
         const updated_id = params.updated_id;
         const editor = params.editor;
+        const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
+        const registrationToken = itemUser.registation_id;
+        var message = "Sản Phẩm " + item.name + " Của Bạn Vừa Được Cập Nhật"
+        firebaseService.sendNotification(registrationToken, message)
         await this.exec(item.update({ editor_type, updated_id, editor }))
         await this.exec(FavoriteProduct.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
         await this.exec(ProductPost.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
