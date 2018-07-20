@@ -5,7 +5,7 @@ const sql = require('./database')
 dotenv.config({ silent: true })
 export default {
     server: {
-        host: os.hostname(),
+        host: process.env.PROD_HOST,
         protocol: 'http',
         debug: true,
         name: 'SERVER NAME',
