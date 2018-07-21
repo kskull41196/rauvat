@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
 import { config } from '@/config'
-var os = require('os');
+const os = require('os');
 const sql = require('./database')
 dotenv.config({ silent: true })
 export default {
@@ -9,7 +9,7 @@ export default {
         protocol: 'http',
         debug: true,
         name: 'SERVER NAME',
-        port: process.env.PORT || 5000,
+        port: process.env.PORT || -1,
         secret: process.env.SERVER_SECRET
     },
     database: {

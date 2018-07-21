@@ -10,7 +10,7 @@ import {
     errorService,
 } from '@/services'
 const IMAGE_URL_LOCAL = `${config.server.protocol}://${config.server.host}:${config.server.port}` + '/api/v1/image/get/'
-const IMAGE_URL_SERVER = `${config.server.protocol}://${config.server.host}` + '/api/v1/image/get/'
+const IMAGE_URL_SERVER = `${config.server.protocol}://${config.server.host}` + (config.server.port != -1 ? `:${config.server.port}` : '') + '/api/v1/image/get/'
 const TYPE_IMAGE = '.png'
 const FILE_IMAGE_PATH = 'image/'
 export default class ImageRouter extends BaseRouter {
@@ -18,7 +18,7 @@ export default class ImageRouter extends BaseRouter {
     constructor() {
         super()
         this.router = express.Router()
-        var storage = multer.diskStorage({
+        const storage = multer.diskStorage({
             destination: function (req: Request, file: any, cb: any) {
                 cb(null, FILE_IMAGE_PATH)
             },
@@ -26,12 +26,12 @@ export default class ImageRouter extends BaseRouter {
                 cb(null, file.fieldname + '-' + Date.now() + TYPE_IMAGE)
             }
         })
-        var upload = multer({ storage: storage })
+        const upload = multer({ storage: storage })
         this.router.get('/get/:filename', this.route(this.getImage));
         this.router.post('/upload/', this.updateImageMiddlewares(), upload.single("image"), this.route(this.updateAvatar))
     }
     async updateAvatar(req: Request, res: Response) {
-        var imageUrl = IMAGE_URL_SERVER;
+        let imageUrl = IMAGE_URL_SERVER;
         if (config.server.host == "localhost") {
             imageUrl = IMAGE_URL_LOCAL;
         }
