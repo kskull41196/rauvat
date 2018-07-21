@@ -9,4 +9,21 @@ export default class Relationship extends CrudRouter<typeof relationshipControll
 
     }
 
+    customRouting(){
+        this.router.get('/friends', this.getFriendsMiddlewares(), this.route(this.getFriends));
+    }
+
+    getFriendsMiddlewares(): any[]{
+        return [
+            authInfoMiddleware.run(),
+            queryMiddleware.run()
+        ]
+    }
+
+    async getFriends(req: Request, res: Response){
+        req.query.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getFriends(req.query);
+        this.onSuccess(res, result);
+    }
+
 }
