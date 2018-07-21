@@ -10,7 +10,7 @@ import {
     errorService,
 } from '@/services'
 const IMAGE_URL_LOCAL = `${config.server.protocol}://${config.server.host}:${config.server.port}` + '/api/v1/image/get/'
-const IMAGE_URL_SERVER = `${config.server.protocol}://${config.server.host}` + (config.server.port != -1 ? `:${config.server.port}` : '') + '/api/v1/image/get/'
+const IMAGE_URL_SERVER = `${config.server.protocol}://${config.server.host}` + (config.server.port === 5000 ? `:${config.server.port}` : '') + '/api/v1/image/get/'
 const TYPE_IMAGE = '.png'
 const FILE_IMAGE_PATH = 'image/'
 export default class ImageRouter extends BaseRouter {

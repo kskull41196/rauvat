@@ -1,1 +1,0 @@
-{"version":3,"file":"billItemController.js","sourceRoot":"","sources":["../../../src/controllers/crud/billItemController.ts"],"names":[],"mappings":";;AAAA,sDAAkD;AAClD,yCAAuE;AAGvE,wBAAgC,SAAQ,+BAAsC;IAC1E;QACI,KAAK,CAAC,0BAAe,CAAC,CAAA;IAC1B,CAAC;CAEJ;AALD,gDAKC"}

@@ -9,7 +9,7 @@ export default {
         protocol: 'http',
         debug: true,
         name: 'SERVER NAME',
-        port: process.env.PORT || -1,
+        port: process.env.PORT || 5000,
         secret: process.env.SERVER_SECRET
     },
     database: {

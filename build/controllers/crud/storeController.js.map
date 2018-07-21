@@ -1,1 +1,0 @@
-{"version":3,"file":"storeController.js","sourceRoot":"","sources":["../../../src/controllers/crud/storeController.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,sDAAkD;AAClD,yCAAmE;AAGnE,qBAA6B,SAAQ,+BAAmC;IACpE;QACI,KAAK,CAAC,uBAAY,CAAC,CAAA;IACvB,CAAC;IACK,gBAAgB,CAAC,MAAY;;YAC/B,OAAO,MAAM,IAAI,CAAC,OAAO,CAAC,gBAAgB,CAAC,MAAM,CAAC,CAAC;QACvD,CAAC;KAAA;CACJ;AAPD,0CAOC"}
