@@ -17,7 +17,7 @@ export const Following = sequelize.define(
         model: 'tbl_user',
         key: 'id'
       },
-      allowNull: false
+      allowNull: false,
     },
     follower_id: {
       type: Sequelize.UUID,
@@ -25,7 +25,7 @@ export const Following = sequelize.define(
         model: 'tbl_user',
         key: 'id'
       },
-      allowNull: false
+      allowNull: false,
     },
     action: {
       type: Sequelize.STRING,

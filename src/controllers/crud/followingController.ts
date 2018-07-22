@@ -88,11 +88,33 @@ export class FollowingController extends CrudController<typeof followingService>
     }
 
     async followUser(params: any) {
-        return params;
+        let {
+            user_id,
+            follower_id
+        } = params;
+
+        return await followingService.create({
+            user_id,
+            follower_id,
+            action: "DEFAULT"
+        })
+
     }
 
     async unFollowUser(params: any) {
-        return params;
+        let {
+            user_id,
+            follower_id
+        } = params;
+
+        return await followingService.delete({
+            filter: {
+                user_id,
+                follower_id
+            }
+        })
+
+
     }
 
 }
