@@ -7,7 +7,7 @@ export class FollowingController extends CrudController<typeof followingService>
         super(followingService)
     }
 
-    async getFollowers(params: any) {
+    async getFollowers(params: any, option?: ICrudOption) {
         let {
             user_id
         } = params;
@@ -24,11 +24,13 @@ export class FollowingController extends CrudController<typeof followingService>
                     },
                     attributes: []
                 }
-            ]
+            ],
+            limit: option.limit,
+            offset: option.offset
         });
     }
 
-    async getFollowings(params: any) {
+    async getFollowings(params: any, option?: ICrudOption) {
         let {
             user_id
         } = params;
@@ -45,7 +47,9 @@ export class FollowingController extends CrudController<typeof followingService>
                     },
                     attributes: []
                 }
-            ]
+            ],
+            limit: option.limit,
+            offset: option.offset
         });
     }
 

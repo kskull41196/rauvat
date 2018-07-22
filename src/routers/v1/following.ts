@@ -1,7 +1,12 @@
 import { CrudRouter } from '../crud'
 import { Request, Response } from '../base'
 import { followingController } from '@/controllers'
-import { authInfoMiddleware, queryMiddleware, blockMiddleware } from '@/middlewares'
+import {
+    authInfoMiddleware,
+    queryMiddleware,
+    blockMiddleware,
+    pageInfoMiddleware
+} from '@/middlewares'
 
 export default class Following extends CrudRouter<typeof followingController> {
     constructor() {
@@ -19,26 +24,28 @@ export default class Following extends CrudRouter<typeof followingController> {
 
     getFollowersMiddlewares(): any[] {
         return [
-            authInfoMiddleware.run()
+            authInfoMiddleware.run(),
+            pageInfoMiddleware.run()
         ]
     }
 
     async getFollowers(req: Request, res: Response) {
         req.body.user_id = req.tokenInfo.payload.user_id;
-        const result = await this.controller.getFollowers(req.body);
-        this.onSuccess(res, result);
+        const result = await this.controller.getFollowers(req.body, req.pageInfo);
+        this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     getFollowingsMiddlewares(): any[] {
         return [
-            authInfoMiddleware.run()
+            authInfoMiddleware.run(),
+            pageInfoMiddleware.run()
         ]
     }
 
     async getFollowings(req: Request, res: Response) {
         req.body.user_id = req.tokenInfo.payload.user_id;
         const result = await this.controller.getFollowings(req.body);
-        this.onSuccess(res, result);
+        this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     getNewfeedsMiddlewares(): any[] {
