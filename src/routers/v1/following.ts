@@ -44,19 +44,21 @@ export default class Following extends CrudRouter<typeof followingController> {
 
     async getFollowings(req: Request, res: Response) {
         req.body.user_id = req.tokenInfo.payload.user_id;
-        const result = await this.controller.getFollowings(req.body);
+        const result = await this.controller.getFollowings(req.body, req.pageInfo);
         this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     getNewfeedsMiddlewares(): any[] {
         return [
-
+            authInfoMiddleware.run(),
+            pageInfoMiddleware.run()
         ]
     }
 
     async getNewfeeds(req: Request, res: Response) {
-        const result = await this.controller.getNewfeeds(req.body);
-        this.onSuccess(res, result);
+        req.body.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getNewfeeds(req.body, req.pageInfo);
+        this.onSuccessAsList(res, result, undefined, req.pageInfo);
     }
 
     followUserMiddlewares(): any[] {

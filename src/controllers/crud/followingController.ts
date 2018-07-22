@@ -1,5 +1,11 @@
 import { CrudController } from '../crudController'
-import { ICrudOption, errorService, followingService, userService } from '@/services'
+import {
+    ICrudOption,
+    errorService,
+    followingService,
+    userService,
+    postService
+} from '@/services'
 
 
 export class FollowingController extends CrudController<typeof followingService> {
@@ -7,7 +13,7 @@ export class FollowingController extends CrudController<typeof followingService>
         super(followingService)
     }
 
-    async getFollowers(params: any, option?: ICrudOption) {
+    async getFollowers(params: any, option: ICrudOption) {
         let {
             user_id
         } = params;
@@ -30,7 +36,7 @@ export class FollowingController extends CrudController<typeof followingService>
         });
     }
 
-    async getFollowings(params: any, option?: ICrudOption) {
+    async getFollowings(params: any, option: ICrudOption) {
         let {
             user_id
         } = params;
@@ -53,8 +59,32 @@ export class FollowingController extends CrudController<typeof followingService>
         });
     }
 
-    async getNewfeeds(params: any) {
-        return params;
+    async getNewfeeds(params: any, option: ICrudOption) {
+        let {
+            user_id
+        } = params;
+
+        console.log(user_id);
+
+        return await postService.getList({
+            filter: {
+                privacy: 'PUBLIC',
+                user_id: {
+                    $ne: user_id
+                }
+            },
+            // include: [
+            //     {
+            //         association: 'followers',
+            //         where: {
+            //             user_id: user_id
+            //         },
+            //         attributes: []
+            //     }
+            // ],
+            limit: option.limit,
+            offset: option.offset
+        });
     }
 
     async followUser(params: any) {
