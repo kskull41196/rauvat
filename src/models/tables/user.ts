@@ -76,6 +76,21 @@ export const User = sequelize.define(
         registation_id: {
             type: Sequelize.STRING
         },
+        bank_user_name: {
+            type: Sequelize.STRING
+        },
+        bank_name: {
+            type: Sequelize.STRING
+        },
+        bank_serial: {
+            type: Sequelize.STRING
+        },
+        bank_branch: {
+            type: Sequelize.STRING
+        },
+        bank_province: {
+            type: Sequelize.STRING
+        },
         status: {
             type: Sequelize.BOOLEAN,
             defaultValue: true,
