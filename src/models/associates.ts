@@ -31,10 +31,29 @@ import {
     VnpayHistory,
     RelationshipHistory,
     Following,
-    Relationship
+    Relationship,
+    ExportRequest
 
 } from "@/models/tables";
 
+//ExportRequest
+ExportRequest.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+User.hasMany(ExportRequest, {
+    foreignKey: 'user_id',
+    as: 'user_export_requests'
+});
+
+ExportRequest.belongsTo(Employee, {
+    foreignKey: 'employee_id',
+    as: 'employee'
+});
+Employee.hasMany(ExportRequest, {
+    foreignKey: 'employee_id',
+    as: 'employee_export_requests'
+});
 //report
 Report.belongsTo(User, {
     foreignKey: 'user_id',

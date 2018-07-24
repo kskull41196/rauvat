@@ -74,6 +74,9 @@ import {
 import {
     ProductPostService
 } from './crud/productPostService'
+import {
+    ExportRequestService
+} from './crud/exportRequestService'
 import { ProductGlobalAttributeService } from './crud/productGlobalAttributeService'
 import { HistoryMembershipService } from './crud/historyMembershipService'
 import { VnpayHistoryService } from './crud/vnpayHistoryService'
@@ -121,6 +124,7 @@ const vnpayHistoryService = new VnpayHistoryService()
 const relationshipHistoryService = new RelationshipHistoryService()
 const followingService = new FollowingService()
 const relationshipService = new RelationshipService()
+const exportRequestService = new ExportRequestService()
 
 // Crud
 
@@ -164,4 +168,5 @@ export {
     relationshipHistoryService,
     followingService,
     relationshipService,
+    exportRequestService
 }
