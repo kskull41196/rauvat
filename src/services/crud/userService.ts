@@ -9,7 +9,8 @@ import {
     HistoryMembership,
     Store,
     Like,
-    Comment
+    Comment,
+    Notification,
 } from '@/models'
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
@@ -22,29 +23,28 @@ import * as moment from 'moment'
 import * as admin from "firebase-admin";
 import { runInThisContext } from 'vm';
 
+import { FCM_ACTIONS } from '../../const'
 export class UserService extends CrudService<typeof User> {
     constructor() {
         super(User)
     }
     async sendNotification(params: any, option?: ICrudOption) {
         var registrationToken = params.registation_id;
-        var payload = {
-            data: {
-                message: params.message
-            }
-        };
-        var options = {
-            priority: "high",
-            timeToLive: 2 * 30 * 60 * 24
-        };
-        admin.messaging().sendToDevice(registrationToken, payload, options)
-            .then(function (response) {
-                console.log("Successful sent message : ", response)
-            })
-            .catch(function (error: any) {
-                console.log("Error sent message : ", error)
-            });
-        return { registrationToken, payload }
+        var message = params.message;
+        const item = await this.exec(User.findOne({ where: { registation_id: registrationToken } }), { allowNull: false })
+        const user_id = item.id;
+        params.title = params.message;
+        const title = params.title
+        params.content = params.message;
+        const content = params.title
+        const data = { "message": params.message }
+        await this.exec(Notification.create({ user_id, title, content, data }, this.applyCreateOptions(option)))
+        try {
+            firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.SEND_NOTIFIATION)
+            return { registrationToken, message }
+        } catch (error) {
+            return { registrationToken, error }
+        }
     }
     async updateRegistrationId(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
@@ -61,6 +61,9 @@ export class UserService extends CrudService<typeof User> {
                 var md5Password = crypto.createHash(CONVERT_MD5).update(params.password).digest(ENCODING)
                 params.password = md5Password;
             }
+            const registrationToken = item.registation_id;
+            var message = "Cập Nhật Thông Tin Tài Khoản " + item.username + " Thành công"
+            firebaseService.sendNotification(registrationToken, message, FCM_ACTIONS.EDIT_USER)
             let updatedItem = await this.exec(item.update(params))
             updatedItem.password = undefined
             return updatedItem;

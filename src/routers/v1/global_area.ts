@@ -29,12 +29,12 @@ export default class GlobalAreaRouter extends CrudRouter<typeof globalAreaContro
         return [authInfoMiddleware.run()]
     }
     deleteMiddlewares(): any[] {
-        return []
+        return [authInfoMiddleware.run()]
     }
     deleteAllMiddlewares(): any[] {
-        return [blockMiddleware.run()]
+        return [authInfoMiddleware.run()]
     }
     createMiddlewares(): any[] {
-        return []
+        return [authInfoMiddleware.run()]
     }
 }

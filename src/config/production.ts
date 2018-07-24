@@ -1,9 +1,11 @@
 import * as dotenv from 'dotenv'
+import { config } from '@/config'
+const os = require('os');
 const sql = require('./database')
 dotenv.config({ silent: true })
 export default {
     server: {
-        host: 'rauvat.herokuapp.com',
+        host: process.env.HOST_NAME,
         protocol: 'http',
         debug: true,
         name: 'SERVER NAME',

@@ -34,7 +34,10 @@ export const Product = sequelize.define(
     },
     price: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min: 0,
+      }
     },
     short_description: {
       type: Sequelize.STRING,

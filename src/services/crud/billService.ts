@@ -1,4 +1,4 @@
-import { errorService } from '@/services'
+import { errorService, firebaseService } from '@/services'
 import { ICreateOrder } from '@/interfaces'
 import {
     sequelize,
@@ -6,44 +6,53 @@ import {
 } from '@/models'
 import { CrudService, ICrudOption } from '../crudService.pg'
 import { config } from '@/config'
-
+import { FCM_ACTIONS } from '../../const'
 export class BillService extends CrudService<typeof Bill> {
     constructor() {
         super(Bill)
     }
-    // async update(params: any, option?: ICrudOption) {
-    //     const item = await this.exec(Bill.findById(option.filter.id), { allowNull: false })
-    //     //get data from params to item
-    //     var keys = Object.keys(params);
-    //     for (var j = 0; j < keys.length; j++) {
-    //         item.dataValues[keys[j]] = params[keys[j]];
-    //     }
-    //     item.dataValues.id = undefined
-    //     item.dataValues.created_at = undefined
-    //     item.dataValues.updated_at = undefined
-    //     item.dataValues.deleted_at = undefined
-    //     item.dataValues.status = undefined
-    //     item.dataValues.editor = undefined
-    //     item.dataValues.editor_type = undefined
-    //     const createBill = await this.exec(
-    //         this.model.create(item.dataValues, this.applyCreateOptions(option))
-    //     )
-    //     item.dataValues.id = option.filter.id;
+    async update(params: any, option?: ICrudOption) {
+        const item = await this.exec(Bill.findById(option.filter.id), { allowNull: false })
+        //get data from params to item
+        var keys = Object.keys(params);
+        for (var j = 0; j < keys.length; j++) {
+            item.dataValues[keys[j]] = params[keys[j]];
+        }
+        item.dataValues.id = undefined
+        item.dataValues.created_at = undefined
+        item.dataValues.updated_at = undefined
+        item.dataValues.deleted_at = undefined
+        item.dataValues.status = undefined
+        item.dataValues.editor = undefined
+        item.dataValues.editor_type = undefined
+        const createBill = await this.exec(
+            this.model.create(item.dataValues, this.applyCreateOptions(option))
+        )
+        item.dataValues.id = option.filter.id;
+        params.updated_id = createBill.id;
+        var editor_type;
+        if (params.editor_role == 'ADMIN') {
+            params.editor_type = "EMPLOYEE"
+            editor_type = params.editor_type
+        } else {
+            params.editor_type = "USER"
+            editor_type = params.editor_type
+        }
+        const updated_id = params.updated_id;
+        const editor = params.editor;
+        const itemBuyer = await this.exec(User.findOne({ where: { id: item.buyer_id } }), { allowNull: false })
+        const itemSeller = await this.exec(User.findOne({ where: { id: item.seller_id } }), { allowNull: false })
+        const registrationTokenBuyer = itemBuyer.registation_id;
+        const registrationTokenSeller = itemSeller.registation_id;
+        var message = "Cập Nhật Thông Tin Đơn Hàng Của Tài Khoản " + itemBuyer.username + "Và" + itemSeller.username + " Thành công"
+        firebaseService.sendNotification(registrationTokenBuyer, message, FCM_ACTIONS.BILL)
 
-    //     params.updated_id = createBill.id;
-    //     var editor_type;
-    //     if (params.editor_role == 'ADMIN') {
-    //         params.editor_type = "EMPLOYEE"
-    //         editor_type = params.editor_type
-    //     } else {
-    //         params.editor_type = "USER"
-    //         editor_type = params.editor_type
-    //     }
-    //     const updated_id = params.updated_id;
-    //     const editor = params.editor;
-    //     await this.exec(item.update({ editor_type, updated_id, editor }))
-    //     return createBill
-    // }
+        await this.exec(item.update({ editor_type, updated_id, editor }))
+        await this.exec(BillItem.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
+        await this.exec(BillActivity.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
+        await this.exec(PaidHistory.update({ bill_id: createBill.id }, { where: { bill_id: item.id } }))
+        return createBill
+    }
     async getBillWithHistory(params: any, option?: ICrudOption) {
         let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
         var bill = JSON.parse(JSON.stringify(item));

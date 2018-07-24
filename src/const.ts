@@ -14,3 +14,14 @@ export const USER_ROLES = {
     NORMAL: 'NORMAL',
     PREMIUM: 'PREMIUM'
 }
+
+export const FCM_ACTIONS = {
+    SEND_NOTIFIATION: '0',
+    WALLET: '1',
+    PRODUCT_VALID: '2',
+    PRODUCT_BANNED: '3',
+    PRODUCT_EXPIRED: '4',
+    PRODUCT_REVIEW: '5',
+    BILL: '6',
+    EDIT_USER: '7'
+}

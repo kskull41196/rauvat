@@ -1,10 +1,15 @@
 import { CrudService, ICrudOption } from '../crudService.pg'
+import { errorService, firebaseService } from '@/services'
 import {
     Product,
     GlobalCategory,
     GlobalArea,
     User,
-    Employee
+    Employee,
+    FavoriteProduct,
+    ProductPost,
+    BillItem,
+    ProductGlobalAttribute
 } from '@/models'
 import {
     Sequelize,
@@ -18,7 +23,7 @@ import {
     IPostProduct,
     IPostQuickProduct
 } from '@/interfaces'
-
+import { FCM_ACTIONS } from '../../const'
 export class ProductService extends CrudService<typeof Product> {
     constructor() {
         super(Product)
@@ -225,7 +230,28 @@ export class ProductService extends CrudService<typeof Product> {
         }
         const updated_id = params.updated_id;
         const editor = params.editor;
+        const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
+        const registrationToken = itemUser.registation_id;
+        var message = "Sản Phẩm " + item.name + " Của Bạn Vừa Được Cập Nhật"
+        let action;
+        if(createProduct.state == "VALID"){
+            action = FCM_ACTIONS.PRODUCT_VALID
+        }else
+        if(createProduct.state == "BANNED"){
+            action = FCM_ACTIONS.PRODUCT_BANNED
+        }else
+        if(createProduct.state == "OUTDATED"){
+            action = FCM_ACTIONS.PRODUCT_EXPIRED
+        }else
+        if(createProduct.state == "REVIEW"){
+            action = FCM_ACTIONS.PRODUCT_REVIEW
+        }
+        firebaseService.sendNotification(registrationToken, message, action)
         await this.exec(item.update({ editor_type, updated_id, editor }))
+        await this.exec(FavoriteProduct.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(ProductPost.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(BillItem.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
+        await this.exec(ProductGlobalAttribute.update({ product_id: createProduct.id }, { where: { product_id: item.id } }))
         return createProduct
     }
     async getProductWithHistory(params: any, option?: ICrudOption) {
