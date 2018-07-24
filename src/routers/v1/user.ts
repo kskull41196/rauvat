@@ -24,6 +24,15 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.router.post('/downgrade', this.downgradeMiddlewares(), this.route(this.downgrade));
         this.router.put('/update_registration_id/:id', this.updateMiddlewares(), this.route(this.updateRegistrationId));
         this.router.post('/send_notification', this.createMiddlewares(), this.route(this.sendNotification));
+
+        this.router.post('/like/post/:post_id', this.likePostMiddlewares(), this.route(this.likePost));
+        this.router.post('/like/comment/:comment_id', this.likeCommentMiddlewares(), this.route(this.likeComment));
+        this.router.post('/comment/:post_id', this.commentOnPostMiddlewares(), this.route(this.commentOnPost));
+        this.router.get('/likes', this.getLikesMiddlewares(), this.route(this.getLikes));
+        this.router.get('/comments', this.getCommentsMiddlewares(), this.route(this.getComments));
+        this.router.post('/unlike/post/:post_id', this.unlikePostMiddlewares(), this.route(this.unlikePost));
+        this.router.post('/unlike/comment/:comment_id', this.unlikeCommentMiddlewares(), this.route(this.unlikeComment));
+        this.router.delete('/comment/:id', this.deleteCommentOnPostMiddlewares(), this.route(this.deleteCommentOnPost));
     }
     async sendNotification(req: Request, res: Response) {
         const result = await userController.sendNotification(req.body)
@@ -59,7 +68,7 @@ export default class UserRouter extends CrudRouter<typeof userController> {
             req.body.fullname = "";
         }
         if (req.body.sex == undefined) {
-            req.body.sex = "Other"
+            req.body.sex = "OTHER"
         }
         if (req.body.birthday == undefined) {
             req.body.birthday = new Date();
@@ -215,5 +224,196 @@ export default class UserRouter extends CrudRouter<typeof userController> {
         this.onSuccess(res, result);
     }
 
+    likePostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async likePost(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                post_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'post_id']
+        })
+
+        const result = await this.controller.likePost(req.params);
+        this.onSuccess(res, result);
+    }
+
+    likeCommentMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async likeComment(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                comment_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'comment_id']
+        })
+
+        const result = await this.controller.likeComment(req.params);
+        this.onSuccess(res, result);
+    }
+
+    commentOnPostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async commentOnPost(req: Request, res: Response) {
+        req.body.user_id = req.tokenInfo.payload.user_id;
+        req.body = Object.assign(req.body, req.params);
+        await this.validateJSON(req.body, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                post_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                content: {
+                    type: 'string'
+                }
+            },
+            required: ['user_id', 'post_id', 'content']
+        })
+
+        const result = await this.controller.commentOnPost(req.params);
+        this.onSuccess(res, result);
+    }
+
+    getLikesMiddlewares(): any {
+        return [
+            authInfoMiddleware.run(),
+            queryMiddleware.run()
+        ]
+    }
+
+    async getLikes(req: Request, res: Response) {
+        req.queryInfo.filter.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getLikes(req.queryInfo)
+        this.onSuccessAsList(res, result, undefined, req.queryInfo)
+    }
+
+    getCommentsMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run(),
+            queryMiddleware.run()
+        ]
+    }
+
+    async getComments(req: Request, res: Response) {
+        req.queryInfo.filter.user_id = req.tokenInfo.payload.user_id;
+        const result = await this.controller.getComments(req.queryInfo)
+        this.onSuccessAsList(res, result, undefined, req.queryInfo)
+    }
+
+    unlikePostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async unlikePost(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                post_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'post_id']
+        })
+
+        const result = await this.controller.unlikePost(req.params);
+        this.onSuccess(res, result);
+    }
+
+    unlikeCommentMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async unlikeComment(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                comment_id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['user_id', 'comment_id']
+        })
+
+        const result = await this.controller.unlikeComment(req.params);
+        this.onSuccess(res, result);
+    }
+
+    deleteCommentOnPostMiddlewares(): any[] {
+        return [
+            authInfoMiddleware.run()
+        ]
+    }
+
+    async deleteCommentOnPost(req: Request, res: Response) {
+        req.params.user_id = req.tokenInfo.payload.user_id;
+        await this.validateJSON(req.params, {
+            type: 'object',
+            properties: {
+                user_id: {
+                    type: 'string',
+                    format: 'uuid'
+                },
+                id: {
+                    type: 'string',
+                    format: 'uuid'
+                }
+            },
+            required: ['id', 'user_id']
+        })
+
+        const result = await this.controller.deleteCommentOnPost(req.params);
+        this.onSuccess(res, result);
+    }
 
 }

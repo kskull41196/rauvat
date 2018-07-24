@@ -28,7 +28,10 @@ import {
     Store,
     Report,
     ProductPost,
-    VnpayHistory
+    VnpayHistory,
+    RelationshipHistory,
+    Following,
+    Relationship
 
 } from "@/models/tables";
 
@@ -227,6 +230,23 @@ User.hasMany(Like, {
     foreignKey: 'user_id',
     as: 'likes'
 });
+Like.belongsTo(Post, {
+    foreignKey: 'entity_id',
+    as: 'post'
+})
+Post.hasMany(Like, {
+    foreignKey: 'entity_id',
+    as: 'likes'
+})
+Like.belongsTo(Comment, {
+    foreignKey: 'entity_id',
+    as: 'comment'
+})
+Comment.hasMany(Like, {
+    foreignKey: 'entity_id',
+    as: 'likes'
+})
+
 //rate
 Rate.belongsTo(User, {
     foreignKey: 'user_id',
@@ -245,6 +265,14 @@ User.hasMany(Comment, {
     foreignKey: 'user_id',
     as: 'comments'
 });
+Comment.belongsTo(Post, {
+    foreignKey: 'entity_id',
+    as: 'post'
+})
+Post.hasMany(Comment, {
+    foreignKey: 'entity_id',
+    as: 'comments'
+})
 //user
 User.hasOne(Wallet, {
     foreignKey: 'user_id',
@@ -351,5 +379,60 @@ VnpayHistory.hasOne(PaidHistory, {
     foreignKey: 'vnpay_history_id',
     as: 'paid_history'
 });
+
+// Relationship History
+RelationshipHistory.belongsTo(User, {
+    foreignKey: 'sender_id',
+    as: 'sender'
+})
+User.hasMany(RelationshipHistory, {
+    foreignKey: 'sender_id',
+    as: 'relationship_sends'
+})
+RelationshipHistory.belongsTo(User, {
+    foreignKey: 'receiver_id',
+    as: 'receiver'
+})
+User.hasMany(RelationshipHistory, {
+    foreignKey: 'receiver_id',
+    as: 'relationship_receives'
+})
+
+// Following
+Following.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+})
+User.hasMany(Following, {
+    foreignKey: 'user_id',
+    as: 'followings'
+})
+Following.belongsTo(User, {
+    foreignKey: 'follower_id',
+    as: 'follower'
+})
+User.hasMany(Following, {
+    foreignKey: 'follower_id',
+    as: 'followers'
+})
+
+// Relationship
+Relationship.belongsTo(User, {
+    foreignKey: 'sender_id',
+    as: 'sender'
+})
+Relationship.belongsTo(User, {
+    foreignKey: 'receiver_id',
+    as: 'receiver'
+})
+Relationship.belongsTo(RelationshipHistory, {
+    foreignKey: 'relationship_history_id',
+    as: 'history'
+})
+RelationshipHistory.hasOne(Relationship, {
+    foreignKey: 'relationship_history_id',
+    as: 'relationship'
+})
+
 
 console.log('run associates')

@@ -1,6 +1,13 @@
 import { CrudController } from '../crudController'
 
-import { ICrudOption, errorService, userService, billService } from '@/services'
+import {
+    ICrudOption,
+    errorService,
+    userService,
+    billService,
+    likeService,
+    commentService
+} from '@/services'
 import {
     sequelize,
     Sequelize
@@ -66,6 +73,64 @@ export class UserController extends CrudController<typeof userService> {
         user_id: string
     }) {
         return await this.service.downgrade(params);
+    }
+
+    async likePost(params: any) {
+        return await this.service.likePost(params);
+    }
+
+    async likeComment(params: any) {
+        return await this.service.likeComment(params);
+    }
+
+    async commentOnPost(params: any) {
+        return await this.service.commentOnPost(params);
+    }
+
+    async getLikes(query: any) {
+        return likeService.getList(query)
+    }
+
+    async getComments(query: any) {
+        return commentService.getList(query)
+    }
+    async unlikePost(params: any) {
+        let {
+            user_id,
+            post_id
+        } = params;
+
+        return await likeService.delete({
+            filter: {
+                user_id,
+                entity_type: 'POST',
+                entity_id: post_id
+            }
+        })
+    }
+
+    async unlikeComment(params: any) {
+        let {
+            user_id,
+            comment_id
+        } = params;
+
+        console.log(params);
+
+        return await likeService.delete({
+            filter: {
+                user_id,
+                entity_type: 'CMT',
+                entity_id: comment_id
+            }
+        })
+    }
+
+    async deleteCommentOnPost(params: any){
+        console.log(params);
+        return await commentService.delete({
+            filter: params
+        })
     }
 
 }

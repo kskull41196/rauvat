@@ -3,15 +3,15 @@ import {
   Sequelize
 } from '../base'
 
-export const Comment = sequelize.define(
-  'tbl_comment',
+export const RelationshipHistory = sequelize.define(
+  'tbl_relationship_history',
   {
     id: {
       type: Sequelize.UUID,
       defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
-    user_id: {
+    sender_id: {
       type: Sequelize.UUID,
       references: {
         model: 'tbl_user',
@@ -19,24 +19,27 @@ export const Comment = sequelize.define(
       },
       allowNull: false
     },
-    entity_type: {
+    receiver_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_user',
+        key: 'id'
+      },
+      allowNull: false
+    },
+    action: {
       type: Sequelize.STRING,
+      defaultValue: 'PENDING',
+      allowNull: false,
       validate: {
         isIn: [
           [
-            'POST'
+            'PENDING',
+            'ACCEPTED',
+            'BLOCKED'
           ]
         ]
-      },
-      defaultValue: 'POST',
-      allowNull: false
-    },
-    entity_id: {
-      type: Sequelize.UUID,
-      allowNull: false
-    },
-    content: {
-      type: Sequelize.TEXT
+      }
     },
     status: {
       type: Sequelize.BOOLEAN,

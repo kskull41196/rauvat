@@ -8,7 +8,9 @@ import {
     UserSetting,
     HistoryMembership,
     Store,
-    Notification
+    Like,
+    Comment,
+    Notification,
 } from '@/models'
 import * as crypto from 'crypto'
 const CONVERT_MD5 = 'md5'
@@ -19,6 +21,8 @@ import {
 } from '@/models/base'
 import * as moment from 'moment'
 import * as admin from "firebase-admin";
+import { runInThisContext } from 'vm';
+
 import { FCM_ACTIONS } from '../../const'
 export class UserService extends CrudService<typeof User> {
     constructor() {
@@ -259,6 +263,132 @@ export class UserService extends CrudService<typeof User> {
             t.rollback();
             throw e;
         }
+    }
+
+    async likePost(params: any) {
+        let {
+            post_id,
+            user_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let post = await this.exec(Comment.findOne({
+                where: {
+                    id: post_id
+                }
+            }));
+            if (!post) throw errorService.database.recordNotFound("Post not found");
+
+            let like = await this.exec(Like.findOne({
+                where: {
+                    user_id,
+                    entity_type: 'POST',
+                    entity_id: post_id
+                },
+                transaction: t
+            }))
+
+            if (!like) {
+                like = await this.exec(Like.create({
+                    user_id,
+                    entity_type: 'POST',
+                    entity_id: post_id
+                }, {
+                        transaction: t
+                    }));
+            }
+
+            t.commit();
+
+            return like;
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+
+        }
+
+    }
+
+    async likeComment(params: any) {
+        let {
+            comment_id,
+            user_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let comment = await this.exec(Comment.findOne({
+                where: {
+                    id: comment_id
+                }
+            }));
+            if (!comment) throw errorService.database.recordNotFound("Comment not found");
+
+            let like = await this.exec(Like.findOne({
+                where: {
+                    user_id,
+                    entity_type: 'CMT',
+                    entity_id: comment_id
+                },
+                transaction: t
+            }))
+
+            if (!like) {
+                like = await this.exec(Like.create({
+                    user_id,
+                    entity_type: 'CMT',
+                    entity_id: comment_id
+                }, {
+                        transaction: t
+                    }));
+            }
+
+            t.commit();
+
+            return like;
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+
+        }
+
+    }
+
+    async commentOnPost(params: any) {
+        let {
+            content,
+            user_id,
+            post_id
+        } = params;
+
+        const t = await sequelize.transaction();
+
+        try {
+            let comment = await this.exec(Comment.create({
+                user_id,
+                entity_type: 'POST',
+                entity_id: post_id,
+                content
+            }, {
+                    transaction: t
+                }));
+
+            t.commit();
+
+            return {
+                comment
+            }
+        }
+        catch (e) {
+            t.rollback();
+            throw e;
+        }
+
     }
 
 }

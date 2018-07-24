@@ -3,8 +3,8 @@ import {
   Sequelize
 } from '../base'
 
-export const Comment = sequelize.define(
-  'tbl_comment',
+export const Following = sequelize.define(
+  'tbl_following',
   {
     id: {
       type: Sequelize.UUID,
@@ -17,26 +17,27 @@ export const Comment = sequelize.define(
         model: 'tbl_user',
         key: 'id'
       },
-      allowNull: false
+      allowNull: false,
     },
-    entity_type: {
+    follower_id: {
+      type: Sequelize.UUID,
+      references: {
+        model: 'tbl_user',
+        key: 'id'
+      },
+      allowNull: false,
+    },
+    action: {
       type: Sequelize.STRING,
+      defaultValue: 'DEFAULT',
       validate: {
         isIn: [
           [
-            'POST'
+            'DEFAULT',
+            'VIEWFIRST'
           ]
         ]
-      },
-      defaultValue: 'POST',
-      allowNull: false
-    },
-    entity_id: {
-      type: Sequelize.UUID,
-      allowNull: false
-    },
-    content: {
-      type: Sequelize.TEXT
+      }
     },
     status: {
       type: Sequelize.BOOLEAN,
