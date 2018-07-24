@@ -174,11 +174,12 @@ export default class UserRouter extends CrudRouter<typeof userController> {
     upgradeMiddlewares(): any[] {
         return [
             authInfoMiddleware.run(),
-            adminAuthInfoMiddleware.run()
+            //adminAuthInfoMiddleware.run()
         ]
     }
 
     async upgrade(req: Request, res: Response) {
+        req.body.user_id = req.body.user_id || req.tokenInfo.payload.user_id;
         await this.validateJSON(req.body, {
             type: 'object',
             properties: {
