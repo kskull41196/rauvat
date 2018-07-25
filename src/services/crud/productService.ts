@@ -34,7 +34,7 @@ export class ProductService extends CrudService<typeof Product> {
         offset: 0,
         scope: ['defaultScope']
     }) {
-        let {
+        const {
             name,
             global_category_id,
             area_id,
@@ -57,11 +57,11 @@ export class ProductService extends CrudService<typeof Product> {
             query.where.global_category_id = global_category_id
         }
         if (area_id) {
-            let area_ids: any[] = [area_id];
+            const area_ids: any[] = [area_id];
 
             let parent_ids = [area_id];
             while (true) {
-                let global_areas = await this.exec(GlobalArea.findAndCountAll({
+                const global_areas = await this.exec(GlobalArea.findAndCountAll({
                     where: {
                         parent_id: {
                             $in: parent_ids
@@ -104,9 +104,16 @@ export class ProductService extends CrudService<typeof Product> {
                         4326),
                     radius * CONST.METER_TO_MILE),
                 true), query.where)
+
+            query.where.global_area_id = undefined;
         }
 
         option.filter = query.where;
+
+
+        option.filter['updated_id'] = undefined;
+
+        console.log('bambi', option.filter);
 
         return await this.exec(
             this.modelWithScope(option.scope)
@@ -202,9 +209,9 @@ export class ProductService extends CrudService<typeof Product> {
     }
     async update(params: any, option?: ICrudOption) {
         const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
-        //get data from params to item
-        var keys = Object.keys(params);
-        for (var j = 0; j < keys.length; j++) {
+        // get data from params to item
+        const keys = Object.keys(params);
+        for (let j = 0; j < keys.length; j++) {
             item.dataValues[keys[j]] = params[keys[j]];
         }
         item.dataValues.id = undefined
@@ -220,7 +227,7 @@ export class ProductService extends CrudService<typeof Product> {
         item.dataValues.id = option.filter.id;
 
         params.updated_id = createProduct.id;
-        var editor_type;
+        let editor_type;
         if (params.editor_role == 'ADMIN') {
             params.editor_type = "EMPLOYEE"
             editor_type = params.editor_type
@@ -232,18 +239,18 @@ export class ProductService extends CrudService<typeof Product> {
         const editor = params.editor;
         const itemUser = await this.exec(User.findOne({ where: { id: item.user_id } }), { allowNull: false })
         const registrationToken = itemUser.registation_id;
-        var message = "Sản Phẩm " + item.name + " Của Bạn Vừa Được Cập Nhật"
+        const message = "Sản Phẩm " + item.name + " Của Bạn Vừa Được Cập Nhật"
         let action;
-        if(createProduct.state == "VALID"){
+        if (createProduct.state == "VALID") {
             action = FCM_ACTIONS.PRODUCT_VALID
-        }else
-        if(createProduct.state == "BANNED"){
+        } else
+        if (createProduct.state == "BANNED") {
             action = FCM_ACTIONS.PRODUCT_BANNED
-        }else
-        if(createProduct.state == "OUTDATED"){
+        } else
+        if (createProduct.state == "OUTDATED") {
             action = FCM_ACTIONS.PRODUCT_EXPIRED
-        }else
-        if(createProduct.state == "REVIEW"){
+        } else
+        if (createProduct.state == "REVIEW") {
             action = FCM_ACTIONS.PRODUCT_REVIEW
         }
         firebaseService.sendNotification(registrationToken, message, action)
@@ -255,10 +262,10 @@ export class ProductService extends CrudService<typeof Product> {
         return createProduct
     }
     async getProductWithHistory(params: any, option?: ICrudOption) {
-        let item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
-        var product = JSON.parse(JSON.stringify(item));
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        const product = JSON.parse(JSON.stringify(item));
 
-        let object = [];
+        const object = [];
         let findProductHistory;
         try {
             findProductHistory = await this.exec(Product.findOne({ where: { updated_id: item.id } }), { allowNull: false })
@@ -267,11 +274,11 @@ export class ProductService extends CrudService<typeof Product> {
         }
 
         object.push(findProductHistory);
+        let editor;
         if (findProductHistory.editor_type == 'USER') {
-            var editor_user = await this.exec(User.findOne({ where: { id: findProductHistory.editor } }), { allowNull: false })
-        }
-        if (findProductHistory.editor_type == 'EMPLOYEE') {
-            var editor_employee = await this.exec(Employee.findOne({ where: { id: findProductHistory.editor } }), { allowNull: false })
+            editor = await this.exec(User.findOne({ where: { id: findProductHistory.editor } }), { allowNull: false })
+        } else { 
+            editor = await this.exec(Employee.findOne({ where: { id: findProductHistory.editor } }), { allowNull: false })
         }
 
         while (true) {
@@ -284,7 +291,7 @@ export class ProductService extends CrudService<typeof Product> {
             }
         }
 
-        const current_product = { product, editor: editor_user || editor_employee }
+        const current_product = { product, editor };
         return { current_product, history: object }
     }
     async getList(option: ICrudOption = {
