@@ -13,6 +13,9 @@ import { config } from '@/config'
 import * as guid from 'guid';
 import * as dateFormat from 'dateformat'
 import * as querystring from 'qs'
+import {
+    FCM_ACTIONS
+} from '@/const'
 export class VnpayController extends BaseController {
     constructor() {
         super()
@@ -129,9 +132,16 @@ export class VnpayController extends BaseController {
                                                 $ne: 0
                                             }
                                         }
+                                    },
+                                    {
+                                        association: 'buyer'
+                                    },
+                                    {
+                                        association: 'seller'
                                     }
                                 ]
                             });
+
                             if (!bill)
                                 return {
                                     RspCode: "02",
@@ -152,13 +162,18 @@ export class VnpayController extends BaseController {
                                     action: 'SUCCESSED',
                                     bill_id: bill_id
                                 })
-                                await billService.update({
+
+                                await billService.updateBill({
                                     current_paid_history_id: paid_history.id
                                 }, {
                                         filter: {
                                             id: bill_id
                                         }
                                     })
+
+                                firebaseService.sendNotification(bill.buyer.registation_id, `Hoá đơn ${bill.id} đã được thanh toán`, FCM_ACTIONS.BILL);
+                                firebaseService.sendNotification(bill.seller.registation_id, `Hoá đơn ${bill.id} đã được thanh toán`, FCM_ACTIONS.BILL);
+
                                 return {
                                     RspCode: "00",
                                     Message: "Confirm Success"
