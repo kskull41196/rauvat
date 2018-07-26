@@ -192,6 +192,12 @@ export class BillService extends CrudService<typeof Bill> {
         }
     }
 
+    async updateBill(params: any, option?: ICrudOption) {
+        const item = await this.exec(this.model.findById(option.filter.id), { allowNull: false })
+        await this.exec(item.update(params))
+        return await this.getItem(option)
+    }
+
     async getBill(option: {
         user_id: string,
         id: string
