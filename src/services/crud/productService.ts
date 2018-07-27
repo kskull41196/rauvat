@@ -46,7 +46,8 @@ export class ProductService extends CrudService<typeof Product> {
 
         const query: any = {
             where: {
-
+                updated_id: null, // It must be null here instead of undefined
+                state: 'VALID'
             }
         }
 
@@ -56,7 +57,28 @@ export class ProductService extends CrudService<typeof Product> {
         if (global_category_id) {
             query.where.global_category_id = global_category_id
         }
-        if (area_id) {
+        if (is_quick_post == true || is_quick_post == false) {
+            if (is_quick_post == true)
+                query.where.is_limit_duration = false;
+            else if (is_quick_post == false) query.where.is_limit_duration = true;
+        }
+        if (trade_type) {
+            query.where = Object.assign(query.where, {
+                type: trade_type
+            });
+        }
+        if (point && radius) {
+            query.where = Sequelize.and(Sequelize.where(
+                Sequelize.fn('ST_DWithin',
+                    Sequelize.col('position'),
+                    Sequelize.fn('ST_SetSRID',
+                        Sequelize.fn('ST_MakePoint',
+                            point.longitude, point.latitude),
+                        4326),
+                    radius * CONST.METER_TO_MILE),
+                true), query.where)
+        }
+        if (!radius && area_id) {
             const area_ids: any[] = [area_id];
 
             let parent_ids = [area_id];
@@ -84,34 +106,8 @@ export class ProductService extends CrudService<typeof Product> {
                 $in: area_ids
             }
         }
-        if (is_quick_post == true || is_quick_post == false) {
-            if (is_quick_post == true)
-                query.where.is_limit_duration = false;
-            else if (is_quick_post == false) query.where.is_limit_duration = true;
-        }
-        if (trade_type) {
-            query.where = Object.assign(query.where, {
-                type: trade_type
-            });
-        }
-        if (point && radius) {
-            query.where = Sequelize.and(Sequelize.where(
-                Sequelize.fn('ST_DWithin',
-                    Sequelize.col('position'),
-                    Sequelize.fn('ST_SetSRID',
-                        Sequelize.fn('ST_MakePoint',
-                            point.longitude, point.latitude),
-                        4326),
-                    radius * CONST.METER_TO_MILE),
-                true), query.where)
-
-            query.where.global_area_id = undefined;
-        }
 
         option.filter = query.where;
-
-
-        option.filter['updated_id'] = null; // It must be null here instead of undefined
 
         return await this.exec(
             this.modelWithScope(option.scope)
