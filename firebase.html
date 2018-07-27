@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+ <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+Ï
+<script>
+  // Initialize Firebase
+  // TODO: Replace with your project's customized code snippet
+ var config = {
+    apiKey: "AIzaSyAf2E_X_gw-w9aUuIV6tZNlCW7X2iadtzk",
+    authDomain: "toi-server.firebaseapp.com",
+    databaseURL: "https://toi-server.firebaseio.com",
+    projectId: "toi-server",
+    storageBucket: "toi-server.appspot.com",
+    messagingSenderId: "778337031356"
+  };
+  firebase.initializeApp(config);
+
+  firebase.auth().signInWithEmailAndPassword('trinhminhtuan123456@gmail.com', 'Adlkdt01325789').then((user)=>{
+  	console.log(user)
+  	firebase.auth().currentUser.sendEmailVerification();
+     firebase.auth().currentUser.getIdToken().then(token => {
+          console.log('GET TOKEN', token)
+        })
+  }).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+});
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
