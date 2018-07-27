@@ -58,11 +58,18 @@ export class FirebaseService {
         priority: "high",
         timeToLive: 2 * 30 * 60 * 24
     }) {
-        var registrationToken = registation_id;
-        var payload = {
+        const registrationToken = registation_id;
+        const payload = {
             data: {
                 message,
                 action
+            },
+            notification: {
+                title: 'Rao Vặt',
+                body: message,
+                badge: '1',
+                sound: 'default',
+                click_action: action,
             }
         };
         try {
