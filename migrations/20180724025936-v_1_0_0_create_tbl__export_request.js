@@ -22,7 +22,7 @@ module.exports = {
           model: 'tbl_employee',
           key: 'id'
         },
-        allowNull: false
+        allowNull: true
       },
       amount: {
         type: Sequelize.INTEGER,
@@ -51,9 +51,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      employee_feedback: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       state: {
         type: Sequelize.ENUM,
-        values: ['EXPORTED', 'NONE'],
+        values: ['EXPORTED', 'DENIED', 'NONE'],
         allowNull: false
       },
       status: {

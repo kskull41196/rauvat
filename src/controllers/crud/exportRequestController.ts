@@ -6,6 +6,9 @@ export class ExportRequestController extends CrudController<typeof exportRequest
     constructor() {
         super(exportRequestService)
     }
-    
+    async execute(params: any, option?: ICrudOption) {
+        params.employee_id = params.employee_id
+        return await this.service.execute(params, option)
+    }
 }
     
