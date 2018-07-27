@@ -43,7 +43,7 @@ export class ProductService extends CrudService<typeof Product> {
             point,
             radius
         } = params;
-
+ 
         const query: any = {
             where: {
                 updated_id: null, // It must be null here instead of undefined
