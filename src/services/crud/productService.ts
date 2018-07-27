@@ -111,9 +111,7 @@ export class ProductService extends CrudService<typeof Product> {
         option.filter = query.where;
 
 
-        option.filter['updated_id'] = undefined;
-
-        console.log('bambi', option.filter);
+        option.filter['updated_id'] = null; // It must be null here instead of undefined
 
         return await this.exec(
             this.modelWithScope(option.scope)
